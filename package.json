@@ -1,0 +1,28 @@
+{
+  "name": "ulp_proyecto_videojuego",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node src/app.js",
+    "dev": "nodemon src/app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lucasalonia/ULP_Proyecto_VideoJuego.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/lucasalonia/ULP_Proyecto_VideoJuego/issues"
+  },
+  "homepage": "https://github.com/lucasalonia/ULP_Proyecto_VideoJuego#readme",
+  "dependencies": {
+    "dotenv": "^17.2.3",
+    "express": "^5.1.0",
+    "pug": "^3.0.3",
+    "sequelize": "^6.37.7"
+  }
+}
