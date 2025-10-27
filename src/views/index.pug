@@ -1,20 +1,4 @@
-doctype html
-html(lang="es")
-  head
-    meta(charset="utf-8")
-    meta(name="viewport", content="width=device-width, initial-scale=1.0")
-    title Página Principal
-    link(rel="stylesheet", href="/css/styles.css")
-  body
-    header
-      h1 Bienvenido a mi aplicación
-      p Esto es una página renderizada con Pug y Express.
-
-    main
-      section
-        h2 Contenido principal
-        p Aquí podés agregar lo que quieras mostrar.
-        a(href="/about") Ir a la página "Acerca de"
-
-    footer
-      p © #{new Date().getFullYear()} Mi Aplicación
+extends layouts/mainLayout.pug
+block content
+  h1 Bienvenido al juego
+  p Empieza a jugar o explora los departamentos.

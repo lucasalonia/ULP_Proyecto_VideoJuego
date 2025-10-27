@@ -1,0 +1,70 @@
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+}
+.navbar {
+  width: 100%;
+  box-sizing: border-box; /* para que el padding no sume ancho extra */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #111;
+  padding: 15px 40px;
+  border-bottom: 2px solid #0ff;
+  font-family: 'Consolas', 'Press Start 2P', monospace;
+}
+/* 
+opcion para que el navbar quede siempre visible al hacer scroll:
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+}
+body {
+  padding-top: 70px; /* espacio para que el contenido no quede debajo */
+
+
+.navbar .logo a {
+  color: #0ff;
+  text-decoration: none;
+  font-size: 1.2rem;
+  font-weight: bold;
+  letter-spacing: 2px;
+  transition: color 0.3s;
+}
+
+.navbar .logo a:hover {
+  color: #f0f;
+}
+
+.nav-links {
+  list-style: none;
+  display: flex;
+  gap: 30px;
+  margin: 0;
+  padding: 0;
+}
+
+.nav-links a {
+  text-decoration: none;
+  color: #fff;
+  font-size: 0.9rem;
+  transition: color 0.3s, transform 0.2s;
+}
+
+.nav-links a:hover {
+  color: #0ff;
+  transform: scale(1.1);
+}
+
+/* Responsive para móvil */
+@media (max-width: 768px) {
+  .nav-links {
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+  }
+}

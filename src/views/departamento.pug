@@ -1,0 +1,24 @@
+extends layouts/mainLayout.pug
+
+block content
+  main.departamento-container(style=`background-color: ${departamento.colorFondo}; border-color: ${departamento.colorBorde}`)
+    header.departamento-header(style=`background-color: ${departamento.colorBorde}`)
+      h1= departamento.nombre
+
+    section.departamento-content
+      // Contenedor general que agrupa sílabas y tarjeta
+      div.game-area
+        // Sílabas arriba (en fila)
+        div.silabas-area
+          each silaba in departamento.silabas
+            div.silaba(draggable="true" data-silaba=silaba)= silaba
+
+        // Tarjeta tipo carta debajo
+        div.card-wrapper(style=`--borde:${departamento.colorBorde}`)
+          div.card-header(style=`background-color:${departamento.colorBorde}`)
+            p COMPLETA EL NOMBRE
+          div.drop-zone
+            each silaba in departamento.silabas
+              div.drop-slot(data-expected=silaba)
+          div.card-footer
+            p= departamento.nombre
