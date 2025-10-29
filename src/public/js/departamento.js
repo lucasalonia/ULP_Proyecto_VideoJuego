@@ -1,39 +1,76 @@
 document.addEventListener("DOMContentLoaded", () => {
-  const silabas = document.querySelectorAll(".silaba");
-  const slots = document.querySelectorAll(".drop-slot");
+  const chips = [...document.querySelectorAll(".silaba")];
+  const slots = [...document.querySelectorAll("button.slot")];
+  const ordenCorrecto = (window.JUEGO_DATA && window.JUEGO_DATA.ordenCorrecto) || [];
 
-  silabas.forEach(s => {
-    s.addEventListener("dragstart", e => {
-      e.dataTransfer.setData("text/plain", s.dataset.silaba);
-      s.classList.add("dragging");
+  let selectedChip = null;
+
+  const deselectChip = () => {
+    if (selectedChip) selectedChip.classList.remove("selected");
+    selectedChip = null;
+  };
+
+  const setSlotValue = (slot, valor, chipId = null) => {
+    if (slot.dataset.chipId) {
+      const prev = document.querySelector(`.silaba[data-id="${slot.dataset.chipId}"]`);
+      if (prev) {
+        prev.dataset.used = "0";
+        prev.classList.remove("used");
+      }
+    }
+
+    if (valor) {
+      slot.textContent = valor;
+      slot.dataset.value = valor;
+      if (chipId !== null) slot.dataset.chipId = chipId;
+    } else {
+      slot.textContent = "";
+      delete slot.dataset.value;
+      delete slot.dataset.chipId;
+    }
+
+    slot.classList.remove("incorrect", "correct");
+  };
+
+  const checkWin = () => {
+    const filled = slots.every(s => !!s.dataset.value);
+    if (!filled) return false;
+
+    const correcto = slots.every((s, i) => s.dataset.value === (ordenCorrecto[i] || ""));
+    slots.forEach((s, i) => {
+      const match = s.dataset.value === (ordenCorrecto[i] || "");
+      s.classList.toggle("correct", match);
+      s.classList.toggle("incorrect", !match);
     });
-    s.addEventListener("dragend", () => s.classList.remove("dragging"));
+
+    if (correcto) setTimeout(() => alert("¡Bien! ✅"), 200);
+    return correcto;
+  };
+
+  chips.forEach(chip => {
+    chip.dataset.used = chip.dataset.used || "0";
+    chip.addEventListener("click", () => {
+      if (chip.dataset.used === "1") return;
+      if (selectedChip === chip) return deselectChip();
+      deselectChip();
+      chip.classList.add("selected");
+      selectedChip = chip;
+    });
   });
 
   slots.forEach(slot => {
-    slot.addEventListener("dragover", e => {
-      e.preventDefault();
-      slot.classList.add("hover");
-    });
-
-    slot.addEventListener("dragleave", () => {
-      slot.classList.remove("hover");
-    });
-
-    slot.addEventListener("drop", e => {
-      e.preventDefault();
-      slot.classList.remove("hover");
-
-      const draggedSilaba = e.dataTransfer.getData("text/plain");
-      const expected = slot.dataset.expected;
-
-      if (draggedSilaba === expected) {
-        slot.textContent = draggedSilaba;
-        slot.classList.add("correct");
-      } else {
-        slot.classList.add("incorrect");
-        setTimeout(() => slot.classList.remove("incorrect"), 1000);
+    slot.addEventListener("click", () => {
+      if (selectedChip) {
+        setSlotValue(slot, selectedChip.dataset.silaba, selectedChip.dataset.id);
+        selectedChip.dataset.used = "1";
+        selectedChip.classList.remove("selected");
+        selectedChip.classList.add("used");
+        selectedChip = null;
+        checkWin();
+        return;
       }
+
+      if (slot.dataset.value) setSlotValue(slot, null);
     });
   });
 });

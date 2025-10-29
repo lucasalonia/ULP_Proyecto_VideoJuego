@@ -1,24 +1,32 @@
 extends layouts/mainLayout.pug
 
 block content
-  main.departamento-container(style=`background-color: ${departamento.colorFondo}; border-color: ${departamento.colorBorde}`)
-    header.departamento-header(style=`background-color: ${departamento.colorBorde}`)
-      h1= departamento.nombre
+  main.scene(
+    style=`--primary:${departamento.colorBorde || '#007bb8'};
+            --card-img:url(/img/tarjetas/${departamento.imagen_carta});
+            --bg-img:url(/img/bg/${departamento.imagen_fondo || 'default-bg.jpg'});`
+  )
+    // Título del juego
+    header.topbar
+      h1.title COMARCAS DE SAN LUIS
 
-    section.departamento-content
-      // Contenedor general que agrupa sílabas y tarjeta
-      div.game-area
-        // Sílabas arriba (en fila)
-        div.silabas-area
-          each silaba in departamento.silabas
-            div.silaba(draggable="true" data-silaba=silaba)= silaba
+    // Slots superiores (espacios a completar)
+    .slots
+      each s, i in tokens
+        if s === '|'
+          div.slot.space
+        else 
+          button.slot(type="button" data-index=i)
 
-        // Tarjeta tipo carta debajo
-        div.card-wrapper(style=`--borde:${departamento.colorBorde}`)
-          div.card-header(style=`background-color:${departamento.colorBorde}`)
-            p COMPLETA EL NOMBRE
-          div.drop-zone
-            each silaba in departamento.silabas
-              div.drop-slot(data-expected=silaba)
-          div.card-footer
-            p= departamento.nombre
+    // Carta con fondo del departamento
+    section.card
+      .card-inner
+        .chips
+          each s, idx in silabas
+            button.silaba(type="button" data-silaba=s data-id=idx)= s
+        .card-badge= departamento.nombre
+
+  // Datos del juego
+  script.
+    window.JUEGO_DATA = { ordenCorrecto: !{JSON.stringify(ordenCorrecto)} };
+  script(src="/js/departamento.js")

@@ -1,0 +1,8 @@
+extends layouts/mainLayout.pug
+
+block content
+  main.departamentos-container
+    h1 Departamentos
+    .departamentos-list
+      each dep in departamentos
+        a.departamento-btn(href=`/departamento/${dep.departamento_id}`)= dep.nombre
