@@ -1,4 +1,4 @@
-const pool = require("../config/db");
+const Departamento = require("../models/Departamento");
 
 // 🎨 Añade colores e imágenes por defecto al departamento
 function colorizeDepto(departamento) {
@@ -22,7 +22,7 @@ function shuffle(arr) {
 // 🧭 LISTAR DEPARTAMENTOS
 exports.listarDepartamentos = async (req, res) => {
   try {
-    const [departamentos] = await pool.query("SELECT * FROM departamento");
+    const departamentos = await Departamento.getAll();
     res.render("departamentos", { departamentos });
   } catch (err) {
     console.error(err);
@@ -34,21 +34,13 @@ exports.listarDepartamentos = async (req, res) => {
 exports.verDepartamentoJuego = async (req, res) => {
   const { id } = req.params;
   try {
-    const [[departamento]] = await pool.query(
-      "SELECT * FROM departamento WHERE departamento_id = ?",
-      [id]
-    );
+    const departamento = await Departamento.getById(id);
     if (!departamento) return res.status(404).render("notFound");
 
-    const [parajes] = await pool.query(
-      "SELECT * FROM paraje WHERE departamento_id = ?",
-      [id]
-    );
+    const parajes = await Departamento.getParajesByDepto(id);
     if (!parajes?.length) return res.status(404).render("notFound");
 
     const dep = colorizeDepto(departamento);
-
-    // Paraje aleatorio
     const paraje = parajes[Math.floor(Math.random() * parajes.length)];
 
     // === Procesar sílabas ===
@@ -56,23 +48,20 @@ exports.verDepartamentoJuego = async (req, res) => {
     const tokens = [];
     for (const p of rawParts) {
       if (p === "-") continue;
-      if (p === "|") tokens.push("|"); // marcador visual de hueco
+      if (p === "|") tokens.push("|");
       else if (p.trim()) tokens.push(p);
     }
 
-    // Solo las sílabas reales participan del juego
     const silabasReales = tokens.filter(t => t !== "|");
     const silabasMezcladas = shuffle(silabasReales);
-
-    // ordenCorrecto sin los huecos, para validación
     const ordenCorrecto = tokens.filter(t => t !== "|");
 
     res.render("departamento", {
       departamento: dep,
       paraje,
-      tokens,               // incluye huecos visuales
-      silabas: silabasMezcladas, // chips mezclados
-      ordenCorrecto,        // para validar el orden correcto
+      tokens,
+      silabas: silabasMezcladas,
+      ordenCorrecto,
     });
   } catch (err) {
     console.error(err);
@@ -84,17 +73,10 @@ exports.verDepartamentoJuego = async (req, res) => {
 exports.verDepartamentoDetalle = async (req, res) => {
   const { id } = req.params;
   try {
-    const [[departamento]] = await pool.query(
-      "SELECT * FROM departamento WHERE departamento_id = ?",
-      [id]
-    );
+    const departamento = await Departamento.getById(id);
     if (!departamento) return res.status(404).render("notFound");
 
-    const [parajes] = await pool.query(
-      "SELECT * FROM paraje WHERE departamento_id = ?",
-      [id]
-    );
-
+    const parajes = await Departamento.getParajesByDepto(id);
     res.render("departamentoDetalle", { departamento, parajes });
   } catch (err) {
     console.error(err);

@@ -1,0 +1,12 @@
+extends ../layouts/mainLayout.pug
+
+block content
+  main.auth-container
+    section.auth-box
+      h1.auth-title Jugar como invitado
+      form.auth-form(action="/guest" method="POST")
+        input.auth-input(type="text" name="nickname" placeholder="Elige un nickname" required)
+        button.auth-btn(type="submit") Entrar al juego
+      div.auth-links
+        a(href="/login") Iniciar sesión
+        a(href="/register") Crear cuenta

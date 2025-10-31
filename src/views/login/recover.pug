@@ -1,0 +1,11 @@
+extends ../layouts/mainLayout.pug
+
+block content
+  main.auth-container
+    section.auth-box
+      h1.auth-title Recuperar contraseña
+      form.auth-form(action="/recover" method="POST")
+        input.auth-input(type="email" name="email" placeholder="Correo electrónico" required)
+        button.auth-btn(type="submit") Enviar enlace
+      div.auth-links
+        a(href="/login") Volver al inicio

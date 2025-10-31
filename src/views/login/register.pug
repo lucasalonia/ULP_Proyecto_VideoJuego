@@ -1,0 +1,14 @@
+extends ../layouts/mainLayout.pug
+
+block content
+  main.auth-container
+    section.auth-box
+      h1.auth-title Crear cuenta
+      form.auth-form(action="/register" method="POST")
+        input.auth-input(type="text" name="nickname" placeholder="Nickname" required)
+        input.auth-input(type="email" name="email" placeholder="Correo electrónico" required)
+        input.auth-input(type="password" name="password" placeholder="Contraseña" required)
+        button.auth-btn(type="submit") Registrarme
+      div.auth-links
+        a(href="/login") Ya tengo cuenta
+        a(href="/guest") Entrar sin registrarme
