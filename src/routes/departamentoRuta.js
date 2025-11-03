@@ -5,6 +5,7 @@ const {
   listarDepartamentos,
   verDepartamentoJuego,
   verDepartamentoDetalle,
+  mostrarMapa,
 } = require("../controllers/DepartamentoController");
 
 // 🧭 Listado general de departamentos
@@ -15,5 +16,7 @@ router.get("/departamento/:id", verDepartamentoJuego);
 
 // 📄 Detalle textual de un departamento
 router.get("/departamento/:id/detalle", verDepartamentoDetalle);
+
+router.get("/mapa", mostrarMapa);
 
 module.exports = router;

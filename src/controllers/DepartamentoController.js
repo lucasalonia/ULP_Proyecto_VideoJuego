@@ -83,3 +83,12 @@ exports.verDepartamentoDetalle = async (req, res) => {
     res.status(500).send("Error al obtener los datos del departamento");
   }
 };
+
+exports.mostrarMapa=async (req, res) => {
+    try {
+    res.render('mapa');
+  } catch (err) {
+    console.error('Error al renderizar mapa:', err);
+    res.status(500).send('Error al renderizar mapa');
+  }
+  };
