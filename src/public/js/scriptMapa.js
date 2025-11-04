@@ -6,7 +6,7 @@ class Escena extends Phaser.Scene {
 
     preload() {
 
-        this.load.image('bg', '/img/mapa/mapa1.png');
+        this.load.image('bg', '/img/mapa/San_Luis.png');
         this.load.spritesheet('blocks', 'assets/sprites/heartstar.png', { frameWidth: 64, frameHeight: 64 });
         this.load.image('Ayacucho', '/img/mapa/ayacuchoMapa.png');
         this.load.image('Junin', '/img/mapa/junin.png');
@@ -25,8 +25,8 @@ class Escena extends Phaser.Scene {
 
     create() {
         this.contador = 0;
-        const fondo = this.add.sprite(0, 120, 'bg');
-        fondo.setScale(1);
+        const fondo = this.add.sprite(-50, 30, 'bg');
+        fondo.setScale(1.27);
         fondo.setOrigin(0, 0);
 
         const left = fondo.x - fondo.displayWidth * fondo.originX;
@@ -36,10 +36,10 @@ class Escena extends Phaser.Scene {
 
 
         // Contorno
-        const graphics = this.add.graphics();
-        graphics.lineStyle(2, 0xff0000);
-        graphics.strokeRect(fondo.x, fondo.y, fondo.displayWidth, fondo.displayHeight);
-        graphics.strokeRect(0, 0, this.sys.game.config.width, this.sys.game.config.height);
+        // const graphics = this.add.graphics();
+        // graphics.lineStyle(2, 0xff0000);
+        // graphics.strokeRect(fondo.x, fondo.y, fondo.displayWidth, fondo.displayHeight);
+        // graphics.strokeRect(0, 0, this.sys.game.config.width, this.sys.game.config.height);
 
         //Zonas objetivo
         const zona1 = new Phaser.Geom.Rectangle(850, 290, 100, 100);
@@ -188,7 +188,7 @@ class Escena extends Phaser.Scene {
                                 }).setOrigin(0.5).setDepth(20);
 
                         button = this.add.text(1300, 300, "SI", {
-                           
+
                             fontSize: '50px',
                             color: '#080808ff',
                             align: 'center',
@@ -210,7 +210,7 @@ class Escena extends Phaser.Scene {
                         }
                         )
                         buttonNo = this.add.text(1400, 300, "NO", {
-                          
+
                             fontSize: '50px',
                             color: '#ffffff',
                             align: 'center',
@@ -237,7 +237,7 @@ class Escena extends Phaser.Scene {
                         console.log(`${obj.texture.key} clickeado`);
                         if (msj2 || msj3) { msj2.destroy(); msj3.destroy(); };
                         mensaje.destroy();
-                      
+
                         msj2 = this.add.text(obj.targetZone.centerX, obj.targetZone.centerY,
 
                             ` ${obj.texture.key}`, { fontSize: '80px', fill: '#000000ff', backgroundColor: " #baecb4ff", fontFamily: 'Georgia, "Goudy Bookletter 1911", Times, serif' }).setOrigin(0.5).setDepth(20);
@@ -274,8 +274,10 @@ const config = {
     height: 2000,
 
     backgroundColor: '#617f81',
+ 
     scene: Escena,
-  
+    
+
 };
 
 new Phaser.Game(config);
