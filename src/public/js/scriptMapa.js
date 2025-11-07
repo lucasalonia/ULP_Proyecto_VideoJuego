@@ -272,14 +272,50 @@ const config = {
     type: Phaser.AUTO,
     width: 3000,
     height: 2000,
-
+    parent: 'phaser-container',
     backgroundColor: '#617f81',
- 
     scene: Escena,
-    
 
 };
 
 new Phaser.Game(config);
 
+
+function applyCssScale() {
+    const canvas = document.querySelector('canvas');
+    if (!canvas) return;
+
+    const ww = window.innerWidth;
+    const wh = window.innerHeight;
+    const scale = Math.min(ww / config.width, wh / config.height);
+
+    // TAMAÑO DE CANVA BASE
+    canvas.style.width = config.width + 'px';
+    canvas.style.height = config.height + 'px';
+
+    // TRANSFORM DE ESCALA
+    canvas.style.transformOrigin = 'top left';
+    canvas.style.transform = `scale(${scale})`;
+
+    // CENTRA
+    const offsetX = (ww - config.width * scale) / 2;
+    const offsetY = (wh - config.height * scale) / 2;
+    canvas.style.position = 'absolute';
+    canvas.style.left = `${offsetX}px`;
+    canvas.style.top = `${offsetY}px`;
+}
+
+// CREA CANVA Y AJUSTA ESCALA
+function waitForCanvasThenApply() {
+    const check = setInterval(() => {
+        const canvas = document.querySelector('canvas');
+        if (canvas) {
+            clearInterval(check);
+            applyCssScale();
+            window.addEventListener('resize', applyCssScale);
+        }
+    }, 50);
+}
+
+waitForCanvasThenApply();
 
