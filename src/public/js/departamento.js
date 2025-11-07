@@ -1,76 +1,106 @@
+// Espera a que el DOM esté listo antes de ejecutar el juego
 document.addEventListener("DOMContentLoaded", () => {
-  const chips = [...document.querySelectorAll(".silaba")];
-  const slots = [...document.querySelectorAll("button.slot")];
-  const ordenCorrecto = (window.JUEGO_DATA && window.JUEGO_DATA.ordenCorrecto) || [];
 
-  let selectedChip = null;
+  // === VARIABLES PRINCIPALES ===
+  const fichas = [...document.querySelectorAll(".ficha")]; // todas las sílabas
+  const casilleros = [...document.querySelectorAll("button.casillero")]; // espacios de armado
+  const ordenCorrecto = (window.JUEGO_DATA && window.JUEGO_DATA.ordenCorrecto) || []; // orden correcto cargado desde el servidor
 
-  const deselectChip = () => {
-    if (selectedChip) selectedChip.classList.remove("selected");
-    selectedChip = null;
+  let fichaSeleccionada = null; // ficha actualmente seleccionada
+
+  // === FUNCIONES ===
+
+  // Quita la selección de una ficha
+  const deseleccionarFicha = () => {
+    if (fichaSeleccionada) fichaSeleccionada.classList.remove("seleccionada");
+    fichaSeleccionada = null;
   };
 
-  const setSlotValue = (slot, valor, chipId = null) => {
-    if (slot.dataset.chipId) {
-      const prev = document.querySelector(`.silaba[data-id="${slot.dataset.chipId}"]`);
-      if (prev) {
-        prev.dataset.used = "0";
-        prev.classList.remove("used");
+  // Asigna (o limpia) una ficha dentro de un casillero
+  const asignarValorCasillero = (casillero, valor, idFicha = null) => {
+    // Si el casillero ya tenía una ficha, liberarla
+    if (casillero.dataset.idFicha) {
+      const anterior = document.querySelector(`.ficha[data-indice="${casillero.dataset.idFicha}"]`);
+      if (anterior) {
+        anterior.dataset.usada = "0";
+        anterior.classList.remove("usada");
       }
     }
 
+    // Colocar nueva ficha o limpiar
     if (valor) {
-      slot.textContent = valor;
-      slot.dataset.value = valor;
-      if (chipId !== null) slot.dataset.chipId = chipId;
+      casillero.textContent = valor;
+      casillero.dataset.valor = valor;
+      if (idFicha !== null) casillero.dataset.idFicha = idFicha;
     } else {
-      slot.textContent = "";
-      delete slot.dataset.value;
-      delete slot.dataset.chipId;
+      casillero.textContent = "";
+      delete casillero.dataset.valor;
+      delete casillero.dataset.idFicha;
     }
 
-    slot.classList.remove("incorrect", "correct");
+    // Quita estilos de validación anteriores
+    casillero.classList.remove("incorrecto", "correcto");
   };
 
-  const checkWin = () => {
-    const filled = slots.every(s => !!s.dataset.value);
-    if (!filled) return false;
+  // Comprueba si todas las fichas están en el orden correcto
+  const verificarVictoria = () => {
+    const completo = casilleros.every(c => !!c.dataset.valor);
+    if (!completo) return false;
 
-    const correcto = slots.every((s, i) => s.dataset.value === (ordenCorrecto[i] || ""));
-    slots.forEach((s, i) => {
-      const match = s.dataset.value === (ordenCorrecto[i] || "");
-      s.classList.toggle("correct", match);
-      s.classList.toggle("incorrect", !match);
+    const correcto = casilleros.every(
+      (c, i) => c.dataset.valor === (ordenCorrecto[i] || "")
+    );
+
+    // Marca los casilleros como correctos o incorrectos
+    casilleros.forEach((c, i) => {
+      const coincide = c.dataset.valor === (ordenCorrecto[i] || "");
+      c.classList.toggle("correcto", coincide);
+      c.classList.toggle("incorrecto", !coincide);
     });
 
-    if (correcto) setTimeout(() => alert("¡Bien! ✅"), 200);
+    // Si todo está correcto, muestra mensaje
+    if (correcto) setTimeout(() => alert("¡Bien hecho! ✅"), 200);
     return correcto;
   };
 
-  chips.forEach(chip => {
-    chip.dataset.used = chip.dataset.used || "0";
-    chip.addEventListener("click", () => {
-      if (chip.dataset.used === "1") return;
-      if (selectedChip === chip) return deselectChip();
-      deselectChip();
-      chip.classList.add("selected");
-      selectedChip = chip;
+  // === EVENTOS DE LAS FICHAS ===
+  fichas.forEach(ficha => {
+    ficha.dataset.usada = ficha.dataset.usada || "0";
+
+    ficha.addEventListener("click", () => {
+      // Ignorar si ya está usada
+      if (ficha.dataset.usada === "1") return;
+
+      // Si se vuelve a hacer clic en la misma ficha, se deselecciona
+      if (fichaSeleccionada === ficha) return deseleccionarFicha();
+
+      // Selecciona la nueva ficha
+      deseleccionarFicha();
+      ficha.classList.add("seleccionada");
+      fichaSeleccionada = ficha;
     });
   });
 
-  slots.forEach(slot => {
-    slot.addEventListener("click", () => {
-      if (selectedChip) {
-        setSlotValue(slot, selectedChip.dataset.silaba, selectedChip.dataset.id);
-        selectedChip.dataset.used = "1";
-        selectedChip.classList.remove("selected");
-        selectedChip.classList.add("used");
-        selectedChip = null;
-        checkWin();
+  // === EVENTOS DE LOS CASILLEROS ===
+  casilleros.forEach(casillero => {
+    casillero.addEventListener("click", () => {
+      // Si hay una ficha seleccionada, la coloca en el casillero
+      if (fichaSeleccionada) {
+        asignarValorCasillero(
+          casillero,
+          fichaSeleccionada.dataset.silaba,
+          fichaSeleccionada.dataset.indice
+        );
+        fichaSeleccionada.dataset.usada = "1";
+        fichaSeleccionada.classList.remove("seleccionada");
+        fichaSeleccionada.classList.add("usada");
+        fichaSeleccionada = null;
+        verificarVictoria();
         return;
       }
 
-      if (slot.dataset.value) setSlotValue(slot, null);
+      // Si no hay ficha seleccionada, limpiar el casillero
+      if (casillero.dataset.valor) asignarValorCasillero(casillero, null);
     });
   });
 });

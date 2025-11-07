@@ -1,30 +1,30 @@
 extends layouts/mainLayout.pug
 
 block content
-  main.scene(
-    style=`--primary:${departamento.colorBorde || '#007bb8'};
-            --card-img:url(/img/tarjetas/${departamento.imagen_carta});
-            --bg-img:url(/img/bg/${departamento.imagen_fondo || 'default-bg.jpg'});`
+  main.escena(
+    style=`--color-principal:${departamento.colorBorde || '#007bb8'};
+            --img-carta:url(/img/tarjetas/${departamento.imagen_carta});
+            --img-fondo:url(/img/bg/${departamento.imagen_fondo || 'default-bg.jpg'});`
   )
     // Título del juego
-    header.topbar
-      h1.title COMARCAS DE SAN LUIS
+    header.barra-superior
+      h1.titulo COMARCAS DE SAN LUIS
 
-    // Slots superiores (espacios a completar)
-    .slots
+    // Casilleros superiores (espacios a completar)
+    .casilleros
       each s, i in tokens
         if s === '|'
-          div.slot.space
-        else 
-          button.slot(type="button" data-index=i)
+          div.casillero.casillero-espacio
+        else
+          button.casillero(type="button" data-indice=i)
 
     // Carta con fondo del departamento
-    section.card
-      .card-inner
-        .chips
+    section.carta
+      .carta__interior
+        .fichas
           each s, idx in silabas
-            button.silaba(type="button" data-silaba=s data-id=idx)= s
-        .card-badge= departamento.nombre
+            button.ficha(type="button" data-silaba=s data-indice=idx)= s
+        .carta__etiqueta= departamento.nombre
 
   // Datos del juego
   script.
