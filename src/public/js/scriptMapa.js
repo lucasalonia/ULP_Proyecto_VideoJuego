@@ -26,6 +26,7 @@ class Escena extends Phaser.Scene {
     }
 
     create() {
+        this.fechaInicio = new Date();
         const canvaWidth = this.sys.game.config.width;
         const canvaHeight = this.sys.game.config.height;
         const hoja = this.add.sprite(canvaWidth / 2, canvaHeight / 2 + 10, 'hoja').setDepth(0).setScale(0.8)
@@ -173,6 +174,30 @@ class Escena extends Phaser.Scene {
 
 
             if (this.contador === 9) {
+                const fechaFin = new Date();
+                const tiempoMs = fechaFin - this.fechaInicio; // milisegundos transcurridos
+                const tiempoSegundos = Math.floor(tiempoMs / 1000);
+                const datos = {
+                    id_jugador: 1,  // asegurate de tenerlo guardado (por ejemplo en sesión)
+                    fecha_inicio: this.fechaInicio.toISOString(),
+                    fecha_fin: fechaFin.toISOString(),
+                    tiempo: tiempoSegundos
+                };
+                fetch("/tiempo_mapa", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(datos)
+                })
+                    .then(res => res.json())
+                    .then(respuesta => {
+                        console.log("Tiempo guardado:", respuesta);
+                    })
+                    .catch(err => {
+                        console.error("Error al guardar tiempo:", err);
+                    });
+
                 const sticker = this.add.sprite(300, 200, 'sticker').setScale(0.9);
                 var botonNo = null;
                 var botonSi = null;
@@ -191,19 +216,19 @@ class Escena extends Phaser.Scene {
                     console.log(`${obj.texture.key} clickeado `);
 
                     obj.on('pointerdown', () => {
-                         const sticker2 = this.add.sprite(1000, 400, 'sticker').setScale(0.75);
+                        const sticker2 = this.add.sprite(1000, 400, 'sticker').setScale(0.75);
                         if (mensajeComarca) {
                             mensajeComarca.destroy();
                             botonSi.destroy();
                             botonNo.destroy();
-                            
+
                         }
                         mensajeComarca =
                             this.add.text(1000, 400, `Deseas jugar\n     en\n ${obj.texture.key}?`,
                                 {
                                     fontSize: '30px',
                                     fill: '#000000ff',
-                                   
+
                                 }).setOrigin(0.5).setDepth(20);
 
                         botonSi = this.add.text(950, 500, "SI", {
@@ -255,7 +280,7 @@ class Escena extends Phaser.Scene {
 
                         console.log(`${obj.texture.key} clickeado`);
                         if (msj2) { msj2.destroy() };
-                      //  mensaje.destroy();
+                        //  mensaje.destroy();
 
                         msj2 = this.add.text(obj.targetZone.centerX, obj.targetZone.centerY,
 
