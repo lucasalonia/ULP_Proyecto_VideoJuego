@@ -6,29 +6,34 @@ class Escena extends Phaser.Scene {
 
     preload() {
 
-        this.load.image('bg', '/img/mapa/mapa1.png');
+        this.load.image('mapaSL', '/img/mapa/mapaSanLuis.png');
         this.load.spritesheet('blocks', 'assets/sprites/heartstar.png', { frameWidth: 64, frameHeight: 64 });
         this.load.image('Ayacucho', '/img/mapa/ayacuchoMapa.png');
-        this.load.image('Junin', '/img/mapa/junin.png');
-        this.load.image('San Martin', '/img/mapa/sanMartin.png');
+        this.load.image('Junin', '/img/mapa/juninMapa.png');
+        this.load.image('San Martin', '/img/mapa/sanMartinMapa.png');
         this.load.image('Dupuy', '/img/mapa/dupuyMapa.png');
         this.load.image('Pueyrredon', '/img/mapa/pueyrredonMapa.png');
         this.load.image('Pedernera', '/img/mapa/pederneraMapa.png');
         this.load.image('Chacabuco', '/img/mapa/chacabucoMapa.png');
         this.load.image('Belgrano', '/img/mapa/belgranoMapa.png');
         this.load.image('Pringles', '/img/mapa/pringlesMapa.png');
+        this.load.image('hoja', '/img/mapa/hoja1.png');
+        this.load.image('marco', '/img/mapa/marcoL.png');
+        this.load.image('sticker', '/img/mapa/sticker.png');
 
 
 
     }
 
-
     create() {
+        this.fechaInicio = new Date();
+        const canvaWidth = this.sys.game.config.width;
+        const canvaHeight = this.sys.game.config.height;
+        const hoja = this.add.sprite(canvaWidth / 2, canvaHeight / 2 + 10, 'hoja').setDepth(0).setScale(0.8)
         this.contador = 0;
-        const fondo = this.add.sprite(0, 120, 'bg');
-        fondo.setScale(1);
-        fondo.setOrigin(0, 0);
-
+        const fondo = this.add.sprite(canvaWidth / 2, canvaHeight / 2, 'mapaSL').setScale(0.95);
+        const marco = this.add.sprite(canvaWidth / 2 - 40, canvaHeight / 2 - 30, 'marco').setScale(0.9);
+        fondo.setScale(0.5).setOrigin(0.5, 0.5);
         const left = fondo.x - fondo.displayWidth * fondo.originX;
         const right = fondo.x + fondo.displayWidth * (1 - fondo.originX);
         const top = fondo.y - fondo.displayHeight * fondo.originY;
@@ -36,21 +41,21 @@ class Escena extends Phaser.Scene {
 
 
         // Contorno
-        const graphics = this.add.graphics();
-        graphics.lineStyle(2, 0xff0000);
-        graphics.strokeRect(fondo.x, fondo.y, fondo.displayWidth, fondo.displayHeight);
-        graphics.strokeRect(0, 0, this.sys.game.config.width, this.sys.game.config.height);
+        // const graphics = this.add.graphics();
+        // graphics.lineStyle(2, 0xff0000);
+        // graphics.strokeRect(fondo.x, fondo.y, fondo.displayWidth, fondo.displayHeight);
+        // graphics.strokeRect(0, 0, this.sys.game.config.width, this.sys.game.config.height);
 
         //Zonas objetivo
-        const zona1 = new Phaser.Geom.Rectangle(850, 290, 100, 100);
-        const zona2 = new Phaser.Geom.Rectangle(400, 330, 100, 100);
-        const zona3 = new Phaser.Geom.Rectangle(727, 480, 64, 64);
-        const zona4 = new Phaser.Geom.Rectangle(655, 1650, 64, 64);
-        const zona5 = new Phaser.Geom.Rectangle(405, 1048, 64, 64);
-        const zona6 = new Phaser.Geom.Rectangle(770, 1005, 64, 64);
-        const zona7 = new Phaser.Geom.Rectangle(898, 530, 64, 64);
-        const zona8 = new Phaser.Geom.Rectangle(340, 549, 64, 64);
-        const zona9 = new Phaser.Geom.Rectangle(663, 700, 64, 64);
+        const zona1 = new Phaser.Geom.Rectangle(663, 116, 100, 100);//junin
+        const zona2 = new Phaser.Geom.Rectangle(547, 126, 100, 100);//ayacucho
+        const zona3 = new Phaser.Geom.Rectangle(641, 178, 64, 64);//san martin
+        const zona4 = new Phaser.Geom.Rectangle(625, 473, 64, 64);//dupuy
+        const zona5 = new Phaser.Geom.Rectangle(557, 315, 64, 64);//pueyrredon
+        const zona6 = new Phaser.Geom.Rectangle(657, 310, 64, 64);
+        const zona7 = new Phaser.Geom.Rectangle(687, 192, 64, 64);//chacabuco
+        const zona8 = new Phaser.Geom.Rectangle(550, 195, 64, 64);//belgrano
+        const zona9 = new Phaser.Geom.Rectangle(623, 232, 64, 64);//pringles
 
 
 
@@ -63,37 +68,47 @@ class Escena extends Phaser.Scene {
         //     .strokeRectShape(zona6)
         //     .strokeRectShape(zona7)
         //     .strokeRectShape(zona8)
-        // .strokeRectShape(zona9);
+        //     .strokeRectShape(zona9);
 
 
 
         // Objetos arrastrables
-        this.ayacucho = this.add.sprite(1800, 250, 'Ayacucho').setOrigin(0.5).setScale(1.5);
+        this.ayacucho = this.add.sprite(250, 250, 'Ayacucho').setOrigin(0.5).setScale(0.32);
         this.ayacucho.depId = 2;
+        this.ayacucho.color = 0x0E88EC;
 
-        this.junin = this.add.sprite(2200, 600, 'Junin').setOrigin(0.5).setScale(1.5);
+        this.junin = this.add.sprite(950, 150, 'Junin').setOrigin(0.5).setScale(0.32);
         this.junin.depId = 6;
+        this.junin.color = 0xFFCA7B;
 
-        this.sanMartin = this.add.sprite(1700, 1100, 'San Martin').setOrigin(0.5).setScale(1.5);
+
+        this.sanMartin = this.add.sprite(950, 400, 'San Martin').setOrigin(0.5).setScale(0.32);
         this.sanMartin.depId = 9;
+        this.sanMartin.color = 0xA260F5;
 
-        this.dupuy = this.add.sprite(1700, 1600, 'Dupuy').setOrigin(0.5).setScale(1.5);
+        this.dupuy = this.add.sprite(250, 400, 'Dupuy').setOrigin(0.5).setScale(0.32);
         this.dupuy.depId = 5;
+        this.dupuy.color = 0xE4F10E;
 
-        this.pueyrredon = this.add.sprite(2200, 1200, 'Pueyrredon').setOrigin(0.5).setScale(1.5);
+        this.pueyrredon = this.add.sprite(1050, 300, 'Pueyrredon').setOrigin(0.5).setScale(0.32);
         this.pueyrredon.depId = 8;
+        this.pueyrredon.color = 0x488D2D;
 
-        this.pedernera = this.add.sprite(2600, 1400, 'Pedernera').setOrigin(0.5).setScale(1.5);
+        this.pedernera = this.add.sprite(1050, 500, 'Pedernera').setOrigin(0.5).setScale(0.32);
         this.pedernera.depId = 7;
+        this.pedernera.color = 0xDF9CB8;
 
-        this.chacabuco = this.add.sprite(2600, 800, 'Chacabuco').setOrigin(0.5).setScale(1.5);
+        this.chacabuco = this.add.sprite(1100, 150, 'Chacabuco').setOrigin(0.5).setScale(0.32);
         this.chacabuco.depId = 4;
+        this.chacabuco.color = 0xCC448E;
 
-        this.belgrano = this.add.sprite(1800, 610, 'Belgrano').setOrigin(0.5).setScale(1.5);
+        this.belgrano = this.add.sprite(300, 610, 'Belgrano').setOrigin(0.5).setScale(0.32);
         this.belgrano.depId = 3;
+        this.belgrano.color = 0x9E8982;
 
-        this.pringles = this.add.sprite(2500, 250, 'Pringles').setOrigin(0.5).setScale(1.5);
+        this.pringles = this.add.sprite(300, 150, 'Pringles').setOrigin(0.5).setScale(0.32);
         this.pringles.depId = 1;
+        this.pringles.color = 0x1598DB;
 
 
 
@@ -127,8 +142,8 @@ class Escena extends Phaser.Scene {
 
         // Drag y snap
         this.input.on('drag', (pointer, gameObject, dragX, dragY) => {
-            dragX = Phaser.Math.Snap.To(dragX, 40);
-            dragY = Phaser.Math.Snap.To(dragY, 40);
+            dragX = Phaser.Math.Snap.To(dragX, 10);
+            dragY = Phaser.Math.Snap.To(dragY, 10);
             gameObject.setPosition(dragX, dragY);
         });
 
@@ -156,91 +171,120 @@ class Escena extends Phaser.Scene {
                 // Si no, vuelve a su posición original
                 gameObject.setPosition(gameObject.input.dragStartX, gameObject.input.dragStartY);
             }
-            if (this.contador === 9) {
 
-                var buttonNo = null;
-                var button = null;
+
+            if (this.contador === 9) {
+                const fechaFin = new Date();
+                const tiempoMs = fechaFin - this.fechaInicio; // milisegundos transcurridos
+                const tiempoSegundos = Math.floor(tiempoMs / 1000);
+                const datos = {
+                    id_jugador: 1,  // asegurate de tenerlo guardado (por ejemplo en sesión)
+                    fecha_inicio: this.fechaInicio.toISOString(),
+                    fecha_fin: fechaFin.toISOString(),
+                    tiempo: tiempoSegundos
+                };
+                fetch("/tiempo_mapa", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(datos)
+                })
+                    .then(res => res.json())
+                    .then(respuesta => {
+                        console.log("Tiempo guardado:", respuesta);
+                    })
+                    .catch(err => {
+                        console.error("Error al guardar tiempo:", err);
+                    });
+
+                const sticker = this.add.sprite(300, 200, 'sticker').setScale(0.9);
+                var botonNo = null;
+                var botonSi = null;
                 let msj2 = null;
                 let msj3 = null;
                 let mensajeComarca = null;
                 const mensaje =
-                    this.add.text(1500, 1000, '¡FELICITACIONES!\nCOMPLETASTE EL MAPA',
-                        { fontSize: '130px', fill: '#d49b46ff', backgroundColor: " #000000ff" }).setOrigin(0.5).setDepth(20);
+                    this.add.text(300, 200, '¡FELICITACIONES!\n  COMPLETASTE\n   EL MAPA',
+                        { fontSize: '30px', fill: '#000000ff' }).setOrigin(0.5).setDepth(20);
 
                 [this.ayacucho, this.junin, this.sanMartin, this.dupuy, this.pueyrredon,
                 this.pedernera, this.chacabuco, this.belgrano, this.pringles].forEach(obj => {
-                    obj.on('pointerover', () => { obj.setTint(0x06A788); });
-                    obj.on('pointerout', () => { obj.clearTint(); });
+                    obj.on('pointerover', () => { obj.setTintFill(obj.color) });
+
+                    obj.on('pointerout', () => { obj.clearTint() });
                     console.log(`${obj.texture.key} clickeado `);
 
                     obj.on('pointerdown', () => {
+                        const sticker2 = this.add.sprite(1000, 400, 'sticker').setScale(0.75);
                         if (mensajeComarca) {
                             mensajeComarca.destroy();
-                            button.destroy();
-                            buttonNo.destroy();
+                            botonSi.destroy();
+                            botonNo.destroy();
+
                         }
                         mensajeComarca =
-                            this.add.text(1600, 200, `Deseas jugar en ${obj.texture.key} ?`,
+                            this.add.text(1000, 400, `Deseas jugar\n     en\n ${obj.texture.key}?`,
                                 {
-                                    fontSize: '120px',
-                                    fill: '#d49b46ff',
-                                    backgroundColor: " #000000ff"
+                                    fontSize: '30px',
+                                    fill: '#000000ff',
+
                                 }).setOrigin(0.5).setDepth(20);
 
-                        button = this.add.text(1300, 300, "SI", {
-                           
-                            fontSize: '50px',
+                        botonSi = this.add.text(950, 500, "SI", {
+
+                            fontSize: '15px',
                             color: '#080808ff',
                             align: 'center',
-                            fixedWidth: 260,
+                            fixedWidth: 100,
                             backgroundColor: '#3ed348ff'
-                        }).setPadding(32).setOrigin(0.5);
+                        }).setPadding(10).setOrigin(0.5);
 
-                        button.setInteractive({ useHandCursor: true });
+                        botonSi.setInteractive({ useHandCursor: true });
 
-                        button.on('pointerover', () => {
-                            button.setBackgroundColor('#8d8d8d');
+                        botonSi.on('pointerover', () => {
+                            botonSi.setBackgroundColor('#8d8d8d');
                         });
 
-                        button.on('pointerout', () => {
-                            button.setBackgroundColor('#2d2d2d');
+                        botonSi.on('pointerout', () => {
+                            botonSi.setBackgroundColor('#2d2d2d');
                         });
-                        button.on('pointerdown', () => {
+                        botonSi.on('pointerdown', () => {
                             window.location.href = `/departamento/${obj.depId}`;
                         }
                         )
-                        buttonNo = this.add.text(1400, 300, "NO", {
-                          
-                            fontSize: '50px',
+                        botonNo = this.add.text(995, 500, "NO", {
+
+                            fontSize: '15px',
                             color: '#ffffff',
                             align: 'center',
-                            fixedWidth: 260,
+                            fixedWidth: 100,
                             backgroundColor: '#2d2d2d'
-                        }).setPadding(32).setOrigin(0.5);
+                        }).setPadding(10).setOrigin(0.5);
 
-                        buttonNo.setInteractive({ useHandCursor: true });
+                        botonNo.setInteractive({ useHandCursor: true });
 
-                        buttonNo.on('pointerover', () => {
-                            buttonNo.setBackgroundColor('#8d8d8d');
+                        botonNo.on('pointerover', () => {
+                            botonNo.setBackgroundColor('#8d8d8d');
                         });
 
-                        buttonNo.on('pointerout', () => {
-                            buttonNo.setBackgroundColor('#2d2d2d');
+                        botonNo.on('pointerout', () => {
+                            botonNo.setBackgroundColor('#2d2d2d');
                         });
-                        buttonNo.on('pointerdown', () => {
-                            button.destroy();
+                        botonNo.on('pointerdown', () => {
+                            botonSi.destroy();
                             mensajeComarca.destroy();
-                            buttonNo.destroy();
+                            botonNo.destroy();
                         }
                         )
 
                         console.log(`${obj.texture.key} clickeado`);
-                        if (msj2 || msj3) { msj2.destroy(); msj3.destroy(); };
-                        mensaje.destroy();
-                      
+                        if (msj2) { msj2.destroy() };
+                        //  mensaje.destroy();
+
                         msj2 = this.add.text(obj.targetZone.centerX, obj.targetZone.centerY,
 
-                            ` ${obj.texture.key}`, { fontSize: '80px', fill: '#000000ff', backgroundColor: " #baecb4ff", fontFamily: 'Georgia, "Goudy Bookletter 1911", Times, serif' }).setOrigin(0.5).setDepth(20);
+                            ` ${obj.texture.key}`, { fontSize: '20px', fill: '#000000ff', backgroundColor: " #baecb4ff", fontFamily: 'Georgia, "Goudy Bookletter 1911", Times, serif' }).setOrigin(0.5).setDepth(20);
 
                     })
                 })
@@ -270,14 +314,52 @@ function resize() {
 
 const config = {
     type: Phaser.AUTO,
-    width: 3000,
-    height: 2000,
-
-    backgroundColor: '#617f81',
+    width: 1280,
+    height: 720,
+    parent: 'phaser-container',
+    backgroundColor: '#d9fafb',
     scene: Escena,
-  
+
 };
 
 new Phaser.Game(config);
 
+
+function applyCssScale() {
+    const canvas = document.querySelector('canvas');
+    if (!canvas) return;
+
+    const ww = window.innerWidth;
+    const wh = window.innerHeight;
+    const scale = Math.min(ww / config.width, wh / config.height);
+
+    // TAMAÑO DE CANVA BASE
+    canvas.style.width = config.width + 'px';
+    canvas.style.height = config.height + 'px';
+
+    // TRANSFORM DE ESCALA
+    canvas.style.transformOrigin = 'top left';
+    canvas.style.transform = `scale(${scale})`;
+
+    // CENTRA
+    const offsetX = (ww - config.width * scale) / 2;
+    const offsetY = (wh - config.height * scale) / 2;
+    canvas.style.position = 'absolute';
+    canvas.style.left = `${offsetX}px`;
+    canvas.style.top = `${offsetY}px`;
+}
+
+// CREA CANVA Y AJUSTA ESCALA
+function waitForCanvasThenApply() {
+    const check = setInterval(() => {
+        const canvas = document.querySelector('canvas');
+        if (canvas) {
+            clearInterval(check);
+            applyCssScale();
+            window.addEventListener('resize', applyCssScale);
+        }
+    }, 50);
+}
+
+waitForCanvasThenApply();
 

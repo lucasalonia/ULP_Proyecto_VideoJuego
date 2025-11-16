@@ -9,7 +9,7 @@ const PORT = process.env.PORT || 3309;
 const indexRuta = require("./routes/indexRuta");
 const departamentoRuta = require("./routes/departamentoRuta");
 const loginRuta = require("./routes/loginRuta");
-
+const logroRuta= require("./routes/logroRuta");
 // Middleware
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
@@ -30,6 +30,7 @@ app.use("/", indexRuta);
 
 app.use("/", departamentoRuta);
 app.use("/", loginRuta);
+app.use("/", logroRuta)
 
 //
 const pool = require("./config/db");
