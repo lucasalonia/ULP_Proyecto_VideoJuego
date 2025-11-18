@@ -102,8 +102,10 @@ CREATE TABLE `usuario` (
   `usuario_id` int(11) NOT NULL,
   `nombre` varchar(200) NOT NULL,
   `mail` varchar(150) NOT NULL,
-  `password` varchar(200) NOT NULL,
-  `imagen_perfil` varchar(250) NOT NULL
+  `password_hash` varchar(200) NOT NULL,
+  `imagen_perfil` varchar(250) NOT NULL,
+  `rol` VARCHAR(50) NOT NULL DEFAULT 'jugador',
+  `fecha_creacion` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --

@@ -1,6 +1,7 @@
 const express = require("express");
 const app = express();
 const path = require("path");
+const cookieParser = require('cookie-parser');
 require('dotenv').config();
 
 const PORT = process.env.PORT || 3309;
@@ -10,12 +11,16 @@ const indexRuta = require("./routes/indexRuta");
 const departamentoRuta = require("./routes/departamentoRuta");
 const loginRuta = require("./routes/loginRuta");
 const logroRuta= require("./routes/logroRuta");
+
 // Middleware
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+app.use(cookieParser());
+app.use(express.static(path.join(__dirname, "public")));
+
+const { verifyToken } = require('./middlewares/authMiddleware');
 
 // Servir archivos estáticos (CSS, JS, imágenes)
-app.use(express.static(path.join(__dirname, "public")));
 
 // Configuración del motor de vistas
 const directorioVistas = path.join(__dirname, "views");
@@ -23,16 +28,24 @@ app.set("view engine", "pug");
 app.set("views", directorioVistas);
 console.log("Directorio de vistas:", directorioVistas);
 
-// Rutas principales
+
+/*Rutas publicas*/
+//Login
+app.use("/", loginRuta);
+
+
+/*MIDDLEWARE con TOKEN*/
+app.use(verifyToken);
+
+
+// Rutas privadas
 app.use("/", indexRuta);
 
-// Departamento
-
 app.use("/", departamentoRuta);
-app.use("/", loginRuta);
+
 app.use("/", logroRuta)
 
-//
+
 const pool = require("./config/db");
 
 (async () => {

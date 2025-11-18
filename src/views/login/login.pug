@@ -4,10 +4,12 @@ block content
   main.auth-container
     section.auth-box
       h1.auth-title Iniciar sesión
-      form.auth-form(action="/login" method="POST")
-        input.auth-input(type="email" name="email" placeholder="Correo electrónico" required)
+      form.auth-form#loginForm
+        input.auth-input(type="email" name="mail" placeholder="Correo electrónico" required)
         input.auth-input(type="password" name="password" placeholder="Contraseña" required)
         button.auth-btn(type="submit") Entrar
       div.auth-links
         a(href="/register") Crear cuenta
         a(href="/guest") Jugar como invitado
+
+  script(src='/js/login.js')
