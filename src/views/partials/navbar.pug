@@ -9,8 +9,10 @@ header
       li: a(href='/departamentos') Departamentos
       li: a(href='/contacto') Contacto
       li.nav-item.dropdown
+
         a#userDropdown.nav-link.dropdown-toggle.d-flex.align-items-center(href='#' role='button' data-bs-toggle='dropdown' aria-expanded='false')
-          | Usuario
+          img.rounded-circle(src=user.fotoUrl alt='Foto de Perfil' style='width: 30px; height: 30px; object-fit: cover; margin-right: 8px;')
+          | #{user.userName}
         ul.dropdown-menu.dropdown-menu-end.shadow-sm(aria-labelledby='userDropdown')
           li
             a.dropdown-item.d-flex.align-items-center(href='/perfil')

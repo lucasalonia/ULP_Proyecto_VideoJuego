@@ -19,6 +19,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
 const { verifyToken } = require('./middlewares/authMiddleware');
+const { globalPugContext } = require('./middlewares/contextMiddleware');
 
 // Servir archivos estáticos (CSS, JS, imágenes)
 
@@ -36,7 +37,7 @@ app.use("/", loginRuta);
 
 /*MIDDLEWARE con TOKEN*/
 app.use(verifyToken);
-
+app.use(globalPugContext);
 
 // Rutas privadas
 app.use("/", indexRuta);
