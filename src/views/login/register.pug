@@ -6,7 +6,6 @@ block content
     main.auth-container
         section.auth-box
             h1.auth-title Crear cuenta
-            // 💡 CORRECCIÓN: Se eliminó enctype="multipart/form-data" ya que no se usa un input type="file"
             form.auth-form(action="/register" method="POST")
 
                 .profile-picture-container
@@ -30,10 +29,6 @@ block content
                     a(href="/guest") Entrar sin registrarme
 
 
-    // ======================================================
-    // MODAL
-    // ======================================================
-    // El modal tiene las clases .modal y .fade, las cuales lo ocultan por defecto si el CSS de Bootstrap está cargado.
     #profileCarouselModal.modal.fade(tabindex="-1", aria-hidden="true")
         .modal-dialog.modal-lg
             .modal-content
@@ -78,46 +73,16 @@ block content
                             span.visually-hidden Siguiente
 
 
-    // 💡 El JS de Bootstrap debe cargarse DESPUÉS del HTML que lo usa
     script(src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js")
+    script(src="/js/registroUsuario.js")
     
-    // Script y Estilos (sin cambios salvo la corrección CSS)
 
-    script.
-        document.querySelectorAll('.select-btn').forEach(btn => {
-            btn.addEventListener('click', () => {
 
-                const imgUrl = btn.getAttribute('data-img-url');
-                const previewDiv = document.getElementById('profile-preview');
-
-                // 💡 Se eliminó el span.initials de la previsualización al seleccionar imagen
-                previewDiv.innerHTML = `
-                    <img src="${imgUrl}" 
-                    style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;">
-                `;
-
-                let hiddenInput = document.getElementById('selected-profile-url');
-                if (!hiddenInput) {
-                    hiddenInput = document.createElement('input');
-                    hiddenInput.type = 'hidden';
-                    hiddenInput.id = 'selected-profile-url';
-                    hiddenInput.name = 'selectedProfileURL';
-                    document.querySelector('.auth-form').appendChild(hiddenInput);
-                }
-
-                hiddenInput.value = imgUrl;
-            });
-        });
+        
 
 
     style.
-        /* ================================================
-            💡 CORRECCIÓN CRUCIAL: Se eliminó el CSS que impedía el funcionamiento del modal (position: static)
-            ================================================ */
-        
-        /* ================================================
-            Estilos Avatar
-            ================================================ */
+      
         .profile-picture-container {
             display: flex;
             flex-direction: column;
@@ -144,9 +109,7 @@ block content
             color: #333;
         }
 
-        /* ================================================
-            Estética Modal
-            ================================================ */
+
         .modal-content {
             border-radius: 18px;
             overflow: hidden;

@@ -40,7 +40,7 @@ async function authenticateUser(mail, password) {
  * Hashea una contraseña usando bcrypt (equivalente a HashearContraseña).
  */
 function hashPassword(password) {
-    // Generamos el 'salt' e inmediatamente hasheamos
+    
     return bcrypt.hashSync(password, 12); 
 }
 

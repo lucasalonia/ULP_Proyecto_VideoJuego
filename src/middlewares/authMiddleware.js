@@ -9,22 +9,13 @@ const AUDIENCE = process.env.JWT_AUDIENCE;
 function verifyToken(req, res, next) {
     const authHeader = req.headers['authorization'];
     let token = authHeader && authHeader.split(' ')[1]; 
-    const publicPaths = [
-        '/login', 
-        '/register', 
-        '/guest', 
-        '/api/login', 
-        '/api/logout'
-    ];
-
-    if (publicPaths.includes(req.path)) {
-        return next();
-    }
+  
     if (!token && req.cookies) {
         token = req.cookies.jwt_token;
     }
 
-    if (req.path === '/login' || req.path === '/api/login' || req.path === '/register' || req.path === '/guest') {
+    if (req.path === '/login' || req.path === '/login' || req.path === '/register' || req.path === '/guest') {
+        
         return next();
     }
     if (token == null) {

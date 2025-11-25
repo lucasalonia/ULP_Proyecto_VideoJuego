@@ -101,7 +101,7 @@ CREATE TABLE `tiempo_mapa` (
 CREATE TABLE `usuario` (
   `usuario_id` int(11) NOT NULL,
   `nombre` varchar(200) NOT NULL,
-  `mail` varchar(150) NOT NULL,
+  `mail` UNIQUE varchar(150) NOT NULL,
   `password_hash` varchar(200) NOT NULL,
   `imagen_perfil` varchar(250) NOT NULL,
   `rol` VARCHAR(50) NOT NULL DEFAULT 'jugador',

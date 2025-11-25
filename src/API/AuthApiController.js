@@ -85,7 +85,13 @@ function logoutApi(req, res) {
     })
 }
 
+async function registrarNuevoUsuario(req, res) {
+  const { nickname } = req.body;
+  console.log("Nuevo usuario:", nickname);
+}
+
 module.exports = {
   loginApi,
   logoutApi,
+  registrarNuevoUsuario
 };
