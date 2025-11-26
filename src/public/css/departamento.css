@@ -1,3 +1,5 @@
+/* === RESET === */
+* { box-sizing: border-box; }
 html, body {
   margin: 0;
   padding: 0;
@@ -6,10 +8,12 @@ html, body {
   font-family: system-ui, sans-serif;
 }
 
-:root { --color-principal: #007bb8; }
-* { box-sizing: border-box; }
+/* === VARIABLES === */
+:root {
+  --color-principal: #007bb8;
+}
 
-/* === ESCENA PRINCIPAL === */
+/* === ESCENA === */
 .escena {
   min-height: 100vh;
   padding: 20px;
@@ -31,8 +35,8 @@ html, body {
 .titulo {
   color: var(--color-principal);
   font-size: 1.4rem;
-  letter-spacing: 1px;
   font-weight: 700;
+  letter-spacing: 1px;
 }
 
 /* === CASILLEROS === */
@@ -44,10 +48,14 @@ html, body {
   justify-content: center;
 }
 
-.casillero {
+.casillero,
+.casillero-espacio {
   width: 80px;
   height: 80px;
   border-radius: 16px;
+}
+
+.casillero {
   background: #e3e6ea;
   border: 3px solid rgba(0, 0, 0, .25);
   display: flex;
@@ -71,11 +79,7 @@ html, body {
   box-shadow: 0 0 10px rgba(255, 0, 0, 0.3);
 }
 
-/* === CASILLEROS VACÍOS === */
 .casillero-espacio {
-  width: 80px;
-  height: 80px;
-  border-radius: 16px;
   border: 3px dashed rgba(0, 0, 0, .15);
   background: transparent;
   pointer-events: none;
@@ -105,24 +109,21 @@ html, body {
   transform: translateX(-50%);
   background: #000;
   color: #fff;
-  text-align: center;
+  font-weight: 800;
   padding: 8px 16px;
   border-radius: 12px;
-  font-weight: 800;
-  letter-spacing: .6px;
   font-size: 1rem;
   white-space: nowrap;
-  z-index: 10;
 }
 
-/* === FICHAS (SÍLABAS) === */
+/* === FICHAS === */
 .fichas {
   position: absolute;
   inset: 0;
   display: grid;
-  place-items: center;
   grid-template-columns: repeat(2, 1fr);
   grid-template-rows: repeat(2, 1fr);
+  place-items: center;
   gap: 26px;
   padding: 36px 48px 58px;
 }
@@ -130,7 +131,7 @@ html, body {
 .ficha {
   width: 110px;
   height: 110px;
-  border-radius: 999px;
+  border-radius: 50%;
   background: #fff;
   border: 3px solid #222;
   display: grid;
@@ -142,13 +143,75 @@ html, body {
 }
 
 .ficha:hover { transform: scale(1.05); }
-
 .ficha.seleccionada {
   outline: 4px solid var(--color-principal);
   transform: scale(1.08);
 }
-
 .ficha.usada {
   opacity: 0.45;
   pointer-events: none;
+}
+
+/* === TOAST === */
+.toast {
+  padding: 15px 20px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+
+  opacity: 0;
+  transform: translateY(-15px);
+  transition: .35s ease;
+  pointer-events: none;
+}
+
+.toast--visible {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: all;
+}
+
+
+
+.toast-botones {
+  margin-top: 10px;
+  display: flex;
+  gap: 10px;
+}
+
+.toast a {
+  padding: 6px 12px;
+  border-radius: 8px;
+  background: #ccc;
+  text-decoration: none;
+  font-weight: bold;
+  color: black;
+}
+@keyframes pop {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.18); }
+  100% { transform: scale(1); }
+}
+
+.pop {
+  animation: pop 0.25s ease-out;
+}
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-6px); }
+  50% { transform: translateX(6px); }
+  75% { transform: translateX(-4px); }
+}
+
+.shake {
+  animation: shake 0.35s ease;
+}
+
+.toast-wrapper {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;  /* SEPARA DE LOS CASILLEROS */
+  margin-bottom: 10px;
+  height: 60px; /* ← OCUPA ESPACIO AUNQUE EL TOAST NO ESTÉ VISIBLE */
 }

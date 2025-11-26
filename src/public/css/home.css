@@ -1,0 +1,35 @@
+.home-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 80px;
+  padding-top: 50px;
+}
+
+.logo-container {
+  width: 320px;
+}
+
+.logo {
+  width: 100%;
+}
+
+.menu-container {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.menu-btn {
+  background: #ececec;
+  border: none;
+  padding: 12px 40px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 18px;
+  transition: 0.2s;
+}
+
+.menu-btn:hover {
+  background: #d1d1d1;
+}

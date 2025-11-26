@@ -2,23 +2,33 @@ extends layouts/mainLayout.pug
 
 block content
   main.escena(
-    style=`--color-principal:${departamento.colorBorde || '#007bb8'};
-            --img-carta:url(/img/tarjetas/${departamento.imagen_carta});
-            --img-fondo:url(/img/bg/${departamento.imagen_fondo || 'default-bg.jpg'});`
+    style=`--color-principal:${departamento.colorBorde};
+          --img-carta:url(/img/tarjetas/${departamento.imagen_carta});
+          --img-fondo:url(/img/bg/${departamento.imagen_fondo});`
   )
-    // Título del juego
+
     header.barra-superior
       h1.titulo COMARCAS DE SAN LUIS
+      span.contador-departamentos #{numeroParaje} / #{totalParajes}
 
-    // Casilleros superiores (espacios a completar)
+    // Casilleros superiores
     .casilleros
       each s, i in tokens
         if s === '|'
           div.casillero.casillero-espacio
         else
           button.casillero(type="button" data-indice=i)
+    // === TOAST DE VICTORIA ===
+      .toast-wrapper
+    div.toast.toast--oculto
+      span.toast-msg
+      .toast-botones
+        if urlSiguiente
+          a.btn-siguiente(href=urlSiguiente) Siguiente
+        if urlVolver
+          a.btn-volver(href=urlVolver) Volver
 
-    // Carta con fondo del departamento
+    // Carta y fichas
     section.carta
       .carta__interior
         .fichas
@@ -26,7 +36,15 @@ block content
             button.ficha(type="button" data-silaba=s data-indice=idx)= s
         .carta__etiqueta= departamento.nombre
 
-  // Datos del juego
+    
+
+  // JSON hacia JS
   script.
-    window.JUEGO_DATA = { ordenCorrecto: !{JSON.stringify(ordenCorrecto)} };
+    window.JUEGO_DATA = {
+      ordenCorrecto: !{JSON.stringify(ordenCorrecto)},
+      urlSiguiente: "#{urlSiguiente}",
+      urlVolver: "#{urlVolver}",
+      nombreParaje: "#{paraje.nombre}"
+    };
+
   script(src="/js/departamento.js")

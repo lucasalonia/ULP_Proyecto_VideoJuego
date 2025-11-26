@@ -20,6 +20,14 @@ const Departamento = {
       [id]
     );
     return parajes;
+  },
+
+  // ⭐⭐⭐ NUEVO MÉTODO QUE FALTABA ⭐⭐⭐
+  async countAll() {
+    const [[row]] = await pool.query(
+      "SELECT COUNT(*) AS total FROM departamento"
+    );
+    return row.total;
   }
 };
 

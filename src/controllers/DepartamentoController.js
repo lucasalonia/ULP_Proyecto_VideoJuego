@@ -20,7 +20,7 @@ function shuffle(arr) {
 }
 
 // 🧭 LISTAR DEPARTAMENTOS
-exports.listarDepartamentos = async (req, res) => {
+async function listarDepartamentos(req, res) {
   try {
     const departamentos = await Departamento.getAll();
     res.render("departamentos", { departamentos });
@@ -28,11 +28,12 @@ exports.listarDepartamentos = async (req, res) => {
     console.error(err);
     res.status(500).send("Error al obtener los departamentos");
   }
-};
+}
 
-// 🎮 VISTA DEL JUEGO DEPARTAMENTO
-exports.verDepartamentoJuego = async (req, res) => {
+// 🎮 JUEGO POR PARAJE
+async function verDepartamentoJuego(req, res) {
   const { id } = req.params;
+
   try {
     const departamento = await Departamento.getById(id);
     if (!departamento) return res.status(404).render("notFound");
@@ -41,20 +42,44 @@ exports.verDepartamentoJuego = async (req, res) => {
     if (!parajes?.length) return res.status(404).render("notFound");
 
     const dep = colorizeDepto(departamento);
+
+    // Para obtener un paraje al azar
     const paraje = parajes[Math.floor(Math.random() * parajes.length)];
 
-    // === Procesar sílabas ===
-    const rawParts = (paraje.silabas || "").split(/(-|\|)/);
-    const tokens = [];
-    for (const p of rawParts) {
-      if (p === "-") continue;
-      if (p === "|") tokens.push("|");
-      else if (p.trim()) tokens.push(p);
-    }
+    // Separar sílabas: palabras con | y sílabas con -
+    // === construir palabras y sílabas ===
+    const palabras = (paraje.silabas || "").split("|"); // ej: ["La", "A-gua-da"]
 
-    const silabasReales = tokens.filter(t => t !== "|");
+    const silabasReales = []; // solo sílabas, para la lógica
+    const tokens = [];        // sílabas + '|' para los casilleros
+
+    palabras.forEach((palabra, index) => {
+      const silabasPalabra = palabra
+        .split("-")            // ["A","gua","da"]
+        .map(s => s.trim())
+        .filter(Boolean);
+
+      // para la lógica
+      silabasReales.push(...silabasPalabra);
+
+      // para la vista (casilleros)
+      tokens.push(...silabasPalabra);
+
+      // entre palabra y palabra agregamos un marcador de espacio
+      if (index < palabras.length - 1) {
+        tokens.push("|");
+      }
+    });
+
+    const ordenCorrecto = silabasReales;
     const silabasMezcladas = shuffle(silabasReales);
-    const ordenCorrecto = tokens.filter(t => t !== "|");
+
+    console.log("TOKENS:", tokens);
+    console.log("ORDEN CORRECTO:", ordenCorrecto);
+
+
+    const totalParajes = parajes.length;
+    const indexParaje = parajes.findIndex(p => p.id === paraje.id) + 1;
 
     res.render("departamento", {
       departamento: dep,
@@ -62,33 +87,43 @@ exports.verDepartamentoJuego = async (req, res) => {
       tokens,
       silabas: silabasMezcladas,
       ordenCorrecto,
+      numeroParaje: indexParaje,
+      totalParajes,
+      urlSiguiente: `/departamento/${id}`,
+      urlVolver: "/mapa",
     });
+
   } catch (err) {
     console.error(err);
     res.status(500).send("Error al obtener el departamento");
   }
-};
+}
 
-// 📄 VISTA DETALLE DEPARTAMENTO
-exports.verDepartamentoDetalle = async (req, res) => {
-  const { id } = req.params;
+// 📄 DETALLE
+async function verDepartamentoDetalle(req, res) {
   try {
-    const departamento = await Departamento.getById(id);
-    if (!departamento) return res.status(404).render("notFound");
-
-    const parajes = await Departamento.getParajesByDepto(id);
+    const departamento = await Departamento.getById(req.params.id);
+    const parajes = await Departamento.getParajesByDepto(req.params.id);
     res.render("departamentoDetalle", { departamento, parajes });
   } catch (err) {
     console.error(err);
     res.status(500).send("Error al obtener los datos del departamento");
   }
-};
+}
 
-exports.mostrarMapa=async (req, res) => {
-    try {
-    res.render('mapa');
+// 🗺 MAPA
+function mostrarMapa(req, res) {
+  try {
+    res.render("mapa");
   } catch (err) {
-    console.error('Error al renderizar mapa:', err);
-    res.status(500).send('Error al renderizar mapa');
+    console.error(err);
+    res.status(500).send("Error al renderizar mapa");
   }
-  };
+}
+
+module.exports = {
+  listarDepartamentos,
+  verDepartamentoJuego,
+  verDepartamentoDetalle,
+  mostrarMapa,
+};
