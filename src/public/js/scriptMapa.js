@@ -20,16 +20,48 @@ class Escena extends Phaser.Scene {
         this.load.image('marco', '/img/mapa/marcoL.png');
         this.load.image('sticker', '/img/mapa/sticker.png');
     }
+    async create() {
+        await document.fonts.ready;
 
+        this.fechaInicio = new Date();
+        this.tiempo = 0;
+        this.juegoIniciado = false;
+        this.timer = null;
+        this.contador = 0;
+        this.dialogoActual = null;
+
+        const canvaWidth = this.sys.game.config.width;
+        const canvaHeight = this.sys.game.config.height;
+
+        // Elementos de fondo
+        const hoja = this.add.sprite(canvaWidth / 2, canvaHeight / 2 + 10, 'hoja').setDepth(0).setScale(0.8);
+        const fondo = this.add.sprite(canvaWidth / 2, canvaHeight / 2, 'mapaSL').setScale(0.95);
+        const marco = this.add.sprite(canvaWidth / 2 - 40, canvaHeight / 2 - 30, 'marco').setScale(0.9);
+
+        fondo.setScale(0.5).setOrigin(0.5, 0.5);
+
+        // Texto del reloj
+        this.textoReloj = this.add.text(canvaWidth / 2 - 100, 30, "Tiempo: 0:00", {
+           fontFamily: '"ComicSansWeb"',
+            fontSize: "28px",
+            fill: "#000",
+             
+        }).setDepth(50);
+
+        // Inicializar zonas y departamentos
+        const zonas = this.crearZonasObjetivo();
+        this.inicializarDepartamentos(zonas);
+        this.configurarEventosDrag();
+    }
     crearDepartamento(config) {
-        const { 
-            key, 
-            x, 
-            y, 
-            depId, 
-            color, 
-            targetZone, 
-            scale = 0.32 
+        const {
+            key,
+            x,
+            y,
+            depId,
+            color,
+            targetZone,
+            scale = 0.32
         } = config;
 
         const departamento = this.add.sprite(x, y, key)
@@ -45,12 +77,12 @@ class Escena extends Phaser.Scene {
         departamento.textureKey = key;
 
         // Eventos de hover
-        departamento.on('pointerover', () => { 
-            departamento.setTintFill(color); 
+        departamento.on('pointerover', () => {
+            departamento.setTintFill(color);
         });
-        
-        departamento.on('pointerout', () => { 
-            departamento.clearTint(); 
+
+        departamento.on('pointerout', () => {
+            departamento.clearTint();
         });
 
         this.departamentos.push(departamento);
@@ -134,11 +166,11 @@ class Escena extends Phaser.Scene {
 
     finalizarJuego() {
         if (this.timer) this.timer.remove();
-        
+
         const fechaFin = new Date();
         const tiempoMs = fechaFin - this.fechaInicio;
         const tiempoSegundos = Math.floor(tiempoMs / 1000);
-        
+
         const datos = {
             id_jugador: 1,
             fecha_inicio: this.fechaInicio.toISOString(),
@@ -147,7 +179,7 @@ class Escena extends Phaser.Scene {
         };
 
         this.guardarTiempo(datos);
-        this.mostrarInterfazFinal();
+        this.mostrarInterfazFinal(this.tiempo);
     }
 
     guardarTiempo(datos) {
@@ -158,61 +190,73 @@ class Escena extends Phaser.Scene {
             },
             body: JSON.stringify(datos)
         })
-        .then(res => res.json())
-        .then(respuesta => {
-            console.log("Tiempo guardado:", respuesta);
-        })
-        .catch(err => {
-            console.error("Error al guardar tiempo:", err);
-        });
+            .then(res => res.json())
+            .then(respuesta => {
+                console.log("Tiempo guardado:", respuesta);
+            })
+            .catch(err => {
+                console.error("Error al guardar tiempo:", err);
+            });
     }
 
-    mostrarInterfazFinal() {
+    mostrarInterfazFinal(time) {
         const sticker = this.add.sprite(300, 200, 'sticker').setScale(0.9);
-        
-        this.add.text(300, 200, '¡FELICITACIONES!\n  COMPLETASTE\n   EL MAPA', {
-            fontSize: '30px', 
+
+        const mensajeFinal =this.add.text(300, 200, `¡FELICITACIONES!\n  COMPLETASTE\n   EL MAPA EN\n        ${time}\n  SEGUNDOS`, {
+            fontFamily: '"ComicSansWeb"',
+            fontSize: '30px',
             fill: '#000000ff'
         }).setOrigin(0.5).setDepth(20);
-
+  
         // Configurar eventos de click para todos los departamentos
         this.departamentos.forEach(dep => {
             dep.on('pointerdown', () => {
+                
                 this.mostrarDialogoDepartamento(dep);
             });
         });
     }
 
     mostrarDialogoDepartamento(departamento) {
-        
-        // Limpiar diálogo anterior si existe
+
+        // Destruir diálogo anterior
         if (this.dialogoActual) {
             this.dialogoActual.destroy();
+            this.dialogoActual = null;
         }
 
+        // Crear container
+        const dialogo = this.add.container(0, 0);
+
         const sticker2 = this.add.sprite(1000, 400, 'sticker').setScale(0.75);
-        
+        dialogo.add(sticker2);
+
         const mensajeComarca = this.add.text(1000, 400, `Deseas jugar\n     en\n ${departamento.textureKey}?`, {
+            fontFamily: "ComicSansWeb",
             fontSize: '30px',
             fill: '#000000ff',
         }).setOrigin(0.5).setDepth(20);
+        dialogo.add(mensajeComarca);
 
         const botonSi = this.crearBoton(950, 500, "SI", '#3ed348ff', () => {
             window.location.href = `/departamento/${departamento.depId}`;
         });
+        dialogo.add(botonSi);
 
         const botonNo = this.crearBoton(995, 500, "NO", '#2d2d2d', () => {
-            mensajeComarca.destroy();
-            botonSi.destroy();
-            botonNo.destroy();
-            sticker2.destroy();
+            dialogo.destroy();
+            this.dialogoActual = null;
         });
+        dialogo.add(botonNo);
 
-        this.dialogoActual = { mensajeComarca, botonSi, botonNo, sticker2 };
+        // Guardar container para poder destruirlo luego
+        this.dialogoActual = dialogo;
     }
+
 
     crearBoton(x, y, texto, color, callback) {
         const boton = this.add.text(x, y, texto, {
+             fontFamily:'"ComicSansWeb"',
             fontSize: '15px',
             color: '#ffffff',
             align: 'center',
@@ -235,36 +279,7 @@ class Escena extends Phaser.Scene {
         return boton;
     }
 
-    create() {
-        this.fechaInicio = new Date();
-        this.tiempo = 0;
-        this.juegoIniciado = false;
-        this.timer = null;
-        this.contador = 0;
-        this.dialogoActual = null;
 
-        const canvaWidth = this.sys.game.config.width;
-        const canvaHeight = this.sys.game.config.height;
-
-        // Elementos de fondo
-        const hoja = this.add.sprite(canvaWidth / 2, canvaHeight / 2 + 10, 'hoja').setDepth(0).setScale(0.8);
-        const fondo = this.add.sprite(canvaWidth / 2, canvaHeight / 2, 'mapaSL').setScale(0.95);
-        const marco = this.add.sprite(canvaWidth / 2 - 40, canvaHeight / 2 - 30, 'marco').setScale(0.9);
-        
-        fondo.setScale(0.5).setOrigin(0.5, 0.5);
-
-        // Texto del reloj
-        this.textoReloj = this.add.text(canvaWidth / 2 - 100, 30, "Tiempo: 0:00", {
-            fontSize: "28px",
-            fill: "#000",
-            fontFamily: "Arial"
-        }).setDepth(50);
-
-        // Inicializar zonas y departamentos
-        const zonas = this.crearZonasObjetivo();
-        this.inicializarDepartamentos(zonas);
-        this.configurarEventosDrag();
-    }
 
     iniciarReloj() {
         this.tiempo = 0;
