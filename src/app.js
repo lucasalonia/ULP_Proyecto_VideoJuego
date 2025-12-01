@@ -11,6 +11,7 @@ const indexRuta = require("./routes/indexRuta");
 const departamentoRuta = require("./routes/departamentoRuta");
 const loginRuta = require("./routes/loginRuta");
 const logroRuta= require("./routes/logroRuta");
+const usuarioRuta= require("./routes/usuarioRuta");
 
 // Middleware
 app.use(express.urlencoded({ extended: true }));
@@ -44,7 +45,9 @@ app.use("/", indexRuta);
 
 app.use("/", departamentoRuta);
 
-app.use("/", logroRuta)
+app.use("/", logroRuta);
+
+app.use("/", usuarioRuta);
 
 
 const pool = require("./config/db");

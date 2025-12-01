@@ -42,60 +42,99 @@ function limpiarFormularioRegistro() {
         }
     }
 }
-function enviarDatosNuevoUsuario() {
-  const form = document.querySelector(".auth-form");
-
-  if (form) {
-    form.addEventListener("submit", async function (event) {
-      event.preventDefault();
-      const nickname = document.querySelector('[name="nickname"]').value;
-      const email = document.querySelector('[name="email"]').value;
-      const password = document.querySelector('[name="password"]').value;
-
-      const profileUrlInput = document.getElementById("selected-profile-url");
-      const selectedProfileURL = profileUrlInput ? profileUrlInput.value : "";
-
-      const datosRegistro = {
-        nickname,
-        email,
-        password,
-        selectedProfileURL,
-      };
-
-      try {
-        const respuesta = await fetch("/api/register", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(datosRegistro),
-        });
-
-        if (respuesta.ok) {
-          const resultado = await respuesta.json();
-          console.log(" Registro Exitoso:", resultado);
-          alert("¡Cuenta creada exitosamente!");
-          limpiarFormularioRegistro();
-          window.location.href = '/login';
-        } 
-        else {
-          const errorData = await respuesta.json();
-          console.error(" Error en el registro:", errorData);
-          alert(
-            `Error: ${errorData.message || "No se pudo completar el registro."}`
-          );
-          limpiarFormularioRegistro();
-        }
-      } catch (error) {
-        console.error(" Error de red o en la solicitud:", error);
-        alert("Hubo un problema de conexión al intentar registrarse.");
-      }
-    });
-  } else {
-    console.error("No se encontró el formulario '.auth-form'.");
-  }
+function showSpinner() {
+    document.getElementById("loadingSpinner").classList.remove("d-none");
 }
 
+function hideSpinner() {
+    document.getElementById("loadingSpinner").classList.add("d-none");
+}
+function enviarDatosNuevoUsuario() {
+    // Configuración de Toastr (Ajustar si es necesario)
+    if (typeof toastr !== 'undefined') {
+        toastr.options = {
+            "positionClass": "toast-top-center",
+            "preventDuplicates": true,
+            "closeButton": true,
+            "timeOut": "5000" 
+        };
+    }
+
+    const form = document.querySelector(".auth-form");
+
+    if (form) {
+        form.addEventListener("submit", async function (event) {
+            event.preventDefault();
+
+            showSpinner();
+
+            //Para probar el spinner
+            //  await new Promise(resolve => setTimeout(resolve, 2000));
+
+            const nickname = document.querySelector('[name="nickname"]').value;
+            const email = document.querySelector('[name="email"]').value;
+            const password = document.querySelector('[name="password"]').value;
+
+            const profileUrlInput = document.getElementById("selected-profile-url");
+            const selectedProfileURL = profileUrlInput ? profileUrlInput.value : "";
+
+            const datosRegistro = {
+                nickname,
+                email,
+                password,
+                selectedProfileURL,
+            };
+
+            try {
+                const respuesta = await fetch("/api/register", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(datosRegistro),
+                });
+
+                if (respuesta.ok) {
+                    const resultado = await respuesta.json();
+                    
+                    if (typeof toastr !== 'undefined') {
+                        toastr.success("Serás redirigido al inicio de sesión.", "¡Cuenta creada exitosamente!");
+                    }
+                    
+                    // console.log(" Registro Exitoso:", resultado);
+                    limpiarFormularioRegistro();
+                        window.location.href = '/login';
+                    
+
+                } else {
+                    const errorData = await respuesta.json();
+                    const errorMessage = errorData.message || "No se pudo completar el registro.";
+                    
+                    // console.error(" Error en el registro:", errorData);
+
+                    if (typeof toastr !== 'undefined') {
+                        toastr.error(errorMessage, "Error de registro");
+                    } else {
+                        alert(`Error: ${errorMessage}`);
+                    }
+                    limpiarFormularioRegistro();
+                }
+            } catch (error) {
+                // console.error(" Error de red o en la solicitud:", error);
+                
+                if (typeof toastr !== 'undefined') {
+                    toastr.error("Asegúrate de que el servidor esté en funcionamiento.", "Error de conexión");
+                } else {
+                    alert("Hubo un problema de conexión al intentar registrarse.");
+                }
+            }finally {
+                hideSpinner();
+            }
+        });
+    } else {
+        // console.error("No se encontró el formulario '.auth-form'.");
+    }
+}
 document.addEventListener("DOMContentLoaded", () => {
   cargarModal();
   enviarDatosNuevoUsuario();

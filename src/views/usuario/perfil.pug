@@ -1,0 +1,61 @@
+extends ../layouts/mainLayout.pug
+
+
+block content
+  .container.py-5 
+    
+    // Sección Superior: Foto y Botón de Modificar
+    .text-center.mb-4
+      // Contenedor para la imagen (clase 'rounded-circle' para hacerla redonda)
+      .d-inline-block.position-relative
+        img.img-fluid.rounded-circle(src=user.fotoUrl, alt="Foto de Perfil", style="width: 150px; height: 150px; object-fit: cover;")
+      
+      // Botón de Modificar
+      .mt-3
+        button.btn.btn-sm.btn-outline-primary(type="button") Modificar Foto user
+    
+    hr.my-4
+    
+    // Sección Inferior: Datos y Logros (Columnas)
+    .row
+      // Columna Izquierda: Datos del Usuario (Ocupa 6 de 12 columnas en pantallas medianas)
+      .col-md-6.mb-4
+        .card.h-100
+          .card-header
+            h4.mb-0 📝 Datos del Usuario
+          .card-body
+            // Email
+            p.mb-2
+              strong Email: 
+              span.text-muted #{user.userMail}
+            
+            // Nickname
+            p.mb-3
+              strong Nickname: 
+              span.text-muted #{user.userName}
+            
+            // Botón para Modificar Contraseña
+            button.btn.btn-danger.btn-sm(type="button") Modificar Contraseña
+
+      // Columna Derecha: Logros (Ocupa 6 de 12 columnas en pantallas medianas)
+      .col-md-6.mb-4
+        .card.h-100
+          .card-header
+            h4.mb-0 🏆 Logros
+          .card-body
+            // Tiempos del Mapa
+            .mb-4
+              h5.card-title Tiempos del Mapa
+              p.text-muted (Ej: Mejor tiempo en "Mapa X": 0:35s)
+
+            // Logros más Recientes
+            .mb-3
+              h5.card-title Logros más Recientes
+              ul.list-group.list-group-flush
+                li.list-group-item Logro 1: Rango A en Misión 5
+                li.list-group-item Logro 2: Primera Partida Jugada
+                li.list-group-item Logro 3: Eliminación Triple
+            
+            // Botón Ver Todos los Logros
+            .text-center.mt-4
+              button.btn.btn-primary(type="button") Ver Todos los Logros

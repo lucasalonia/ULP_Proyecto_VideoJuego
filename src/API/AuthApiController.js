@@ -35,6 +35,10 @@ async function loginApi(req, res) {
     sub: user.usuario_id,
     // ClaimTypes.Name -> Usamos 'nombre'
     name: user.nombre,
+
+    fotoUrl: user.imagen_perfil,
+
+    mail: user.mail,
     // Rol -> Usamos 'rol' (o 'role' si se renombró en la consulta)
     role: user.rol,
 

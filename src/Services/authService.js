@@ -18,7 +18,6 @@ async function authenticateUser(mail, password) {
         if (!user) {
             return null;
         }
-        console.log(mail +" "+ password);
         
 
         const isPasswordValid = await bcrypt.compare(password, user.password_hash); 

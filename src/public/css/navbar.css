@@ -70,7 +70,6 @@ body {
   position: absolute;
   top: 100%;
   right: 0;
-  
   /* Estética retro/neón */
    background-color: #111 !important; /* Fondo negro puro */
   border: 1px solid #0ff !important; /* Borde neón */
@@ -79,10 +78,12 @@ body {
   min-width: 180px;
   z-index: 10;
   padding: 5px 0;
-  margin-top: 5px; 
+
   border-radius: 0 !important; /* Quitar bordes redondeados */
 }
-
+.dropdown-toggle{
+  margin: 0 !important;
+}
 /* 2. Mostrar el contenido con solo CSS (necesario si no usas JS de Bootstrap) */
 .nav-links .dropdown:hover .dropdown-menu {
   display: block !important;
