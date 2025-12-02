@@ -22,6 +22,8 @@ const indexRuta = require("./routes/indexRuta");
 const departamentoRuta = require("./routes/departamentoRuta");
 const loginRuta = require("./routes/loginRuta");
 const logroRuta= require("./routes/logroRuta");
+const usuarioRuta= require("./routes/usuarioRuta");
+
 const logroParajeRuta = require("./routes/logroParajeRuta");
 // Middleware
 app.use(express.urlencoded({ extended: true }));
@@ -55,7 +57,9 @@ app.use("/", indexRuta);
 
 app.use("/", departamentoRuta);
 
-app.use("/", logroRuta)
+app.use("/", logroRuta);
+
+app.use("/", usuarioRuta);
 
 //Paraje
 app.use("/", logroParajeRuta);

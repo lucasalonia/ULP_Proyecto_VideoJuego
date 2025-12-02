@@ -4,6 +4,8 @@ header
     div.logo
       a(href='/') 🎮 ULP Game
     ul.nav-links
+
+      li: a(href='/') Inicio
       if !user.isAuthenticated
         li: a(href='/login') Login
       li: a(href='/mapa') Mapa

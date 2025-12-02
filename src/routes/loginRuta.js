@@ -5,7 +5,11 @@ const usuarioController = require('../API/UsuarioApiController');
 
 /*GET*/
 //Vistas
-router.get("/login", (req, res) => res.render("login/login"));
+router.get("/login", (req, res) => {
+    const registro = req.query.registro; 
+    res.render("login/login", { registro });
+});
+
 router.get("/register", (req, res) => res.render("login/register"));
 router.get("/guest", (req, res) => res.render("login/guest"));
 

@@ -18,7 +18,6 @@ async function authenticateUser(mail, password) {
         if (!user) {
             return null;
         }
-        console.log(mail +" "+ password);
         
 
         const isPasswordValid = await bcrypt.compare(password, user.password_hash); 
@@ -44,8 +43,13 @@ function hashPassword(password) {
     return bcrypt.hashSync(password, 12); 
 }
 
+function comparePassword(plainPassword, hashedPassword) {
+    return bcrypt.compareSync(plainPassword, hashedPassword);
+}
+
 
 module.exports = {
     authenticateUser,
-    hashPassword
+    hashPassword,
+    comparePassword
 };
