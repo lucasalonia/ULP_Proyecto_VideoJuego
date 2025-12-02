@@ -1,3 +1,31 @@
+// ============================================
+//  CRONÓMETRO POR PARAJE (FASE 1)
+// ============================================
+
+let startTime = Date.now();  // Se inicia al cargar la página
+let cronometroInterval = null;
+
+function actualizarCronometro() {
+  const ahora = Date.now();
+  const diff = ahora - startTime;
+
+  const minutos = Math.floor(diff / 60000);
+  const segundos = Math.floor((diff % 60000) / 1000);
+  const centesimas = Math.floor((diff % 1000) / 10);
+  const el = document.getElementById("cronometro");
+  if (el) {
+    el.textContent =
+      `${String(minutos).padStart(2, "0")}:` +
+      `${String(segundos).padStart(2, "0")}.` +
+      `${String(centesimas).padStart(2, "0")}`;
+  }
+}
+
+// Comienza a actualizar cuando se cargó la página
+document.addEventListener("DOMContentLoaded", () => {
+  cronometroInterval = setInterval(actualizarCronometro, 50);
+});
+
 document.addEventListener("DOMContentLoaded", () => {
 
   const fichas = [...document.querySelectorAll(".ficha")];
@@ -71,8 +99,33 @@ document.addEventListener("DOMContentLoaded", () => {
   const correcto = casilleros.every((c, i) => c.dataset.valor === ordenCorrecto[i]);
 
   if (completo && correcto) {
-    mostrarToast(`¡Paraje completado: ${window.JUEGO_DATA.nombreParaje}!`);
-  }
+
+  clearInterval(cronometroInterval);
+
+  const inicio = startTime;
+  const fin = Date.now();
+  const tiempo = fin - inicio;
+
+  fetch("/logro-paraje", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      usuario_id: window.JUEGO_DATA.usuarioId,
+      paraje_id: window.JUEGO_DATA.parajeId,
+      fecha_inicio: new Date(inicio),
+      fecha_fin: new Date(fin),
+      tiempo: tiempo
+    })
+  })
+    .then(r => r.json())
+    .then(data => {
+      console.log("Logro guardado:", data);
+    })
+    .catch(err => console.error("Error guardando logro:", err));
+
+  mostrarToast(`¡Paraje completado: ${window.JUEGO_DATA.nombreParaje}!`);
+}
+
 
   return correcto;
 };

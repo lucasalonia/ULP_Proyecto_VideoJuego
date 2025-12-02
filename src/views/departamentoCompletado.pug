@@ -1,0 +1,17 @@
+extends layouts/mainLayout.pug
+
+block content
+  main.escena(
+    style=`--color-principal:${departamento.colorBorde};
+            --img-fondo:url(/img/bg/${departamento.imagen_fondo});`
+  )
+    header.barra-superior
+      h1.titulo ¡Departamento completado!
+      h2.subtitulo= departamento.nombre
+      p.descripcion Completaste los #{totalParajes} parajes de este departamento.
+
+    .icono-exito 🎉
+
+    .acciones
+      a.btn-volver(href="/mapa") Volver al mapa
+      a.btn-otro(href="/departamentos") Elegir otro departamento

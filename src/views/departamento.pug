@@ -10,6 +10,8 @@ block content
     header.barra-superior
       h1.titulo COMARCAS DE SAN LUIS
       span.contador-departamentos #{numeroParaje} / #{totalParajes}
+      br
+      span#cronometro.cronometro 00:00.00
 
     // Casilleros superiores
     .casilleros
@@ -41,10 +43,14 @@ block content
   // JSON hacia JS
   script.
     window.JUEGO_DATA = {
-      ordenCorrecto: !{JSON.stringify(ordenCorrecto)},
-      urlSiguiente: "#{urlSiguiente}",
-      urlVolver: "#{urlVolver}",
-      nombreParaje: "#{paraje.nombre}"
-    };
+        ordenCorrecto: !{JSON.stringify(ordenCorrecto)},
+        urlSiguiente: "#{urlSiguiente}",
+        urlVolver: "#{urlVolver}",
+        nombreParaje: "#{paraje.nombre}",
+        usuarioId: "#{usuarioId}",
+        parajeId: "#{paraje.id}"
+      };
+
+
 
   script(src="/js/departamento.js")

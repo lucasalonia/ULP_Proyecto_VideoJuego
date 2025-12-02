@@ -215,3 +215,11 @@ html, body {
   margin-bottom: 10px;
   height: 60px; /* ← OCUPA ESPACIO AUNQUE EL TOAST NO ESTÉ VISIBLE */
 }
+/*Cronometro*/
+.cronometro {
+  font-size: 22px;
+  font-weight: bold;
+  color: white;
+  margin-left: auto;
+  padding-right: 20px;
+}

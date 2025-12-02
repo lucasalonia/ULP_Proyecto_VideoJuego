@@ -1,4 +1,5 @@
 const Departamento = require("../models/Departamento");
+const LogroParaje = require("../models/LogroParaje");
 
 // 🎨 Añade colores e imágenes por defecto al departamento
 function colorizeDepto(departamento) {
@@ -30,53 +31,68 @@ async function listarDepartamentos(req, res) {
   }
 }
 
-// 🎮 JUEGO POR PARAJE
+// 🎮 JUEGO POR PARAJE — FASE 3 COMPLETA
 async function verDepartamentoJuego(req, res) {
-  const { id } = req.params;
+  const { id } = req.params; // id del departamento
 
   try {
+    // Usuario temporal (hasta login real)
+    if (!req.session.usuarioId) {
+      req.session.usuarioId = 1;
+    }
+    const usuarioId = req.session.usuarioId;
+
     const departamento = await Departamento.getById(id);
     if (!departamento) return res.status(404).render("notFound");
 
+    // TODOS los parajes del depto
     const parajes = await Departamento.getParajesByDepto(id);
     if (!parajes?.length) return res.status(404).render("notFound");
 
+    // IDs de parajes ya completados por este usuario en este departamento
+    const completadosIds = await LogroParaje.getParajesCompletadosPorUsuarioYDepto(
+      usuarioId,
+      id
+    );
+    const completadosSet = new Set(completadosIds);
+
+    // Elegir el PRIMER paraje no completado
+    const paraje = parajes.find(p => !completadosSet.has(p.id));
+
+    // Si no hay → ya completó el departamento
+    if (!paraje) {
+      const dep = colorizeDepto(departamento);
+      return res.render("departamentoCompletado", {
+        departamento: dep,
+        totalParajes: parajes.length
+      });
+    }
+
     const dep = colorizeDepto(departamento);
 
-    // Para obtener un paraje al azar
-    const paraje = parajes[Math.floor(Math.random() * parajes.length)];
+    // Procesar sílabas
+    const palabras = (paraje.silabas || "").split("|");
 
-    // Separar sílabas: palabras con | y sílabas con -
-    // === construir palabras y sílabas ===
-    const palabras = (paraje.silabas || "").split("|"); // ej: ["La", "A-gua-da"]
-
-    const silabasReales = []; // solo sílabas, para la lógica
-    const tokens = [];        // sílabas + '|' para los casilleros
+    const silabasReales = [];
+    const tokens = [];
 
     palabras.forEach((palabra, index) => {
       const silabasPalabra = palabra
-        .split("-")            // ["A","gua","da"]
+        .split("-")
         .map(s => s.trim())
         .filter(Boolean);
 
-      // para la lógica
       silabasReales.push(...silabasPalabra);
-
-      // para la vista (casilleros)
       tokens.push(...silabasPalabra);
 
-      // entre palabra y palabra agregamos un marcador de espacio
       if (index < palabras.length - 1) {
         tokens.push("|");
       }
     });
 
+    // Preparar datos para la vista
     const ordenCorrecto = silabasReales;
     const silabasMezcladas = shuffle(silabasReales);
-
-    console.log("TOKENS:", tokens);
-    console.log("ORDEN CORRECTO:", ordenCorrecto);
-
 
     const totalParajes = parajes.length;
     const indexParaje = parajes.findIndex(p => p.id === paraje.id) + 1;
@@ -84,12 +100,13 @@ async function verDepartamentoJuego(req, res) {
     res.render("departamento", {
       departamento: dep,
       paraje,
+      usuarioId,
       tokens,
       silabas: silabasMezcladas,
       ordenCorrecto,
       numeroParaje: indexParaje,
       totalParajes,
-      urlSiguiente: `/departamento/${id}`,
+      urlSiguiente: `/departamento/${id}`, // vuelve a cargar y toma siguiente
       urlVolver: "/mapa",
     });
 

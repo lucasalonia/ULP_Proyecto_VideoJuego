@@ -3,6 +3,17 @@ const app = express();
 const path = require("path");
 require('dotenv').config();
 
+const session = require("express-session");
+// ===== SESIÓN (necesario para usuarioId) =====
+app.use(
+  session({
+    secret: "comarcas-secret",
+    resave: false,
+    saveUninitialized: true,
+  })
+);
+
+
 const PORT = process.env.PORT || 3309;
 
 // Rutas
@@ -10,6 +21,7 @@ const indexRuta = require("./routes/indexRuta");
 const departamentoRuta = require("./routes/departamentoRuta");
 const loginRuta = require("./routes/loginRuta");
 const logroRuta= require("./routes/logroRuta");
+const logroParajeRuta = require("./routes/logroParajeRuta");
 // Middleware
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
@@ -32,7 +44,9 @@ app.use("/", departamentoRuta);
 app.use("/", loginRuta);
 app.use("/", logroRuta)
 
-//
+//Paraje
+app.use("/", logroParajeRuta);
+
 const pool = require("./config/db");
 
 (async () => {
