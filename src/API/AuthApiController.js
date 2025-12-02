@@ -6,11 +6,47 @@ const { authenticateUser } = authService;
 const SECRET_KEY = process.env.JWT_SECRET_KEY;
 const ISSUER = process.env.JWT_ISSUER;
 const AUDIENCE = process.env.JWT_AUDIENCE;
+const EXPIRATION_HOURS = 4;
+
+/**
+ * @function setJWTCookie
+ * Genera el JWT y establece la cookie 'jwt_token' en la respuesta.
+ * @param {object} res - Objeto de respuesta de Express.
+ * @param {object} usuario - Objeto de usuario con sus propiedades esenciales (usuario_id, nombre, imagen_perfil, etc.).
+ */
+
+function setJWTCookie(res, usuario) {
+  const payload = {
+    sub: usuario.usuario_id,
+    name: usuario.nombre,
+    fotoUrl: usuario.imagen_perfil,
+    mail: usuario.mail,
+    role: usuario.rol,
+    iss: ISSUER,
+    aud: AUDIENCE,
+  };
+
+  const token = jwt.sign(payload, SECRET_KEY, {
+    expiresIn: `${EXPIRATION_HOURS}h`,
+  });
+
+  const expirationTime = new Date(
+    Date.now() + EXPIRATION_HOURS * 60 * 60 * 1000
+  );
+
+  res.cookie("jwt_token", token, {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    expires: expirationTime,
+    sameSite: "strict",
+  });
+
+  return token;
+}
 
 /**
  * @function loginApi
  * Maneja la solicitud POST /api/login y genera el JWT.
- * Equivalente a AuthApiController.LoginApi.
  */
 async function loginApi(req, res) {
   const { mail, password } = req.body;
@@ -29,40 +65,8 @@ async function loginApi(req, res) {
       .json({ message: "Usuario o contraseña incorrectos." });
   }
 
-  // ¡AJUSTE CLAVE! El Payload/Claims del Token
-  const payload = {
-    // ClaimTypes.NameIdentifier -> Usamos 'usuario_id'
-    sub: user.usuario_id,
-    // ClaimTypes.Name -> Usamos 'nombre'
-    name: user.nombre,
-
-    fotoUrl: user.imagen_perfil,
-
-    mail: user.mail,
-    // Rol -> Usamos 'rol' (o 'role' si se renombró en la consulta)
-    role: user.rol,
-
-    iss: ISSUER,
-    aud: AUDIENCE,
-  };
-
-  // Generar el Token (utilizando la configuración de 4 horas como en C#)
-  const expirationHours = 4;
-  const token = jwt.sign(payload, SECRET_KEY, {
-    expiresIn: `${expirationHours}h`,
-  });
-
-  // Devolver el token y la expiración
-  const expirationTime = new Date(
-    Date.now() + expirationHours * 60 * 60 * 1000
-  );
-
-  res.cookie("jwt_token", token, {
-    httpOnly: true, // El JS del navegador NO puede leerla (anti-XSS)
-    secure: process.env.NODE_ENV === "production", // Solo si usas HTTPS
-    expires: expirationTime,
-    sameSite: "strict",
-  });
+  // Usar la función centralizada para establecer la cookie
+  setJWTCookie(res, user);
 
   return res.json({
     message: "Login exitoso. Token establecido en cookie.",
@@ -70,32 +74,27 @@ async function loginApi(req, res) {
   });
 }
 
+
 /**
  * @function logoutApi
  * Maneja la solicitud POST /api/logout.
  */
 function logoutApi(req, res) {
-
+  // Elimina la cookie de manera efectiva
   res.cookie("jwt_token", "loggedout", {
-        httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
-        expires: new Date(Date.now() + 10 * 1000), 
-        maxAge: 0, 
-        sameSite: "strict",
-    });
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    maxAge: 0, // Fuerza la expiración inmediata
+    sameSite: "strict",
+  });
 
-    return res.status(200).json({
-        message: "Sesión cerrada con éxito. Token de sesión eliminado.",
-    })
-}
-
-async function registrarNuevoUsuario(req, res) {
-  const { nickname } = req.body;
-  console.log("Nuevo usuario:", nickname);
+  return res.status(200).json({
+    message: "Sesión cerrada con éxito. Token de sesión eliminado.",
+  });
 }
 
 module.exports = {
   loginApi,
   logoutApi,
-  registrarNuevoUsuario
+  setJWTCookie,
 };

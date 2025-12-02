@@ -22,3 +22,16 @@ html
     script(src='/js/login.js')
     script(src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js")
     script(src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js")
+    script.
+      document.addEventListener("DOMContentLoaded", () => {
+          if ("#{registro}" === "exito" && typeof toastr !== 'undefined') {
+              toastr.options = {
+                  "positionClass": "toast-top-center",
+                  "preventDuplicates": true,
+                  "closeButton": true,
+                  "timeOut": "5000" 
+              };
+              toastr.success("Tu cuenta fue creada con éxito. Ingresá tus datos.", "¡Listo!");
+              window.history.replaceState({}, document.title, "/login");
+          }
+      });

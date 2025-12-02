@@ -43,8 +43,13 @@ function hashPassword(password) {
     return bcrypt.hashSync(password, 12); 
 }
 
+function comparePassword(plainPassword, hashedPassword) {
+    return bcrypt.compareSync(plainPassword, hashedPassword);
+}
+
 
 module.exports = {
     authenticateUser,
-    hashPassword
+    hashPassword,
+    comparePassword
 };
