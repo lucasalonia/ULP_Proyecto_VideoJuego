@@ -10,7 +10,7 @@ html, body {
   justify-content: space-between;
   align-items: center;
   background-color: #111;
-  padding: 15px 40px;
+  padding: 15px 40px !important;
   border-bottom: 2px solid #0ff;
   font-family: 'Consolas', 'Press Start 2P', monospace;
 }
@@ -45,7 +45,6 @@ body {
   display: flex;
   gap: 30px;
   margin: 0;
-  padding: 0;
 }
 
 .nav-links a {
@@ -58,6 +57,74 @@ body {
 .nav-links a:hover {
   color: #0ff;
   transform: scale(1.1);
+}
+.nav-links a:visited {
+  color: #fff;
+  transform: scale(1.1);
+}
+/* --- 1. Contenedor principal del dropdown --- */
+/* Forzar la anulación de las clases de Bootstrap */
+.dropdown-menu {
+  /* ¡Importante! Asegurar que el display CSS lo controla */
+  display: none !important; 
+  position: absolute;
+  top: 100%;
+  right: 0;
+  
+  /* Estética retro/neón */
+   background-color: #111 !important; /* Fondo negro puro */
+  border: 1px solid #0ff !important; /* Borde neón */
+  border-top-width: 0 !important;
+  box-shadow: 0 0 10px rgba(0, 255, 255, 0.5) !important; /* Sombra neón */
+  min-width: 180px;
+  z-index: 10;
+  padding: 5px 0;
+  margin-top: 5px; 
+  border-radius: 0 !important; /* Quitar bordes redondeados */
+}
+
+/* 2. Mostrar el contenido con solo CSS (necesario si no usas JS de Bootstrap) */
+.nav-links .dropdown:hover .dropdown-menu {
+  display: block !important;
+}
+
+/* 3. Estilo de los enlaces del menú (.dropdown-item) */
+.dropdown-item {
+  color: #fff !important; /* Texto blanco */
+  font-size: 0.9rem;
+  padding: 8px 15px;
+  display: flex;
+  align-items: center;
+  background-color: transparent !important; /* Quitar fondo blanco/gris */
+  transition: background-color 0.3s, color 0.3s;
+}
+
+/* 4. Hover en los enlaces (efecto neón) */
+.dropdown-item:hover {
+  background-color: #0ff !important; /* Fondo cian */
+  color: #111 !important; /* Texto oscuro sobre el fondo cian */
+}
+
+/* 5. Separador (ya funciona, pero lo dejamos aquí con !important) */
+.dropdown-menu .dropdown-divider {
+  background-color: #f0f !important; 
+}
+
+/* 6. Ícono de Cerrar Sesión (rojo neón) */
+.dropdown-item.text-danger {
+  color: #ff4444 !important; /* Rojo brillante para el texto */
+}
+
+.dropdown-item.text-danger i {
+  color: #ff4444 !important; /* Rojo brillante para el ícono */
+}
+
+.dropdown-item.text-danger:hover {
+  background-color: #ff4444 !important; /* Fondo rojo al hacer hover */
+  color: #111 !important; /* Texto oscuro */
+}
+#userDropdown {
+  margin-top: 1.5px;
 }
 
 /* Responsive para móvil */

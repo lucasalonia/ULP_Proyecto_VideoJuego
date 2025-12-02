@@ -1,14 +1,148 @@
-extends ../layouts/mainLayout.pug
+html 
+  head 
+    link(rel="stylesheet", href="/css/login.css")
+    link(href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet")
+    
+    - const profileImages = [1, 2, 3, 4];
 
-block content
-  main.auth-container
-    section.auth-box
-      h1.auth-title Crear cuenta
-      form.auth-form(action="/register" method="POST")
-        input.auth-input(type="text" name="nickname" placeholder="Nickname" required)
-        input.auth-input(type="email" name="email" placeholder="Correo electrónico" required)
-        input.auth-input(type="password" name="password" placeholder="Contraseña" required)
-        button.auth-btn(type="submit") Registrarme
-      div.auth-links
-        a(href="/login") Ya tengo cuenta
-        a(href="/guest") Entrar sin registrarme
+    main.auth-container
+        section.auth-box
+            h1.auth-title Crear cuenta
+            form.auth-form(action="/register" method="POST")
+
+                .profile-picture-container
+                    #profile-preview.rounded-circle.default-avatar
+                        span.initials PF
+
+                    button.btn.btn-primary.mt-2(
+                        type="button",
+                        data-bs-toggle="modal",
+                        data-bs-target="#profileCarouselModal"
+                    ) Seleccionar Foto de Perfil
+
+                input.auth-input(type="text" name="nickname" placeholder="Nickname" required)
+                input.auth-input(type="email" name="email" placeholder="Correo electrónico" required)
+                input.auth-input(type="password" name="password" placeholder="Contraseña" required)
+
+                button.auth-btn(type="submit") Registrarme
+
+                div.auth-links
+                    a(href="/login") Ya tengo cuenta
+                    a(href="/guest") Entrar sin registrarme
+
+
+    #profileCarouselModal.modal.fade(tabindex="-1", aria-hidden="true")
+        .modal-dialog.modal-lg
+            .modal-content
+                .modal-header
+                    h5.modal-title Selecciona una Foto
+                    button.btn-close(type="button", data-bs-dismiss="modal")
+
+                .modal-body
+                    #profileCarousel.carousel.slide(data-bs-ride="carousel")
+                        .carousel-indicators
+                            each imgIndex in profileImages
+                                - const isActive = imgIndex === 1;
+                                button(
+                                    type="button",
+                                    data-bs-target="#profileCarousel",
+                                    data-bs-slide-to=(imgIndex - 1),
+                                    class=isActive ? "active" : "",
+                                    aria-current=isActive ? "true" : "",
+                                    aria-label=`Slide ${imgIndex}`
+                                )
+                        .carousel-inner
+                            each imgIndex in profileImages
+                                - const isActive = imgIndex === 1;
+                                .carousel-item(class=isActive ? "active" : "")
+                                    button.select-btn.btn.btn-success.w-100(
+                                        type="button",
+                                        data-img-url=`/img/profiles/testimage${imgIndex}.png`,
+                                        data-bs-dismiss="modal"
+                                    ) Usar esta imagen
+
+                                    img.d-block.w-100.mt-3(
+                                        src=`/img/profiles/testimage${imgIndex}.png`,
+                                        alt=`Foto ${imgIndex}`
+                                    )
+
+                        button.carousel-control-prev(type="button", data-bs-target="#profileCarousel", data-bs-slide="prev")
+                            span.carousel-control-prev-icon
+                            span.visually-hidden Anterior
+
+                        button.carousel-control-next(type="button", data-bs-target="#profileCarousel", data-bs-slide="next")
+                            span.carousel-control-next-icon
+                            span.visually-hidden Siguiente
+
+
+    script(src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js")
+    script(src="/js/registroUsuario.js")
+
+
+
+        
+
+
+    style.
+      
+        .profile-picture-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .default-avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: #ccc;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 10px;
+            overflow: hidden;
+            border: 3px solid #007bff;
+        }
+
+        .initials {
+            font-size: 30px;
+            font-weight: bold;
+            color: #333;
+        }
+
+
+        .modal-content {
+            border-radius: 18px;
+            overflow: hidden;
+            border: none;
+        }
+
+        .modal-header {
+            background: #0d6efd;
+            color: white;
+            border-bottom: none;
+        }
+
+        .modal-body {
+            background: #f5f5f5;
+        }
+
+        .carousel-item img {
+            height: 260px;
+            object-fit: contain;
+            border-radius: 12px;
+            background: white;
+            padding: 10px;
+        }
+
+        .select-btn {
+            font-weight: bold;
+            border-radius: 12px;
+            padding: 12px;
+        }
+
+        .carousel-control-prev-icon,
+        .carousel-control-next-icon {
+            filter: invert(1);
+        }
