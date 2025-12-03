@@ -136,3 +136,37 @@ body {
     gap: 15px;
   }
 }
+
+
+
+/* 🔥 Forzar que el dropdown del usuario respete el flex del navbar */
+.nav-links .nav-item.dropdown {
+  display: flex !important;
+  align-items: center !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+/* El botón del usuario */
+.nav-links .dropdown-toggle {
+  display: flex !important;
+  align-items: center;
+  gap: 6px;
+  padding: 0 !important;
+  margin: 0 !important;
+  border: none !important;
+  background: none !important;
+}
+
+/* Quitar el margen que Bootstrap mete automáticamente */
+.navbar .dropdown {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* Evitar que se abra accidentalmente fuera del flujo */
+.navbar .dropdown-menu {
+  right: 0 !important;
+  left: auto !important;
+}
+
