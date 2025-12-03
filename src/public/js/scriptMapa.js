@@ -19,6 +19,9 @@ class Escena extends Phaser.Scene {
         this.load.image('hoja', '/img/mapa/hoja1.png');
         this.load.image('marco', '/img/mapa/marcoL.png');
         this.load.image('sticker', '/img/mapa/sticker.png');
+        this.load.audio('ok', './audio/ok2.wav');
+        this.load.audio('final', './audio/final.mp3');
+        //this.load.audio('ok', './audio/ok.mp3');
     }
     async create() {
         await document.fonts.ready;
@@ -29,6 +32,7 @@ class Escena extends Phaser.Scene {
         this.timer = null;
         this.contador = 0;
         this.dialogoActual = null;
+        this.departamentoNombre = null;
 
         const canvaWidth = this.sys.game.config.width;
         const canvaHeight = this.sys.game.config.height;
@@ -46,7 +50,7 @@ class Escena extends Phaser.Scene {
             fontSize: "28px",
             fill: "#000",
              
-        }).setDepth(50);
+        }).setDepth(50).setAlpha(0);
 
         // Inicializar zonas y departamentos
         const zonas = this.crearZonasObjetivo();
@@ -92,14 +96,14 @@ class Escena extends Phaser.Scene {
     crearZonasObjetivo() {
         return {
             junin: new Phaser.Geom.Rectangle(663, 116, 100, 100),
-            ayacucho: new Phaser.Geom.Rectangle(547, 126, 100, 100),
+            ayacucho: new Phaser.Geom.Rectangle(547, 128, 100, 100),
             sanMartin: new Phaser.Geom.Rectangle(641, 178, 64, 64),
             dupuy: new Phaser.Geom.Rectangle(625, 473, 64, 64),
-            pueyrredon: new Phaser.Geom.Rectangle(557, 315, 64, 64),
-            pedernera: new Phaser.Geom.Rectangle(657, 310, 64, 64),
+            pueyrredon: new Phaser.Geom.Rectangle(559, 317, 64, 64),
+            pedernera: new Phaser.Geom.Rectangle(657, 311, 64, 64),
             chacabuco: new Phaser.Geom.Rectangle(687, 192, 64, 64),
-            belgrano: new Phaser.Geom.Rectangle(550, 195, 64, 64),
-            pringles: new Phaser.Geom.Rectangle(623, 232, 64, 64)
+            belgrano: new Phaser.Geom.Rectangle(550, 197, 64, 64),
+            pringles: new Phaser.Geom.Rectangle(623, 233, 64, 64)
         };
     }
 
@@ -112,7 +116,7 @@ class Escena extends Phaser.Scene {
             { key: 'Pueyrredon', x: 1050, y: 300, depId: 8, color: 0x488D2D, targetZone: zonas.pueyrredon },
             { key: 'Pedernera', x: 1050, y: 500, depId: 7, color: 0xDF9CB8, targetZone: zonas.pedernera },
             { key: 'Chacabuco', x: 1100, y: 150, depId: 4, color: 0xCC448E, targetZone: zonas.chacabuco },
-            { key: 'Belgrano', x: 300, y: 610, depId: 3, color: 0x9E8982, targetZone: zonas.belgrano },
+            { key: 'Belgrano', x: 300, y: 550, depId: 3, color: 0x9E8982, targetZone: zonas.belgrano },
             { key: 'Pringles', x: 300, y: 150, depId: 1, color: 0x1598DB, targetZone: zonas.pringles }
         ];
 
@@ -155,9 +159,12 @@ class Escena extends Phaser.Scene {
             this.contador += 1;
             console.log(`${gameObject.textureKey} encajó en su zona`);
             console.log('contador:', this.contador);
+             this.sound.play('ok', { volume: 0.5 });
 
             if (this.contador === 9) {
+             
                 this.finalizarJuego();
+                this.sound.play('final', { volume: 0.7 });
             }
         } else {
             gameObject.setPosition(gameObject.input.dragStartX, gameObject.input.dragStartY);
@@ -200,12 +207,12 @@ class Escena extends Phaser.Scene {
     }
 
     mostrarInterfazFinal(time) {
-        const sticker = this.add.sprite(300, 200, 'sticker').setScale(0.9);
-
-        const mensajeFinal =this.add.text(300, 200, `¡FELICITACIONES!\n  COMPLETASTE\n   EL MAPA EN\n        ${time}\n  SEGUNDOS`, {
+        const sticker = this.add.sprite(300, 200, 'sticker').setScale(0.8);
+        
+        const mensajeFinal =this.add.text(300, 200, `¡FELICITACIONES!\n  COMPLETASTE\n     EL MAPA EN\n           ${time}\n   SEGUNDOS`, {
             fontFamily: '"ComicSansWeb"',
-            fontSize: '30px',
-            fill: '#000000ff'
+            fontSize: '25px',
+            fill: '#232323ff'
         }).setOrigin(0.5).setDepth(20);
   
         // Configurar eventos de click para todos los departamentos
@@ -224,26 +231,35 @@ class Escena extends Phaser.Scene {
             this.dialogoActual.destroy();
             this.dialogoActual = null;
         }
-
+        if (this.departamentoNombre) {
+            this.departamentoNombre.destroy();
+            this.departamentoNombre = null;
+        }
+        this.departamentoNombre = this.add.text(departamento.x+5, departamento.y, `${departamento.textureKey}`, {
+            fontFamily: '"ComicSansWeb"',
+            backgroundColor: "#fffffff7",
+            fontSize: '15px',
+            fill: '#000000ff',
+        }).setOrigin(0.5).setDepth(20); 
         // Crear container
         const dialogo = this.add.container(0, 0);
 
-        const sticker2 = this.add.sprite(1000, 400, 'sticker').setScale(0.75);
+        const sticker2 = this.add.sprite(990, 400, 'sticker').setScale(0.75);
         dialogo.add(sticker2);
 
-        const mensajeComarca = this.add.text(1000, 400, `Deseas jugar\n     en\n ${departamento.textureKey}?`, {
+        const mensajeComarca = this.add.text(990, 380, `Deseas jugar\n       en\n ${departamento.textureKey}?`, {
             fontFamily: "ComicSansWeb",
-            fontSize: '30px',
-            fill: '#000000ff',
+            fontSize: '28px',
+            fill: '#232323ff',
         }).setOrigin(0.5).setDepth(20);
         dialogo.add(mensajeComarca);
 
-        const botonSi = this.crearBoton(950, 500, "SI", '#3ed348ff', () => {
+        const botonSi = this.crearBoton(940, 460, "SI", '#3ed348ff', () => {
             window.location.href = `/departamento/${departamento.depId}`;
         });
         dialogo.add(botonSi);
 
-        const botonNo = this.crearBoton(995, 500, "NO", '#2d2d2d', () => {
+        const botonNo = this.crearBoton(985, 460, "NO", '#2d2d2d', () => {
             dialogo.destroy();
             this.dialogoActual = null;
         });
@@ -293,7 +309,7 @@ class Escena extends Phaser.Scene {
                 const segundos = this.tiempo % 60;
                 const segundosStr = segundos.toString().padStart(2, '0');
 
-                this.textoReloj.setText(`Tiempo: ${minutos}:${segundosStr}`);
+                this.textoReloj.setText(`Tiempo: ${minutos}:${segundosStr}`).setAlpha(1);
             },
             callbackScope: this,
             loop: true
