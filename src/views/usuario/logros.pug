@@ -1,0 +1,35 @@
+extends ../layouts/mainLayout.pug
+
+block content
+  .contenedor-principal
+
+    // ---------------------- MEJORES TIEMPOS ----------------------
+    .mejores-tiempos
+      .titulo Mejores Tiempos
+      each tiempo in tiempos
+        .tiempo-item
+          span= tiempo.tiempoFormateado
+
+    // ---------------------- DEPARTAMENTO Y PARAJES ----------------------
+    .departamento
+      .titulo Departamento #{actual.nombre}  
+      .icono-medalla
+        img(src="/img/medalla3.png")
+
+      .lista-parajes
+        each p in parajes
+          .paraje-item
+            .icono-trofeo
+             
+                img(src="/img/trofeo.png")
+             
+
+            .nombre-paraje= p
+
+      // ---------------------- FLECHA ----------------------
+      - const indexActual = departamentos.findIndex(d => d.departamento_id === actual.departamento_id);
+      - const siguiente = departamentos[indexActual + 1] || departamentos[0];
+
+      .flecha
+        a(href=`/logros/${siguiente.departamento_id}`)
+          img(src="/img/flecha.png", alt="Ir")

@@ -24,5 +24,17 @@ const LogroParaje = {
     );
     return rows.map(r => r.paraje_id);
   },
+
+  async getParajesCompletadosPorUsuarioYDeptoCompleto(usuarioId, deptoId) {
+    const [rows] = await pool.query(
+      `SELECT p.nombre
+       FROM logro l
+       INNER JOIN paraje p ON p.id = l.paraje_id
+       WHERE l.usuario_id = ? AND p.departamento_id = ?
+       ORDER BY p.id`,
+      [usuarioId, deptoId]
+    );
+    return rows.map(r => r.nombre);
+  },
 };
 module.exports = LogroParaje;

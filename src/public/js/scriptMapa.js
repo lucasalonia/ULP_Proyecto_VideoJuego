@@ -27,6 +27,8 @@ class Escena extends Phaser.Scene {
         await document.fonts.ready;
 
         this.fechaInicio = new Date();
+        const d = new Date();
+        console.log("toString:", d.toString());
         this.tiempo = 0;
         this.juegoIniciado = false;
         this.timer = null;
@@ -46,10 +48,10 @@ class Escena extends Phaser.Scene {
 
         // Texto del reloj
         this.textoReloj = this.add.text(canvaWidth / 2 - 100, 30, "Tiempo: 0:00", {
-           fontFamily: '"ComicSansWeb"',
+            fontFamily: '"ComicSansWeb"',
             fontSize: "28px",
             fill: "#000",
-             
+
         }).setDepth(50).setAlpha(0);
 
         // Inicializar zonas y departamentos
@@ -159,10 +161,10 @@ class Escena extends Phaser.Scene {
             this.contador += 1;
             console.log(`${gameObject.textureKey} encajó en su zona`);
             console.log('contador:', this.contador);
-             this.sound.play('ok', { volume: 0.5 });
+            this.sound.play('ok', { volume: 0.5 });
 
             if (this.contador === 9) {
-             
+
                 this.finalizarJuego();
                 this.sound.play('final', { volume: 0.7 });
             }
@@ -180,8 +182,8 @@ class Escena extends Phaser.Scene {
 
         const datos = {
             id_jugador: 1,
-            fecha_inicio: this.fechaInicio.toISOString(),
-            fecha_fin: fechaFin.toISOString(),
+             fecha_inicio: this.fechaInicio.toLocaleString("sv-SE"),
+        fecha_fin: fechaFin.toLocaleString("sv-SE"),
             tiempo: this.tiempo
         };
 
@@ -208,17 +210,17 @@ class Escena extends Phaser.Scene {
 
     mostrarInterfazFinal(time) {
         const sticker = this.add.sprite(300, 200, 'sticker').setScale(0.8);
-        
-        const mensajeFinal =this.add.text(300, 200, `¡FELICITACIONES!\n  COMPLETASTE\n     EL MAPA EN\n           ${time}\n   SEGUNDOS`, {
+
+        const mensajeFinal = this.add.text(300, 200, `¡FELICITACIONES!\n  COMPLETASTE\n     EL MAPA EN\n           ${time}\n   SEGUNDOS`, {
             fontFamily: '"ComicSansWeb"',
             fontSize: '25px',
             fill: '#232323ff'
         }).setOrigin(0.5).setDepth(20);
-  
+
         // Configurar eventos de click para todos los departamentos
         this.departamentos.forEach(dep => {
             dep.on('pointerdown', () => {
-                
+
                 this.mostrarDialogoDepartamento(dep);
             });
         });
@@ -235,12 +237,12 @@ class Escena extends Phaser.Scene {
             this.departamentoNombre.destroy();
             this.departamentoNombre = null;
         }
-        this.departamentoNombre = this.add.text(departamento.x+5, departamento.y, `${departamento.textureKey}`, {
+        this.departamentoNombre = this.add.text(departamento.x + 5, departamento.y, `${departamento.textureKey}`, {
             fontFamily: '"ComicSansWeb"',
             backgroundColor: "#fffffff7",
             fontSize: '15px',
             fill: '#000000ff',
-        }).setOrigin(0.5).setDepth(20); 
+        }).setOrigin(0.5).setDepth(20);
         // Crear container
         const dialogo = this.add.container(0, 0);
 
@@ -272,7 +274,7 @@ class Escena extends Phaser.Scene {
 
     crearBoton(x, y, texto, color, callback) {
         const boton = this.add.text(x, y, texto, {
-             fontFamily:'"ComicSansWeb"',
+            fontFamily: '"ComicSansWeb"',
             fontSize: '15px',
             color: '#ffffff',
             align: 'center',

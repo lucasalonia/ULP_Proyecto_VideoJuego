@@ -1,0 +1,98 @@
+
+@font-face {
+  font-family: "MiFuente";
+  src: url("/fonts/GamePocket-Regular.ttf") format("truetype");
+  
+}
+body {
+  background: #3FA66A;
+  
+}
+
+.contenedor-principal {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 40px;
+  margin-top: 40px;
+}
+
+/* ----------- Columna 1 ----------- */
+.mejores-tiempos {
+  background: #C9F3F9;
+  border: 3px solid #333;
+  padding: 20px;
+  width: 280px;
+}
+
+.titulo {
+  background: #F7F4A3;
+font-family: "MiFuente";
+  font-weight: normal !important;
+  padding: 10px;
+  font-size: 40px;
+  text-align: center;
+  margin-bottom: 20px;
+  border: 2px solid #333;
+}
+
+.tiempo-item {
+  background: #FBEAC7;
+  font-family: "MiFuente";
+  margin: 10px 0;
+  padding: 12px;
+  font-size: 22px;
+  border: 2px solid #333;
+  text-align: center;
+}
+
+.tiempo-item.resaltado {
+  background: #F8B07D;
+}
+
+/* ----------- Columna 2 ----------- */
+.departamento {
+  background: #C9F3F9;
+  border: 3px solid #333;
+  padding: 20px;
+  width: 900px;
+}
+
+.icono-medalla img {
+  width: 70px;
+  float: right;
+  margin-top: -70px;
+}
+
+.lista-parajes {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* 2 columnas */
+  gap: 10px; /* espacio entre columnas y filas */
+}
+
+.paraje-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 25px;
+}
+
+.icono-trofeo img {
+  width: 100px;
+}
+
+.nombre-paraje {
+  background: #F7F4A3;
+  font-family: "MiFuente";
+  border: 2px solid #333;
+  padding: 15px 20px;
+  font-size: 22px;
+  margin-left: 10px;
+  width: 200px;
+}
+
+.flecha img {
+  width: 150px;
+  margin-top: 20px;
+  display: block;
+  margin-left: auto;
+}
