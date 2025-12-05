@@ -25,7 +25,7 @@ const LogroParaje = {
     return rows.map(r => r.paraje_id);
   },
 
-  async getParajesCompletadosPorUsuarioYDeptoCompleto(usuarioId, deptoId) {
+  async getParajesCompletadosPorUsuarioYDeptoNombre(usuarioId, deptoId) {
     const [rows] = await pool.query(
       `SELECT p.nombre
        FROM logro l

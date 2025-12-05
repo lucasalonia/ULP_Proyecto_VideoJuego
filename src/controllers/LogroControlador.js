@@ -50,7 +50,7 @@ async obtenerLogros(req, res) {
     }));
 
     // 4) Obtener los parajes COMPLETADOS del depto actual
-    const parajesCompletados = await LogroParaje.getParajesCompletadosPorUsuarioYDeptoCompleto(
+    const parajesCompletados = await LogroParaje.getParajesCompletadosPorUsuarioYDeptoNombre(
       usuarioId,
       actual.departamento_id
     );

@@ -1,8 +1,8 @@
 
 @font-face {
-  font-family: "MiFuente";
-  src: url("/fonts/GamePocket-Regular.ttf") format("truetype");
-  
+ font-family: "MiFuente";
+  src: url("/fonts/Pluto.ttf") format("truetype");
+  font-weight: normal;
 }
 body {
   background: #3FA66A;
@@ -27,7 +27,7 @@ body {
 
 .titulo {
   background: #F7F4A3;
-font-family: "MiFuente";
+  font-family: "MiFuente";
   font-weight: normal !important;
   padding: 10px;
   font-size: 40px;
