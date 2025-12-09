@@ -37,7 +37,12 @@ function globalPugContext(req, res, next) {
         } catch (err) {
             
             res.clearCookie("jwt_token");
+             res.locals.user = null;
         }
+    }else {
+        res.locals.user = null;
+        
+        return next();
     }
     
     next();

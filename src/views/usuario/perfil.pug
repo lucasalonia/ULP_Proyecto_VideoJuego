@@ -1,6 +1,6 @@
 extends ../layouts/mainLayout.pug
 block content
-  if user.role === "jugador" || user.rol === "admin"
+  if user.role === "jugador" || user.rol === "admin" || user.userId > 0
     .container.py-5 
       
       // Sección Superior: Foto y Botón de Modificar
