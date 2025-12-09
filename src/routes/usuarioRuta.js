@@ -7,7 +7,6 @@ const usuarioController = require('../API/UsuarioApiController');
 router.get("/perfil", (req, res) => res.render("usuario/perfil"));
 
 
-
 /*POST*/
 //Acciones
 router.post("/perfil/modificar-contrasenia", usuarioController.modificarContraseña);

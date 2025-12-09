@@ -1,88 +1,401 @@
-/* === CONTENEDOR GENERAL === */
-.auth-container {
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap");
+
+@font-face {
+  font-family: "Pluto";
+  src: url("/fonts/Pluto.ttf") format("truetype");
+  font-weight: 400; /* Regular */
+  font-style: normal;
+  font-display: swap; /* Mejor práctica para la carga de fuentes */
+}
+
+@font-face {
+  font-family: "Pluto";
+  src: url("/fonts/Pluto.ttf") format("truetype");
+  font-weight: 700; /* Bold */
+  font-style: normal;
+  font-display: swap;
+}
+/* Variables de color para consistencia */
+:root {
+  --color-primary: #2766be; /* Azul principal */
+  --color-secondary: #205bac; /* Azul oscuro (base del fondo) */
+  --color-tertiary: #205aaca8;
+  --color-title: #b9c3d1;
+  --color-text-dark: #333333;
+  --color-text-light: #f8f9fa;
+  --color-background-light: #eeeeee;
+}
+
+body.body {
+  background-color: var(--color-background-light); /* Fondo gris claro */
+  font-family: Arial, sans-serif;
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
-  background: linear-gradient(135deg, #007bb8, #4ec9f5);
-  font-family: "Poppins", sans-serif;
+  min-height: 100vh;
+  margin: 0;
 }
 
-/* === CAJA PRINCIPAL === */
-.auth-box {
-  background: #fff;
-  padding: 2.5rem;
-  border-radius: 1rem;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+/* Contenedor principal para centrar */
+.auth-container {
   width: 100%;
-  max-width: 380px;
+  max-width: 450px; /* Ancho similar al de la imagen */
+  padding: 15px;
+}
+
+/* Caja del login */
+.auth-box {
+  background-color: white;
+  border-radius: 25px; /* Bordes redondeados */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  overflow: hidden; /* Para que la imagen de fondo no se desborde */
+  padding-bottom: 20px;
+}
+
+/* --- ESTILOS DEL HEADER CON IMAGEN --- */
+.presentacion {
+  content: "";
+  display: block;
+  /* Ajusta la URL de la imagen de fondo */
+  background-image: url("/img/fondos/fondo_pl-azul.png");
+  background-size: cover;
+  background-position: center;
+  height: 200px;
+  background-blend-mode: overlay;
+  background-color: var(--color-tertiary);
+}
+.presentacion-logo {
+  width: 120px;
+  margin-top: 20px;
+}
+.presentacion-titulo {
+  font-family: "Roboto", sans-serif;
   text-align: center;
+  color: var(--color-title);
+  font-size: 1.5rem;
+  margin-top: 40px;
+  margin-bottom: 0px;
+}
+.presetacion-subtitulo {
+  font-family: "Roboto", sans-serif;
+  text-align: center;
+  color: var(--color-title);
+  font-size: 1rem;
+  margin: 0;
+}
+/* Contenido del header (Logo, Título de la app, etc.) */
+.auth-box-header-content {
+  /* Posiciona el texto y el logo sobre el fondo */
+  position: absolute;
+  top: 0;
+  width: 100%;
+  max-width: 450px;
+  padding: 15px;
 }
 
-/* === TÍTULO === */
+/* Opcional: Estilos para el texto y logo si estuvieran superpuestos en el HTML */
+/* Si el logo y texto van *dentro* del área de la imagen, necesitarías un contenedor. 
+   Basado en la estructura Pug, lo insertaremos después del pseudo-elemento con padding. */
+
+/* Ajuste el padding para el contenido debajo de la imagen */
+.auth-box {
+  padding: 0; /* Remueve el padding inicial */
+  position: relative;
+}
+
+.auth-box > * {
+  padding-left: 30px;
+  padding-right: 30px;
+}
+
+/* Título "Login" */
 .auth-title {
-  margin-bottom: 1.5rem;
-  font-size: 1.8rem;
-  color: #007bb8;
+  font-family: "Roboto", Arial, sans-serif;
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: var(--color-text-dark);
+  margin-top: 20px;
+  margin-bottom: 20px;
+  /* En la imagen de referencia dice "Login", ajustamos el margen */
+  padding-top: 10px;
 }
 
-/* === FORMULARIO === */
+/* --- ESTILOS DEL FORMULARIO --- */
 .auth-form {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 15px;
+  margin-bottom: 20px;
 }
 
 .auth-input {
-  padding: 0.8rem 1rem;
+  width: 100%;
+  padding: 12px 15px;
+  margin-bottom: 5px; /* Separación entre inputs */
   border: 1px solid #ccc;
-  border-radius: 0.5rem;
+  border-radius: 8px;
   font-size: 1rem;
-  outline: none;
-  transition: border 0.3s;
+  box-sizing: border-box; /* Incluye padding y border en el ancho */
 }
 
-.auth-input:focus {
-  border-color: #007bb8;
+/* Placeholder del input simulando el texto de la imagen */
+.auth-input[name="mail"]::placeholder {
+  content: "Usuario"; /* Asumiendo que 'Usuario' es el placeholder */
+  color: #999;
+}
+.auth-input[name="password"]::placeholder {
+  content: "Contraseña"; /* Asumiendo que 'Contraseña' es el placeholder */
+  color: #999;
 }
 
-/* === BOTÓN === */
+/* Etiqueta visible (si se usaran <label>)
+   Dado que usas placeholder y no labels visibles, los inputs deberían tener
+   el texto "Usuario" y "Contraseña" como placeholder, o tendrías que 
+   cambiar la estructura HTML para agregar labels. */
+
+/* Botón principal "Ingresar" */
 .auth-btn {
-  padding: 0.8rem;
-  background: #007bb8;
-  color: #fff;
+  font-family: "Roboto", Arial, sans-serif;
+  background-color: var(--color-primary); /* Azul principal */
+  color: white;
+  padding: 15px 20px;
   border: none;
-  border-radius: 0.5rem;
-  font-weight: 600;
+  border-radius: 30px; /* Más redondeado para parecerse al botón de la imagen */
+  font-size: 1.1rem;
+  font-weight: bold;
   cursor: pointer;
-  transition: background 0.3s;
+  transition: background-color 0.3s;
+  margin-top: 10px;
 }
 
 .auth-btn:hover {
-  background: #005f8a;
+  background-color: var(--color-secondary);
 }
 
-/* === ENLACES === */
+/* --- ESTILOS DE LOS ENLACES INFERIORES --- */
 .auth-links {
-  margin-top: 1rem;
   display: flex;
-  justify-content: space-between;
-  font-size: 0.9rem;
+  justify-content: space-between; /* Para separar "Crear Cuenta" y "Jugar sin cuenta" */
+  margin-top: 30px;
+  padding-bottom: 30px;
 }
 
 .auth-links a {
-  color: #007bb8;
   text-decoration: none;
+  color: var(--color-text-dark);
+  font-size: 0.95rem;
+  padding: 10px 15px;
+  border: 1px solid #ccc; /* Borde sutil como en los botones inferiores */
+  border-radius: 20px;
+  transition: background-color 0.2s;
 }
 
 .auth-links a:hover {
-  text-decoration: underline;
+  background-color: #f0f0f0;
 }
 
-.auth-title {
-  margin-bottom: 1.2rem;
+/* Para simular la etiqueta "Crear Cuenta" y "Jugar sin cuenta" */
+.auth-links a[href="/register"] {
+  font-family: "Roboto", Arial, sans-serif;
+  /* Estilo del botón "Crear Cuenta" */
+  border-color: #ccc;
+  background-color: white;
 }
 
-.auth-links a:last-child {
-  font-weight: 600;
+.auth-links a[href="/guest"] {
+  font-family: "Roboto", Arial, sans-serif;
+  /* Estilo del botón "Jugar sin cuenta" */
+  border-color: #ccc;
+  background-color: white;
+}
+/* Estilos generales para todos los placeholders */
+.auth-input::placeholder {
+  color: #999999; /* Un gris más claro u oscuro para destacar */
+  opacity: 1; /* Asegura que no sea transparente en Firefox */
+  font-weight: 400; /* Puedes ajustar el peso de la fuente */
+}
+
+.auth-input::-webkit-input-placeholder {
+  color: #999999;
+  font-family: "Roboto", sans-serif;
+}
+
+/* Firefox 19+ */
+.auth-input:-moz-placeholder {
+  color: #999999;
+  opacity: 1;
+}
+
+/* IE 10+ */
+.auth-input:-ms-input-placeholder {
+  color: #999999;
+}
+
+/* Firefox 18- */
+.auth-input::-moz-placeholder {
+  color: #999999;
+  opacity: 1;
+}
+a.recover-password {
+  text-align: center;
+}
+
+/*REGISTRAR*/
+.auth-box.regitrar {
+  margin-top: 100px;
+}
+/* --- MODIFICACIONES A ESTILOS BOOTSTRAP PARA COHERENCIA --- */
+
+/* CABECERA DE LA MODAL */
+#profileCarouselModal .modal-dialog {
+    width: 30%;
+    max-width: none; 
+    margin: 0 auto; 
+    margin-top: 50px;
+}
+.profile-picture-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.default-avatar {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background: #ccc;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 10px;
+  overflow: hidden;
+  border: 3px solid #007bff;
+}
+
+.initials {
+  font-size: 30px;
+  font-weight: bold;
+  color: #333;
+}
+
+.modal-content {
+  border-radius: 18px;
+  overflow: hidden;
+  border: none;
+}
+
+.modal-header {
+  background: #0d6efd;
+  color: white;
+  border-bottom: none;
+}
+
+.modal-body {
+  background: #f5f5f5;
+}
+
+.carousel-item img {
+  height: 260px;
+  object-fit: contain;
+  border-radius: 12px;
+  background: white;
+  padding: 10px;
+}
+
+.select-btn {
+  font-weight: bold;
+  border-radius: 12px;
+  padding: 12px;
+}
+
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+  filter: invert(1);
+}
+.modal-content {
+  border-radius: 18px;
+  overflow: hidden;
+  border: none;
+}
+
+.modal-header {
+  /* Usar color primario en lugar de Bootstrap's default azul (#0d6efd) */
+  background-color: var(--color-primary);
+  color: var(--color-text-light); /* Texto blanco */
+  border-bottom: none;
+  font-family: "Roboto", sans-serif;
+  font-weight: 700; /* Negrita para el título */
+}
+
+.modal-header .btn-close {
+  /* Color del ícono de cerrar (haciéndolo blanco para el fondo azul) */
+  filter: invert(1);
+  opacity: 0.8;
+}
+
+.modal-body {
+  background-color: var(--color-background-light); /* Fondo gris claro */
+  padding: 20px;
+}
+
+/* CONTENEDOR DE LA IMAGEN DENTRO DEL CARRUSEL */
+.carousel-item img {
+  height: 260px;
+  object-fit: contain;
+  border-radius: 12px;
+  background-color: white;
+  padding: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* BOTÓN "Seleccionar Foto de Perfil" (Fuera de la Modal) */
+.auth-box button.btn-primary.mt-2 {
+  /* Aplicar la paleta de color principal de la app */
+  background-color: var(--color-primary);
+  border-color: var(--color-primary);
+  border-radius: 30px;
+  font-weight: 700;
+}
+
+.auth-box button.btn-primary.mt-2:hover {
+  background-color: var(--color-secondary);
+  border-color: var(--color-secondary);
+}
+
+/* BOTÓN "Usar esta imagen" (Dentro de la Modal) */
+.select-btn {
+  /* Usar colores primarios en lugar del 'btn-success' por defecto */
+  background-color: var(--color-primary) !important; /* Azul principal */
+  border-color: var(--color-primary) !important;
+  font-family: "Roboto", sans-serif;
+  font-weight: bold;
+  border-radius: 12px;
+  padding: 12px;
+  transition: background-color 0.3s;
+}
+
+.select-btn:hover {
+  background-color: var(--color-secondary) !important;
+  border-color: var(--color-secondary) !important;
+}
+
+/* FLECHAS DEL CARRUSEL (para que se vean en el fondo claro) */
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+  /* Usar el color principal de la app */
+  background-image: none;
+  border-radius: 50%;
+  background-color: rgba(0, 0, 0, 0.5);
+  padding: 15px;
+  width: 40px !important;
+}
+
+/* INDICADORES DEL CARRUSEL */
+.carousel-indicators [data-bs-target] {
+  background-color: var(--color-primary); /* Puntos activos azules */
+}
+.select-btn.btn.btn-success{
+  width: 150px !important;
+  margin-left: 35% !important;
 }

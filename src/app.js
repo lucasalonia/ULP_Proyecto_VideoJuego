@@ -47,7 +47,6 @@ console.log("Directorio de vistas:", directorioVistas);
 //Login
 app.use("/", loginRuta);
 
-
 /*MIDDLEWARE con TOKEN*/
 app.use(verifyToken);
 app.use(globalPugContext);
