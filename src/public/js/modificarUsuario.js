@@ -1,3 +1,7 @@
+// =====================================================================
+//   SPINNER
+// =====================================================================
+
 function showSpinner() {
   document.getElementById("loadingSpinner").classList.remove("d-none");
 }
@@ -5,6 +9,100 @@ function showSpinner() {
 function hideSpinner() {
   document.getElementById("loadingSpinner").classList.add("d-none");
 }
+
+
+
+// =====================================================================
+//   CARGAR TIEMPOS + LOGROS RECIENTES
+// =====================================================================
+
+document.addEventListener("DOMContentLoaded", async () => {
+  showSpinner();
+
+  try {
+    const res = await fetch("/logros/perfil/ultimos");
+    const data = await res.json();
+
+    if (!res.ok) throw new Error(data.message);
+
+    cargarTiempos(data.tiempo ? [data.tiempo] : []);
+    cargarParajes(data.parajesCompletados);
+  } catch (e) {
+    console.error(e);
+    toastr.error("No se pudieron cargar los datos del perfil.");
+  } finally {
+    hideSpinner();
+  }
+
+  modificarContraseña();
+  modificarNickname();
+});
+
+
+
+// =====================================================================
+//   CARGAR TIEMPOS
+// =====================================================================
+
+function cargarTiempos(tiempos = []) {
+  const cont = document.getElementById("listaTiempos");
+  cont.innerHTML = "";
+
+  if (!tiempos.length) {
+    cont.innerHTML = `<li class="item-logro text-muted">Sin tiempos registrados</li>`;
+    return;
+  }
+
+  tiempos.forEach(t => {
+    const li = document.createElement("li");
+    li.className = "paraje-item d-flex  align-items-center";
+
+    li.innerHTML = `
+       <div class="icono-reloj">
+        <img src="/img/reloj.png">
+      </div>
+       <div class="nombre-paraje"> ${t.tiempoFormateado}</div>
+    `;
+
+    cont.appendChild(li);
+  });
+}
+
+
+
+// =====================================================================
+//   CARGAR PARAJES LOGRADOS
+// =====================================================================
+function cargarParajes(parajes = []) {
+  const cont = document.getElementById("listaParajes");
+  cont.innerHTML = "";
+
+  if (!parajes.length) {
+    cont.innerHTML = `
+      <div class="paraje-item">
+        <div class="nombre-paraje">No desbloqueaste logros aún.</div>
+      </div>`;
+    return;
+  }
+
+  parajes.forEach(p => {
+    const item = document.createElement("div");
+    item.className = "paraje-item";
+
+    item.innerHTML = `
+      <div class="icono-trofeo">
+        <img src="/img/trofeo1.png">
+      </div>
+
+      <div class="nombre-paraje">${p}</div>
+    `;
+
+    cont.appendChild(item);
+  });
+}
+
+
+
 
 function modificarContraseña() {
   // Configuración de Toastr (igual que en tu otro método)

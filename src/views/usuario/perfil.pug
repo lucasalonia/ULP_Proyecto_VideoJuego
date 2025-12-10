@@ -1,104 +1,85 @@
 extends ../layouts/mainLayout.pug
 
-
 block content
-  .container.py-5 
-    
-    // Sección Superior: Foto y Botón de Modificar
-    .text-center.mb-4
-      // Contenedor para la imagen (clase 'rounded-circle' para hacerla redonda)
-      .d-inline-block.position-relative
-        img.img-fluid.rounded-circle(src=user.fotoUrl, alt="Foto de Perfil", style="width: 150px; height: 150px; object-fit: cover;")
-      
-      // Botón de Modificar
-      .mt-3
-        button.btn.btn-sm.btn-outline-primary(
-            type="button",
-            data-bs-toggle="modal",
-            data-bs-target="#modalSelectPhoto"
-          ) Modificar Foto
-    
-    hr.my-4
-    
-    // Sección Inferior: Datos y Logros (Columnas)
-    .row
-      // Columna Izquierda: Datos del Usuario (Ocupa 6 de 12 columnas en pantallas medianas)
-      .col-md-6.mb-4
-        .card.h-100
-          .card-header
-            h4.mb-0 📝 Datos del Usuario
-          .card-body
-            // Email
-            p.mb-2
-              strong Email: 
-              span.text-muted #{user.userMail}
-            
-            // Nickname
-            p.mb-3
-              strong Nickname:
-              span.text-muted.ms-2 #{user.userName}
+ .container.py-3
 
-              button.btn.btn-warning.btn-sm.ms-3(
-                type="button",
-                data-bs-toggle="modal",
-                data-bs-target="#modalNickname"
-              ) Modifica
-            
-            button.btn.btn-danger.btn-sm(type="button", data-bs-toggle="modal", data-bs-target="#modalPassword") Modificar Contraseña
+  .text-center.mb-3
+    img.foto-perfil-pixel(src=user.fotoUrl alt="Foto de Perfil")
+    .mt-3
+      button.btn-pixel.btn-pixel-primary(
+        data-bs-toggle="modal"
+        data-bs-target="#modalSelectPhoto"
+      ) Modificar Foto
+
+  hr.my-4
+
+  .row
+
+    // ==== COLUMNA IZQUIERDA - DATOS ====
+    .col-md-6.mb-4
+      .panel-pixel
+        .titulo-pixel  Datos del Usuario
+
+        .dato-item
+          strong Email:
+          span.valor-dato #{user.userMail}
+
+        .dato-item
+          strong Nickname:
+          span.valor-dato #{user.userName}
+          button.btn-pixel.btn-pixel-warning(
+            data-bs-toggle="modal"
+            data-bs-target="#modalNickname"
+          ) Modificar
+
+        button.btn-pixel.btn-pixel-danger(
+          data-bs-toggle="modal"
+          data-bs-target="#modalPassword"
+        ) Modificar Contraseña
 
 
-      // Columna Derecha: Logros (Ocupa 6 de 12 columnas en pantallas medianas)
-      .col-md-6.mb-4
-        .card.h-100
-          .card-header
-            h4.mb-0 🏆 Logros
-          .card-body
-            // Tiempos del Mapa
-            .mb-4
-              h5.card-title Tiempos del Mapa
-              p.text-muted (Ej: Mejor tiempo en "Mapa X": 0:35s)
+    // ==== COLUMNA DERECHA - LOGROS ====
+    .col-md-6.mb-4
+      .panel-pixel
+        .titulo-pixel  Logros
 
-            // Logros más Recientes
-            .mb-3
-              h5.card-title Logros más Recientes
-              ul.list-group.list-group-flush
-                li.list-group-item Logro 1:
-                li.list-group-item Logro 2:
-                li.list-group-item Logro 3:
-            
-            // Botón Ver Todos los Logros
-            .text-center.mt-4
-              button.btn.btn-primary(type="button") Ver Todos los Logros
-    // Modal para modificar contraseña
+        h5.logros Mejor Tiempo
+        ul#listaTiempos
+
+        h5.logros Logros más recientes
+        ul#listaParajes
+
+        .text-center.mt-3
+         a.btn-pixel.btn-pixel-primary.btn-pixel-large(href="/logros") Ver Todos los Logros
+
+
+
+  // ================= MODALES (SIN CAMBIOS) =================
   .modal.fade#modalPassword(tabindex="-1" aria-labelledby="modalPasswordLabel" aria-hidden="true")
     .modal-dialog
       .modal-content
         .modal-header
           h5.modal-title#modalPasswordLabel Modificar Contraseña
-          button.btn-close(type="button", data-bs-dismiss="modal", aria-label="Cerrar")
+          button.btn-close(type="button", data-bs-dismiss="modal")
 
         .modal-body
-          // Contraseña actual
           .mb-3
             label.form-label(for="currentPassword") Contraseña actual
-            input.form-control(type="password", id="currentPassword", placeholder="Ingresá tu contraseña actual")
+            input.form-control(type="password", id="currentPassword")
 
-          // Nueva contraseña
           .mb-3
             label.form-label(for="newPassword") Nueva contraseña
-            input.form-control(type="password", id="newPassword", placeholder="Ingresá tu nueva contraseña")
+            input.form-control(type="password", id="newPassword")
 
-          // Repetir contraseña
           .mb-3
             label.form-label(for="confirmPassword") Repetir nueva contraseña
-            input.form-control(type="password", id="confirmPassword", placeholder="Repetí la nueva contraseña")
+            input.form-control(type="password", id="confirmPassword")
 
         .modal-footer
           button.btn.btn-secondary(type="button", data-bs-dismiss="modal") Cancelar
           button.btn.btn-primary(type="button" id="guardarPassword") Guardar cambios
 
 
-  // Modal para seleccionar foto
   .modal.fade#modalSelectPhoto(tabindex="-1" aria-hidden="true")
     .modal-dialog.modal-lg
       .modal-content
@@ -110,22 +91,22 @@ block content
           .row.g-3
             each imgIndex in [1,2,3,4]
               .col-6.col-md-3
-                .photo-option.border.rounded.p-2.bg-white.hover-shadow.position-relative(
+                .photo-option(
                   style="cursor:pointer"
                   data-img-url=`/img/profiles/testimage${imgIndex}.png`
                   data-bs-dismiss="modal"
                 )
                   img.img-fluid.rounded(
-                    src=`/img/profiles/testimage${imgIndex}.png`
+                    src=`/img/profiles/testimage${imgIndex}.png`,
                     alt=`Foto ${imgIndex}`
-                    style="height:120px; object-fit:contain; width:100%;"
                   )
-                  button.btn.btn-sm.btn-success.w-100.mt-2(type="button") Usar esta
+                  button.btn-usar(type="button") Usar esta
 
         .modal-footer.bg-light
           button.btn.btn-secondary(type="button", data-bs-dismiss="modal") Cerrar
 
-  .modal.fade#modalNickname(tabindex="-1" aria-hidden="true")
+
+  .modal.fade#modalNickname(tabindex="-1")
     .modal-dialog
       .modal-content
         .modal-header
@@ -133,18 +114,13 @@ block content
           button.btn-close(type="button", data-bs-dismiss="modal")
 
         .modal-body
-
           .mb-3
-            label.form-label(for="actualPasword") Contraseña actual (necesaria para confirmar cambios)
-            input.form-control(type="password", id="actualPasword", placeholder="Ingresá tu contraseña actual")
+            label.form-label(for="actualPasword") Contraseña actual
+            input.form-control(type="password", id="actualPasword")
 
           .mb-3
             label.form-label(for="newNickname") Nuevo Nickname
-            input.form-control(
-              type="text"
-              id="newNickname"
-              placeholder="Ingresá tu nuevo nickname"
-            )
+            input.form-control(type="text", id="newNickname")
 
         .modal-footer
           button.btn.btn-secondary(type="button", data-bs-dismiss="modal") Cancelar
@@ -152,7 +128,7 @@ block content
 
 
   #loadingSpinner.position-fixed.top-0.start-0.w-100.h-100.d-flex.justify-content-center.align-items-center.bg-dark.bg-opacity-50.d-none(style="z-index: 9999;")
-              .spinner-border.text-light(role="status" style="width: 3rem; height: 3rem;")
-                  span.visually-hidden Loading...
+    .spinner-border.text-light(role="status", style="width: 3rem; height: 3rem;")
+      span.visually-hidden Loading...
 
   script(src="/js/modificarUsuario.js")

@@ -30,6 +30,25 @@ const Logro = {
 
         const [tiempos] = await pool.query(sql, [id]);
         return tiempos;
+    },
+
+        async getUltimoTiempoMapa(id) {
+        const sql = `
+    SELECT 
+      MIN(tiempo_id) AS tiempo_id,
+      usuario_id,
+      tiempo,
+      fecha_inicio,
+      fecha_fin
+    FROM tiempo_mapa
+    WHERE usuario_id = ?
+    GROUP BY tiempo
+    ORDER BY tiempo ASC
+    LIMIT 1
+  `;
+
+        const [tiempos] = await pool.query(sql, [id]);
+        return tiempos;
     }
 }
 module.exports = Logro;

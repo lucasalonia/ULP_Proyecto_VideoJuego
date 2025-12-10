@@ -16,9 +16,10 @@ class Escena extends Phaser.Scene {
         this.load.image('Chacabuco', '/img/mapa/chacabucoMapa.png');
         this.load.image('Belgrano', '/img/mapa/belgranoMapa.png');
         this.load.image('Pringles', '/img/mapa/pringlesMapa.png');
-        this.load.image('hoja', '/img/mapa/hoja1.png');
-        this.load.image('marco', '/img/mapa/marcoL.png');
-        this.load.image('sticker', '/img/mapa/sticker.png');
+        this.load.image('hoja', '/img/mapa/pixelHoja.png');
+        this.load.image('marco', '/img/mapa/marcoFi.png');
+        this.load.image('sticker', '/img/mapa/notaPixel.png');
+        this.load.image('sticker2', '/img/mapa/notaPixel2.png');
         this.load.audio('ok', './audio/ok2.wav');
         this.load.audio('final', './audio/final.mp3');
         //this.load.audio('ok', './audio/ok.mp3');
@@ -40,15 +41,26 @@ class Escena extends Phaser.Scene {
         const canvaHeight = this.sys.game.config.height;
 
         // Elementos de fondo
-        const hoja = this.add.sprite(canvaWidth / 2, canvaHeight / 2 + 10, 'hoja').setDepth(0).setScale(0.8);
+        const hoja = this.add.sprite(canvaWidth / 2-60, canvaHeight / 2 - 60, 'hoja').setDepth(0).setScale(0.65);
         const fondo = this.add.sprite(canvaWidth / 2, canvaHeight / 2, 'mapaSL').setScale(0.95);
-        const marco = this.add.sprite(canvaWidth / 2 - 40, canvaHeight / 2 - 30, 'marco').setScale(0.9);
+       const marco = this.add.sprite(canvaWidth / 2 - 10, canvaHeight / 2 - 46, 'marco').setScale(0.87);
 
         fondo.setScale(0.5).setOrigin(0.5, 0.5);
+        //Titulo
+        document.fonts.load('20px miFuente').then(() => {
 
+    this.add.text(canvaWidth / 2  -140, 58, "SAN LUIS MI PROVINCIA", {
+        fontFamily: "miFuente",
+        fontSize: "30px",
+        color: "#000",
+    });
+
+});
+
+        
         // Texto del reloj
         this.textoReloj = this.add.text(canvaWidth / 2 - 100, 30, "Tiempo: 0:00", {
-            fontFamily: '"ComicSansWeb"',
+            fontFamily: '"miFuente"',
             fontSize: "28px",
             fill: "#000",
 
@@ -111,7 +123,7 @@ class Escena extends Phaser.Scene {
 
     inicializarDepartamentos(zonas) {
         const configDepartamentos = [
-            { key: 'Ayacucho', x: 250, y: 250, depId: 2, color: 0x0E88EC, targetZone: zonas.ayacucho },
+            { key: 'Ayacucho', x: 250, y: 270, depId: 2, color: 0x0E88EC, targetZone: zonas.ayacucho },
             { key: 'Junin', x: 950, y: 150, depId: 6, color: 0xFFCA7B, targetZone: zonas.junin },
             { key: 'San Martin', x: 950, y: 400, depId: 9, color: 0xA260F5, targetZone: zonas.sanMartin },
             { key: 'Dupuy', x: 250, y: 400, depId: 5, color: 0xE4F10E, targetZone: zonas.dupuy },
@@ -119,7 +131,7 @@ class Escena extends Phaser.Scene {
             { key: 'Pedernera', x: 1050, y: 500, depId: 7, color: 0xDF9CB8, targetZone: zonas.pedernera },
             { key: 'Chacabuco', x: 1100, y: 150, depId: 4, color: 0xCC448E, targetZone: zonas.chacabuco },
             { key: 'Belgrano', x: 300, y: 550, depId: 3, color: 0x9E8982, targetZone: zonas.belgrano },
-            { key: 'Pringles', x: 300, y: 150, depId: 1, color: 0x1598DB, targetZone: zonas.pringles }
+            { key: 'Pringles', x: 270, y: 150, depId: 1, color: 0x1598DB, targetZone: zonas.pringles }
         ];
 
         configDepartamentos.forEach(config => {
@@ -209,10 +221,12 @@ class Escena extends Phaser.Scene {
     }
 
     mostrarInterfazFinal(time) {
-        const sticker = this.add.sprite(300, 200, 'sticker').setScale(0.8);
-
-        const mensajeFinal = this.add.text(300, 200, `¡FELICITACIONES!\n  COMPLETASTE\n     EL MAPA EN\n           ${time}\n   SEGUNDOS`, {
-            fontFamily: '"ComicSansWeb"',
+        const sticker = this.add.sprite(290, 250, 'sticker2').setScale(0.8);
+          const botonRinicio = this.crearBoton(595, 600, "REINICIAR MAPA", '#1f6c24ff', () => {
+           this.scene.restart()
+        });
+        const mensajeFinal = this.add.text(330, 220, `¡FELICITACIONES!\n  COMPLETASTE\n     EL MAPA EN\n           ${time}\n   SEGUNDOS`, {
+            fontFamily: '"miFuente"',
             fontSize: '25px',
             fill: '#232323ff'
         }).setOrigin(0.5).setDepth(20);
@@ -238,7 +252,7 @@ class Escena extends Phaser.Scene {
             this.departamentoNombre = null;
         }
         this.departamentoNombre = this.add.text(departamento.x + 5, departamento.y, `${departamento.textureKey}`, {
-            fontFamily: '"ComicSansWeb"',
+            fontFamily: '"miFuente"',
             backgroundColor: "#fffffff7",
             fontSize: '15px',
             fill: '#000000ff',
@@ -246,22 +260,22 @@ class Escena extends Phaser.Scene {
         // Crear container
         const dialogo = this.add.container(0, 0);
 
-        const sticker2 = this.add.sprite(990, 400, 'sticker').setScale(0.75);
+        const sticker2 = this.add.sprite(920, 400, 'sticker').setScale(0.75);
         dialogo.add(sticker2);
 
-        const mensajeComarca = this.add.text(990, 380, `Deseas jugar\n       en\n ${departamento.textureKey}?`, {
-            fontFamily: "ComicSansWeb",
+        const mensajeComarca = this.add.text(970, 380, `Deseas jugar\n       en\n ${departamento.textureKey}?`, {
+            fontFamily: "miFuente",
             fontSize: '28px',
             fill: '#232323ff',
         }).setOrigin(0.5).setDepth(20);
         dialogo.add(mensajeComarca);
 
-        const botonSi = this.crearBoton(940, 460, "SI", '#3ed348ff', () => {
+        const botonSi = this.crearBoton(930, 460, "SI", '#3ed348ff', () => {
             window.location.href = `/departamento/${departamento.depId}`;
         });
         dialogo.add(botonSi);
 
-        const botonNo = this.crearBoton(985, 460, "NO", '#2d2d2d', () => {
+        const botonNo = this.crearBoton(975, 460, "NO", '#2d2d2d', () => {
             dialogo.destroy();
             this.dialogoActual = null;
         });
@@ -274,7 +288,7 @@ class Escena extends Phaser.Scene {
 
     crearBoton(x, y, texto, color, callback) {
         const boton = this.add.text(x, y, texto, {
-            fontFamily: '"ComicSansWeb"',
+            fontFamily: '"miFuente"',
             fontSize: '15px',
             color: '#ffffff',
             align: 'center',

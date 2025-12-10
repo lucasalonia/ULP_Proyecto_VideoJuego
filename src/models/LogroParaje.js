@@ -36,5 +36,20 @@ const LogroParaje = {
     );
     return rows.map(r => r.nombre);
   },
+
+ async getParajesCompletadosUltimosTres(usuarioId, deptoId) {
+    const [rows] = await pool.query(
+      `
+  SELECT p.nombre
+       FROM logro l
+       INNER JOIN paraje p ON p.id = l.paraje_id
+       WHERE l.usuario_id = 1
+       ORDER BY fecha_fin DESC 
+LIMIT 3; `,
+      [usuarioId, deptoId]
+    );
+    return rows.map(r => r.nombre);
+  },
+  
 };
 module.exports = LogroParaje;
