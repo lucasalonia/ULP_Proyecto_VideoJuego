@@ -1,36 +1,34 @@
 extends layouts/mainLayout.pug
 
+block head
+  style.
+    @font-face {
+      font-family: "miFuente";
+      src: url("/fonts/GamePocket-Regular.ttf") format("truetype");
+    }
+
+    body {
+      background: #d9fafb;
+      overflow: hidden;
+      margin: 0;
+      padding: 0;
+    }
+
+    canvas {
+      display: block;
+      margin: 0 auto;
+      position: relative;
+      top: 0;
+      transform: none;
+    }
+
+    #phaser-container {
+      position: relative;
+      width: 100%;
+      height: 100%;
+    }
+
 block content
-  head
-    title Mapa del Juego
-    style.
-      @font-face {
-        font-family: "ComicSansWeb";
-        src: url("/fonts/comic.ttf") format("truetype");
-      }
-
-      body {
-        background: black;
-        overflow: hidden;
-        margin: 0;
-        padding: 0;
-      }
-
-      canvas {
-        display: block;
-        margin: 0 auto;
-        position: relative;
-        top: 0;
-        transform: none;
-      }
-
-      #phaser-container {
-        position: relative;
-        width: 100%;
-        height: 100%;
-      }
-
   #phaser-container
   script(src='../../phaser.min.js')
-  
   script(src='/js/scriptMapa.js')
