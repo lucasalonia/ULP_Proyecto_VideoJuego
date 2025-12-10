@@ -1,0 +1,81 @@
+/* 🔥 RESETEAR ESTILOS QUE PISA BOOTSTRAP */
+#toast-container > .toast {
+  background-color: #1e1e1e !important;
+  color: #fff !important;
+  opacity: 1 !important;
+  box-shadow: 0 3px 12px rgba(0,0,0,0.4) !important;
+  border: none !important;
+}
+
+/* Icono y botón de cerrar claros */
+#toast-container .toast-close-button {
+  color: #fff !important;
+  opacity: 1 !important;
+}
+
+/* Éxito */
+#toast-container > .toast-success {
+  background-color: #28a745 !important;
+  color: #fff !important;
+}
+
+/* Error */
+#toast-container > .toast-error {
+  background-color: #dc3545 !important;
+  color: #fff !important;
+}
+
+/* Info */
+#toast-container > .toast-info {
+  background-color: #0dcaf0 !important;
+  color: #fff !important;
+}
+
+/* Warning */
+#toast-container > .toast-warning {
+  background-color: #ffc107 !important;
+  color: #000 !important;
+}
+
+/* Asegurar que no se achique */
+#toast-container > div {
+  padding: 15px !important;
+  font-size: 14px !important;
+  border-radius: 8px !important;
+  backdrop-filter: blur(3px);
+}
+/* Espacio para que el icono no tape el texto */
+#toast-container > .toast {
+  padding-left: 50px !important;   /* espacio para icono */
+  position: relative !important;
+}
+
+/* Reposicionar correctamente el icono ✔️ o ✖️ */
+#toast-container > .toast:before {
+  position: absolute !important;
+  left: 15px !important;
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+}
+
+/* Asegurar que los textos no se corran */
+#toast-container > .toast .toast-message {
+  display: block !important;
+  margin-left: 0 !important;
+}
+/* Centrar el contenedor del toast */
+#toast-container {
+  position: fixed !important;
+  top: 50% !important;
+  left: 50% !important;
+  transform: translate(-50%, -50%) !important;
+  width: auto !important;
+  pointer-events: none; /* Permite clicar detrás si querés */
+  z-index: 99999 !important;
+}
+
+/* Centrar cada toast */
+#toast-container > .toast {
+  margin: 0 auto !important;
+  pointer-events: auto; /* Permite cerrar el toast */
+}

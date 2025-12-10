@@ -7,23 +7,33 @@ const AUDIENCE = process.env.JWT_AUDIENCE;
 
 
 function verifyToken(req, res, next) {
-    const authHeader = req.headers['authorization'];
-    let token = authHeader && authHeader.split(' ')[1]; 
-  
+    
+    const PUBLIC_PATHS = [
+        '/login', 
+        '/register', 
+        '/guest', 
+        '/recover',
+        '/.well-known/appspecific/com.chrome.devtools.json',
+        '/reset-password'
+    ];
+    
+    const isPublicPath = PUBLIC_PATHS.includes(req.path); 
+
+    if (isPublicPath) {
+        return next();
+    }
+    
+    let token = req.headers['authorization'] && req.headers['authorization'].split(' ')[1]; 
+
     if (!token && req.cookies) {
         token = req.cookies.jwt_token;
     }
 
-    if (req.path === '/login' || req.path === '/login' || req.path === '/register' || req.path === '/guest') {
-        
-        return next();
-    }
     if (token == null) {
-        console.log('Acceso denegado. Token no proporcionado.');
+        console.log(`Acceso denegado a ${req.path}. Token no proporcionado.`);
         return res.redirect('/login'); 
     }
 
-    
     const options = {
         issuer: ISSUER,
         audience: AUDIENCE,
@@ -35,18 +45,15 @@ function verifyToken(req, res, next) {
             return res.status(403).json({ message: 'Token inválido o expirado.' }); 
         }
         
-       
         req.user = payload; 
-        next(); // Continuar con la función del controlador
+        next(); 
     });
 }
 
-// Middleware para políticas de Autorización (similar a policy.RequireRole("admin"))
 function authorize(requiredRole) {
     return (req, res, next) => {
-        // req.user fue establecido por verifyToken
         if (req.user && req.user.role === requiredRole) {
-            next(); // Rol permitido
+            next();
         } else {
             res.status(403).json({ message: 'No tiene permisos para este recurso.' }); 
         }

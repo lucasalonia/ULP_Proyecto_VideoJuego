@@ -97,7 +97,6 @@ async function modificarContraseña(req, res) {
       });
     }
     const usuario = await Usuario.findByPk(usuarioId);
-    console.log("aca");
     
     if (!usuario) {
       return res.status(404).json({ message: "Usuario no encontrado." });
@@ -141,7 +140,6 @@ async function modificarContraseña(req, res) {
 }
 async function modificarNickname(req, res) {
   try {
-    console.log("REQ BODY →", req.body);
     const currentPassword = req.body.currentPassword;
     const newNickname = req.body.nickname;
     

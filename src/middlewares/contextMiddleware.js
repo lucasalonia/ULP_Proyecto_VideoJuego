@@ -17,12 +17,6 @@ function globalPugContext(req, res, next) {
     //Buscamos el token creado en AuthApiController
     const token = req.cookies.jwt_token;
 
-    //Definimos locales por defecto para invitados
-    res.locals.user = { 
-        isAuthenticated: false,
-        userName: 'Invitado',
-        fotoUrl: '/img/avatar-default.png' 
-    };
 
     if (token) {
         try {
@@ -30,6 +24,8 @@ function globalPugContext(req, res, next) {
             const decoded = jwt.verify(token, SECRET_KEY);
             
             //Si existe un usuario registrado las variables locales de res las definimos con sus datos
+          
+            
             res.locals.user = {
                 isAuthenticated: true,
                 userId: decoded.sub || 0,
@@ -41,7 +37,12 @@ function globalPugContext(req, res, next) {
         } catch (err) {
             
             res.clearCookie("jwt_token");
+             res.locals.user = null;
         }
+    }else {
+        res.locals.user = null;
+        
+        return next();
     }
     
     next();
