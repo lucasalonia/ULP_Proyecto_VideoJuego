@@ -25,18 +25,6 @@ function resetPassword() {
         const newPassword = form.elements['password'].value;
         const passwordConfirm = form.elements['password_confirm'].value;
 
-        // 1. VALIDACIÓN BÁSICA DE CAMPOS
-        if (!newPassword || !passwordConfirm || !token) {
-            toastr.error("Todos los campos son obligatorios.", "Error de Validación");
-            return;
-        }
-
-        if (newPassword !== passwordConfirm) {
-            toastr.error("Las contraseñas no coinciden.", "Error de Validación");
-            return;
-        }
-        
-
         // 2. REALIZAR EL FETCH A LA RUTA POST
         try {
             const response = await fetch('/api/reset-password', {
@@ -46,7 +34,8 @@ function resetPassword() {
                 },
                 body: JSON.stringify({
                     token: token,
-                    newPassword: newPassword
+                    newPassword: newPassword,
+                    passwordConfirm: passwordConfirm
                 }),
             });
 

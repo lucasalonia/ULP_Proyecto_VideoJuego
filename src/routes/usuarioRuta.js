@@ -11,6 +11,7 @@ router.get("/perfil", (req, res) => res.render("usuario/perfil"));
 //Acciones
 router.post("/perfil/modificar-contrasenia", usuarioController.modificarContraseña);
 router.post("/perfil/modificar-nickname", usuarioController.modificarNickname);
+router.post("/perfil/modificar-foto", usuarioController.modificarFoto);
 // router.post("/cambiar-nickname", usuarioController.cambiarNickname);
 
 

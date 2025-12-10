@@ -2,6 +2,7 @@ const jwt = require("jsonwebtoken");
 const authService = require("../Services/authService");
 const Usuario = require("../models/Usuario");
 const { sendMail } = require("../Services/sendMail");
+const { validarPassword } = require("../validators/passwordValidator");
 
 const { authenticateUser } = authService;
 const { hashPassword } = authService;
@@ -203,7 +204,7 @@ async function recoverPassword(req, res) {
 
 async function resetPassword(req, res) {
   try {
-    const { token, newPassword } = req.body;
+    const { token, newPassword, passwordConfirm } = req.body;
 
     if (newPassword.length < 6) {
       return res
@@ -211,8 +212,11 @@ async function resetPassword(req, res) {
         .json({ message: "La contraseña debe tener al menos 6 caracteres." });
     }
 
-    if (!token || !newPassword) {
+    if (!token || !newPassword || !passwordConfirm) {
       return res.status(400).json({ message: "Datos incompletos." });
+    }
+    if (newPassword !== passwordConfirm) {
+      return res.status(400).json({ message: "Las contraseñas no coinciden." });
     }
     let payload;
     try {
@@ -230,6 +234,11 @@ async function resetPassword(req, res) {
     const user = await Usuario.findByPk(userId);
     if (!user) {
       return res.status(404).json({ message: "Usuario no encontrado." });
+    }
+
+    const errorPassword = await validarPassword(newPassword);
+    if (errorPassword) {
+      return res.status(400).json({ message: errorPassword });
     }
     const passwordHashed = hashPassword(newPassword);
     await Usuario.updatePassword(user.usuario_id, passwordHashed);

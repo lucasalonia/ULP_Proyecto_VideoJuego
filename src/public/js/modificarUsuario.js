@@ -10,8 +10,6 @@ function hideSpinner() {
   document.getElementById("loadingSpinner").classList.add("d-none");
 }
 
-
-
 // =====================================================================
 //   CARGAR TIEMPOS + LOGROS RECIENTES
 // =====================================================================
@@ -38,8 +36,6 @@ document.addEventListener("DOMContentLoaded", async () => {
   modificarNickname();
 });
 
-
-
 // =====================================================================
 //   CARGAR TIEMPOS
 // =====================================================================
@@ -53,7 +49,7 @@ function cargarTiempos(tiempos = []) {
     return;
   }
 
-  tiempos.forEach(t => {
+  tiempos.forEach((t) => {
     const li = document.createElement("li");
     li.className = "paraje-item d-flex  align-items-center";
 
@@ -67,8 +63,6 @@ function cargarTiempos(tiempos = []) {
     cont.appendChild(li);
   });
 }
-
-
 
 // =====================================================================
 //   CARGAR PARAJES LOGRADOS
@@ -85,7 +79,7 @@ function cargarParajes(parajes = []) {
     return;
   }
 
-  parajes.forEach(p => {
+  parajes.forEach((p) => {
     const item = document.createElement("div");
     item.className = "paraje-item";
 
@@ -100,9 +94,6 @@ function cargarParajes(parajes = []) {
     cont.appendChild(item);
   });
 }
-
-
-
 
 function modificarContraseña() {
   // Configuración de Toastr (igual que en tu otro método)
@@ -180,7 +171,7 @@ function modificarNickname() {
   btnGuardar.addEventListener("click", async () => {
     const nuevoNickname = document.getElementById("newNickname").value;
     const actualPasword = document.getElementById("actualPasword").value;
-    
+
     const payload = {
       nickname: nuevoNickname,
       currentPassword: actualPasword,
@@ -216,7 +207,64 @@ function modificarNickname() {
   });
 }
 
+function modificarFoto() {
+  if (typeof toastr !== "undefined") {
+    toastr.options = {
+      positionClass: "toast-top-center",
+      preventDuplicates: true,
+      closeButton: true,
+      timeOut: "4000",
+    };
+  }
+  const opcionesFoto = document.querySelectorAll(".photo-option");
+
+  if (!opcionesFoto.length) return;
+
+  opcionesFoto.forEach((opcion) => {
+    opcion.addEventListener("click", async () => {
+      const nuevaFotoUrl = opcion.getAttribute("data-img-url");
+
+      if (!nuevaFotoUrl) return;
+
+      const payload = { fotoUrl: nuevaFotoUrl };
+
+      showSpinner();
+
+      try {
+        const respuesta = await fetch("/perfil/modificar-foto", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
+        });
+
+        let data = {};
+        try {
+          data = await respuesta.json();
+        } catch (err) {
+          console.error("Error parseando JSON:", err);
+        }
+
+        if (respuesta.ok) {
+          toastr.success("¡Foto actualizada correctamente!", "Éxito");
+          setTimeout(() => location.reload(), 1200);
+        } else {
+          const errorMsg = data.message || "No se pudo cambiar la foto.";
+          toastr.error(errorMsg, "Error");
+        }
+      } catch (error) {
+        toastr.error(
+          "Asegurate que el servidor esté encendido.",
+          "Error de conexión"
+        );
+      } finally {
+        hideSpinner();
+      }
+    });
+  });
+}
+
 document.addEventListener("DOMContentLoaded", function () {
   modificarContraseña();
   modificarNickname();
+  modificarFoto();
 });
