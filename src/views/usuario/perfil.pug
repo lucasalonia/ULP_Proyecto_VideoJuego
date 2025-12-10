@@ -1,156 +1,155 @@
 extends ../layouts/mainLayout.pug
 
-
 block content
- .container.py-3
+  if user
+    .container.py-3
 
-  .text-center.mb-3
-    img.foto-perfil-pixel(src=user.fotoUrl alt="Foto de Perfil")
-    .mt-3
-      button.btn-pixel.btn-pixel-primary(
-        data-bs-toggle="modal"
-        data-bs-target="#modalSelectPhoto"
-      ) Modificar Foto
-
-  hr.my-4
-
-  .row
-
-    // ==== COLUMNA IZQUIERDA - DATOS ====
-    .col-md-6.mb-4
-      .panel-pixel
-        .titulo-pixel  Datos del Usuario
-
-        .dato-item
-          strong Email:
-          span.valor-dato #{user.userMail}
-
-        .dato-item
-          strong Nickname:
-          span.valor-dato #{user.userName}
-          button.btn-pixel.btn-pixel-warning(
+      .text-center.mb-3
+        img.foto-perfil-pixel(src=user.fotoUrl alt="Foto de Perfil")
+        .mt-3
+          button.btn-pixel.btn-pixel-primary(
             data-bs-toggle="modal"
-            data-bs-target="#modalNickname"
-          ) Modificar
+            data-bs-target="#modalSelectPhoto"
+          ) Modificar Foto
 
-        button.btn-pixel.btn-pixel-danger(
-          data-bs-toggle="modal"
-          data-bs-target="#modalPassword"
-        ) Modificar Contraseña
+      hr.my-4
 
+      .row
+        // ==== COLUMNA IZQUIERDA - DATOS ====
+        .col-md-6.mb-4
+          .panel-pixel
+            .titulo-pixel Datos del Usuario
 
-      // Columna Derecha: Logros (Ocupa 6 de 12 columnas en pantallas medianas)
-      .col-md-6.mb-4
-        .card.h-100
-          .card-header
-            h4.mb-0 🏆 Logros
-          .card-body
-            // Tiempos del Mapa
-            .mb-4
-              h5.card-title Tiempos del Mapa
-              p.text-muted (Ej: Mejor tiempo en "Mapa X": 0:35s)
+            .dato-item
+              strong Email:
+              span.valor-dato #{user.userMail}
 
-            // Logros más Recientes
+            .dato-item
+              strong Nickname:
+              span.valor-dato #{user.userName}
+              button.btn-pixel.btn-pixel-warning(
+                data-bs-toggle="modal"
+                data-bs-target="#modalNickname"
+              ) Modificar
+
+            button.btn-pixel.btn-pixel-danger(
+              data-bs-toggle="modal"
+              data-bs-target="#modalPassword"
+            ) Modificar Contraseña
+
+        // ==== COLUMNA DERECHA - LOGROS ====
+        .col-md-6.mb-4
+          .card.h-100
+            .card-header
+              h4.mb-0 🏆 Logros
+
+            .card-body
+              // Tiempos del mapa
+              .mb-4
+                h5.card-title Tiempos del Mapa
+                ul#listaTiempos.list-group.list-group-flush
+
+              // Logros recientes
+              .mb-3
+                h5.card-title Logros más Recientes
+                ul#listaParajes.list-group.list-group-flush
+
+              .text-center.mt-4
+                a.btn.btn-primary(href="/logros") Ver Todos los Logros
+
+    // =====================================================================
+    // MODAL: MODIFICAR CONTRASEÑA
+    // =====================================================================
+    .modal.fade#modalPassword(tabindex="-1" aria-labelledby="modalPasswordLabel" aria-hidden="true")
+      .modal-dialog
+        .modal-content
+          .modal-header
+            h5.modal-title#modalPasswordLabel Modificar Contraseña
+            button.btn-close(type="button", data-bs-dismiss="modal", aria-label="Cerrar")
+
+          .modal-body
             .mb-3
-              h5.card-title Logros más Recientes
-              ul.list-group.list-group-flush
-                li.list-group-item Logro 1:
-                li.list-group-item Logro 2:
-                li.list-group-item Logro 3:
-            
-            // Botón Ver Todos los Logros
-            .text-center.mt-4
-              button.btn.btn-primary(type="button") Ver Todos los Logros
-    // Modal para modificar contraseña
-  .modal.fade#modalPassword(tabindex="-1" aria-labelledby="modalPasswordLabel" aria-hidden="true")
-    .modal-dialog
-      .modal-content
-        .modal-header
-          h5.modal-title#modalPasswordLabel Modificar Contraseña
-          button.btn-close(type="button", data-bs-dismiss="modal", aria-label="Cerrar")
+              label.form-label(for="currentPassword") Contraseña actual
+              input.form-control(type="password", id="currentPassword", placeholder="Ingresá tu contraseña actual")
 
-        .modal-body
-          // Contraseña actual
-          .mb-3
-            label.form-label(for="currentPassword") Contraseña actual
-            input.form-control(type="password", id="currentPassword", placeholder="Ingresá tu contraseña actual")
+            .mb-3
+              label.form-label(for="newPassword") Nueva contraseña
+              input.form-control(type="password", id="newPassword", placeholder="Ingresá tu nueva contraseña")
 
-          // Nueva contraseña
-          .mb-3
-            label.form-label(for="newPassword") Nueva contraseña
-            input.form-control(type="password", id="newPassword", placeholder="Ingresá tu nueva contraseña")
-
-          // Repetir contraseña
-          .mb-3
-            label.form-label(for="confirmPassword") Repetir nueva contraseña
-            input.form-control(type="password", id="confirmPassword", placeholder="Repetí la nueva contraseña")
+            .mb-3
+              label.form-label(for="confirmPassword") Repetir nueva contraseña
+              input.form-control(type="password", id="confirmPassword", placeholder="Repetí la nueva contraseña")
 
           .modal-footer
             button.btn.btn-secondary(type="button", data-bs-dismiss="modal") Cancelar
             button.btn.btn-primary(type="button" id="guardarPassword") Guardar cambios
 
+    // =====================================================================
+    // MODAL: SELECCIONAR FOTO
+    // =====================================================================
+    .modal.fade#modalSelectPhoto(tabindex="-1" aria-hidden="true")
+      .modal-dialog.modal-lg
+        .modal-content
+          .modal-header.bg-primary.text-white
+            h5.modal-title Seleccionar Foto de Perfil
+            button.btn-close(type="button", data-bs-dismiss="modal")
 
-  // Modal para seleccionar foto
-  .modal.fade#modalSelectPhoto(tabindex="-1" aria-hidden="true")
-    .modal-dialog.modal-lg
-      .modal-content
-        .modal-header.bg-primary.text-white
-          h5.modal-title Seleccionar Foto de Perfil
-          button.btn-close(type="button", data-bs-dismiss="modal")
-
-        .modal-body.bg-light
-          .row.g-3
-            each imgIndex in [1,2,3,4]
-              .col-6.col-md-3
-                .photo-option.border.rounded.p-2.bg-white.hover-shadow.position-relative(
-                  style="cursor:pointer"
-                  data-img-url=`/img/profiles/testimage${imgIndex}.png`
-                  data-bs-dismiss="modal"
-                )
-                  img.img-fluid.rounded(
-                    src=`/img/profiles/testimage${imgIndex}.png`
-                    alt=`Foto ${imgIndex}`
-                    style="height:120px; object-fit:contain; width:100%;"
+          .modal-body.bg-light
+            .row.g-3
+              each imgIndex in [1,2,3,4]
+                .col-6.col-md-3
+                  .photo-option.border.rounded.p-2.bg-white.hover-shadow.position-relative(
+                    style="cursor:pointer"
+                    data-img-url=`/img/profiles/testimage${imgIndex}.png`
+                    data-bs-dismiss="modal"
                   )
-                  button.btn.btn-sm.btn-success.w-100.mt-2(type="button") Usar esta
+                    img.img-fluid.rounded(
+                      src=`/img/profiles/testimage${imgIndex}.png`
+                      alt=`Foto ${imgIndex}`
+                      style="height:120px; object-fit:contain; width:100%;"
+                    )
+                    button.btn.btn-sm.btn-success.w-100.mt-2(type="button") Usar esta
 
           .modal-footer.bg-light
             button.btn.btn-secondary(type="button", data-bs-dismiss="modal") Cerrar
 
-  .modal.fade#modalNickname(tabindex="-1" aria-hidden="true")
-    .modal-dialog
-      .modal-content
-        .modal-header
-          h5.modal-title Modificar Nickname
-          button.btn-close(type="button", data-bs-dismiss="modal")
+    // =====================================================================
+    // MODAL: MODIFICAR NICKNAME
+    // =====================================================================
+    .modal.fade#modalNickname(tabindex="-1" aria-hidden="true")
+      .modal-dialog
+        .modal-content
+          .modal-header
+            h5.modal-title Modificar Nickname
+            button.btn-close(type="button", data-bs-dismiss="modal")
 
-        .modal-body
+          .modal-body
+            .mb-3
+              label.form-label(for="actualPasword") Contraseña actual
+              input.form-control(type="password", id="actualPasword", placeholder="Ingresá tu contraseña actual")
 
-          .mb-3
-            label.form-label(for="actualPasword") Contraseña actual (necesaria para confirmar cambios)
-            input.form-control(type="password", id="actualPasword", placeholder="Ingresá tu contraseña actual")
-
-          .mb-3
-            label.form-label(for="newNickname") Nuevo Nickname
-            input.form-control(
-              type="text"
-              id="newNickname"
-              placeholder="Ingresá tu nuevo nickname"
-            )
+            .mb-3
+              label.form-label(for="newNickname") Nuevo Nickname
+              input.form-control(
+                type="text"
+                id="newNickname"
+                placeholder="Ingresá tu nuevo nickname"
+              )
 
           .modal-footer
             button.btn.btn-secondary(type="button", data-bs-dismiss="modal") Cancelar
             button.btn.btn-primary(type="button" id="guardarNickname") Guardar cambios
 
+    // =====================================================================
+    // SPINNER GLOBAL
+    // =====================================================================
+    #loadingSpinner.position-fixed.top-0.start-0.w-100.h-100.d-flex.justify-content-center.align-items-center.bg-dark.bg-opacity-50.d-none(style="z-index: 9999;")
+      .spinner-border.text-light(role="status" style="width: 3rem; height: 3rem;")
+        span.visually-hidden Loading...
 
-  #loadingSpinner.position-fixed.top-0.start-0.w-100.h-100.d-flex.justify-content-center.align-items-center.bg-dark.bg-opacity-50.d-none(style="z-index: 9999;")
-              .spinner-border.text-light(role="status" style="width: 3rem; height: 3rem;")
-                  span.visually-hidden Loading...
-
-    script(src="/js/modificarUsuario.js")
   else
     .container.py-5.text-center
-      h1 No tenes una cuenta personal todavia! 
+      h1 No tenes una cuenta personal todavía!
       p.text-muted No tenés un perfil personal porque estás jugando como invitado.
       p
         | Para guardar tu progreso, desbloquear logros y personalizar tu cuenta,
@@ -160,3 +159,6 @@ block content
       .mt-4
         a.btn.btn-primary(href="/register") Crear Cuenta
         a.btn.btn-secondary.ms-3(href="/") Volver al Inicio
+
+  // Script del perfil (DENTRO del block)
+  script(src="/js/modificarUsuario.js")
