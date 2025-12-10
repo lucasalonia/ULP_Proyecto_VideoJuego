@@ -7,50 +7,60 @@ block content
           --img-fondo:url(/img/bg/${departamento.imagen_fondo});`
   )
 
-    header.barra-superior
-      h1.titulo COMARCAS DE SAN LUIS
-      span.contador-departamentos #{numeroParaje} / #{totalParajes}
-      br
-      span#cronometro.cronometro 00:00.00
+    .juego-layout
 
-    // Casilleros superiores
-    .casilleros
-      each s, i in tokens
-        if s === '|'
-          div.casillero.casillero-espacio
-        else
-          button.casillero(type="button" data-indice=i)
-    // === TOAST DE VICTORIA ===
-    .toast-wrapper
-    div.toast.toast--oculto
-      span.toast-msg
-      .toast-botones
-        if urlSiguiente
-          a.btn-siguiente(href=urlSiguiente) Siguiente
-        if urlVolver
-          a.btn-volver(href=urlVolver) Volver
+      // ==========================
+      //     CARTA IZQUIERDA
+      // ==========================
+      section.carta
+        .carta__interior
+          .fichas
+            each s, idx in silabas
+              button.ficha(type="button" data-silaba=s data-indice=idx)= s
 
-    // Carta y fichas
-    section.carta
-      .carta__interior
-        .fichas
-          each s, idx in silabas
-            button.ficha(type="button" data-silaba=s data-indice=idx)= s
-        .carta__etiqueta= departamento.nombre
+          .carta__etiqueta= departamento.nombre
 
-    
 
-  // JSON hacia JS
+      // ==========================
+      //     PANEL DERECHA
+      // ==========================
+      .juego-panel
+
+        header.barra-superior
+          h1.titulo COMARCAS DE SAN LUIS
+          span.contador-departamentos #{numeroParaje} / #{totalParajes}
+          span#cronometro.cronometro 00:00.00
+
+        // === CONTENEDOR DE CASILLEROS DINÁMICO ===
+        .casilleros-area
+          .casilleros
+            each s, i in tokens
+              if s === '|'
+                div.casillero.casillero-espacio
+                br
+              else
+                button.casillero(type="button" data-indice=i)
+
+        // === TOAST DE VICTORIA ===
+        .toast-wrapper
+          .comarca-toast.comarca-toast--oculto
+            span.comarca-toast-msg
+            .comarca-toast-botones
+              if urlSiguiente
+                a.btn-siguiente(href=urlSiguiente) Siguiente
+              if urlVolver
+                a.btn-volver(href=urlVolver) Volver
+
+
+  // ==== JSON PARA EL JS ====
   script.
     window.JUEGO_DATA = {
-        ordenCorrecto: !{JSON.stringify(ordenCorrecto)},
-        urlSiguiente: "#{urlSiguiente}",
-        urlVolver: "#{urlVolver}",
-        nombreParaje: "#{paraje.nombre}",
-        usuarioId: "#{usuarioId}",
-        parajeId: "#{paraje.id}"
-      };
-
-
+      ordenCorrecto: !{JSON.stringify(ordenCorrecto)},
+      urlSiguiente: "#{urlSiguiente}",
+      urlVolver: "#{urlVolver}",
+      nombreParaje: "#{paraje.nombre}",
+      usuarioId: "#{usuarioId}",
+      parajeId: "#{paraje.id}"
+    };
 
   script(src="/js/departamento.js")

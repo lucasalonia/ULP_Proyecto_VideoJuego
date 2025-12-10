@@ -8,7 +8,7 @@ function colorizeDepto(departamento) {
     colorFondo: departamento.color_fondo || "#4EC9F5",
     colorBorde: departamento.color_borde || "#007bb8",
     imagen_carta: departamento.imagen_carta || "default.png",
-    imagen_fondo: departamento.imagen_fondo || "default-bg.jpg",
+    imagen_fondo: departamento.imagen_fondo || "fondoJuego.png",
   };
 }
 
