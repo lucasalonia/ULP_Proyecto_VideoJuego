@@ -1,35 +1,56 @@
+/* ===== CONTENEDOR PRINCIPAL ===== */
 .home-container {
+  height: calc(100vh - 120px);
+  width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 80px;
-  padding-top: 50px;
+  gap: 100px;
+
+  font-family: "Press Start 2P", monospace;
 }
 
+/* ===== LOGO ===== */
 .logo-container {
-  width: 320px;
+  width: 330px;
 }
 
 .logo {
   width: 100%;
+  image-rendering: pixelated;
 }
 
+/* ===== MENU ===== */
 .menu-container {
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: 20px;
 }
 
+/* ===== BOTONES RETRO PIXEL ART ===== */
 .menu-btn {
-  background: #ececec;
-  border: none;
-  padding: 12px 40px;
-  border-radius: 20px;
+  text-decoration: none;
+  font-family: "Press Start 2P", monospace !important;
+  font-size: 15px;
+  letter-spacing: 1px;
+
+  padding: 14px 45px;
+
+  background: #f2f2f2;
+  border: 4px solid #000;       /* borde externo negro */
+  outline: 4px solid #7f7f7f;    /* borde gris estilo GameBoy */
+  border-radius: 0;              /* GameBoy es cuadrado */
+
+  color: #000;
+
+  box-shadow: 6px 6px 0 #3a3a3a; /* sombra pixel retro */
+
   cursor: pointer;
-  font-size: 18px;
-  transition: 0.2s;
+  transition: transform 0.1s ease-in-out, box-shadow 0.1s ease-in-out;
 }
 
 .menu-btn:hover {
-  background: #d1d1d1;
+  background: #bfbfbf;
+  transform: translate(-3px, -3px);
+  box-shadow: 9px 9px 0 #3a3a3a;
 }

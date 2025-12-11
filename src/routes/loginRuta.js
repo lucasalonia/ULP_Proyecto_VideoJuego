@@ -13,7 +13,7 @@ router.get("/login", (req, res) => {
 router.get("/register", (req, res) => res.render("login/register"));
 router.get("/guest", (req, res) => res.render("login/guest"));
 router.get("/recover", (req, res) => res.render("login/recover"));
-
+router.get('/logout', authController.logoutApi);
 /*Segundo paso en la recuperacion de la contraseña:
 Este endpoint recibe el token como parámetro de ruta el cual es solicitado por el usuario al hacer click en el enlace enviado por mail en recoverPasword.
 El token se almacena en una variable es cual puede procesar la vista. Este se asigna como valor a un input escondido en el formulario de la vista*/

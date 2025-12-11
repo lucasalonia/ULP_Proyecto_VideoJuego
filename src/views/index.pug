@@ -6,8 +6,10 @@ block content
       img.logo(src="/img/EscudoDeSanLuis.png" alt="Escudo de San Luis")
 
     .menu-container
-      a.menu-btn(href="/") NickName
-      a.menu-btn(href="/mapa") Jugar
+      div.menu-btn#nickname-btn
+        | #{user ? user.userName : 'NickName'}
+      a.menu-btn(href="/mapa") Mapa
+      a.menu-btn(href="/departamentos") Departamentos
       a.menu-btn(href="/logros") Logros
       a.menu-btn(href="/perfil") Perfil
       a.menu-btn(href="/logout") Salir

@@ -90,9 +90,7 @@ async function logoutApi(req, res) {
     sameSite: "strict",
   });
 
-  return res.status(200).json({
-    message: "Sesión cerrada con éxito. Token de sesión eliminado.",
-  });
+  return res.redirect('/login');
 }
 
 /**
