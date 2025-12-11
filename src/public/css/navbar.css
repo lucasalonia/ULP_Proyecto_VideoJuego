@@ -1,20 +1,24 @@
 /* ===========================
    RESET
 =========================== */
-html, body {
+html,
+body {
   margin: 0;
   padding: 0;
   width: 100%;
 }
 
 /* ===========================
-   NAVBAR BASE
+   NAVBAR BASE (ESCRITORIO)
 =========================== */
 .navbar {
   background-color: #111 !important;
-  border-bottom: 3px solid #00eaff !important;
   padding: 15px 40px;
   font-family: "Consolas", "Press Start 2P", monospace;
+
+  /* Glow en escritorio */
+  border-bottom: 3px solid rgba(0, 238, 255, 0.8);
+  box-shadow: 0 0 12px rgba(0, 238, 255, 0.6);
 }
 
 /* ===========================
@@ -53,27 +57,26 @@ html, body {
 }
 
 /* ===========================
-   USUARIO DROPDOWN
+   DROPDOWN PERFIL (NORMAL)
 =========================== */
 .dropdown-menu {
-  background-color: #111 !important;
-  border: 1px solid #00eaff !important;
-  box-shadow: 0 0 10px rgba(0, 238, 255, 0.4);
-  border-radius: 0 !important;
-  padding: 5px 0;
-  animation: fadeIn 0.15s ease-in-out;
-}
+  background: rgba(17, 17, 17, 0.92) !important;
+  border: 2px solid rgba(0, 238, 255, 0.9) !important;
+  border-radius: 12px !important;
+  padding: 6px 0;
+  backdrop-filter: blur(4px);
 
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(5px); }
-  to { opacity: 1; transform: translateY(0); }
+  /* Glow normal */
+  box-shadow:
+    0 0 18px rgba(0, 238, 255, 0.7),
+    inset 0 0 12px rgba(0, 238, 255, 0.35);
+
+  overflow: visible !important;
 }
 
 .dropdown-item {
   color: #fff !important;
   padding: 8px 15px;
-  display: flex;
-  align-items: center;
   transition: background-color 0.25s ease, color 0.25s ease;
 }
 
@@ -83,10 +86,11 @@ html, body {
 }
 
 .dropdown-divider {
+  height: 1px;
   background-color: #ff00ff !important;
+  box-shadow: 0 0 8px #ff00ff;
 }
 
-/* Cerrar sesión */
 .dropdown-item.text-danger {
   color: #ff4444 !important;
 }
@@ -97,10 +101,18 @@ html, body {
 }
 
 /* ===========================
-   BOTÓN HAMBURGUESA CELESTE
+   BOTÓN HAMBURGUESA (SUAVE)
 =========================== */
 .navbar-toggler {
-  border: 2px solid #00eaff !important;
+  border-radius: 12px !important;
+  border: 2px solid rgba(0, 238, 255, 0.7) !important;
+
+  /* Glow suave */
+  box-shadow:
+    0 0 12px rgba(0, 238, 255, 0.5),
+    inset 0 0 6px rgba(0, 238, 255, 0.3);
+
+  background: rgba(17, 17, 17, 0.85);
 }
 
 .navbar-toggler-icon {
@@ -109,11 +121,11 @@ html, body {
 }
 
 /* ===========================
-   MENU COLAPSADO (MÓVIL)
+   RESPONSIVE (MÓVIL)
 =========================== */
 @media (max-width: 992px) {
 
-  /* Más padding en móvil */
+  /* Navbar en móvil SIN glow */
   .navbar {
     padding: 15px 20px;
   }
@@ -126,11 +138,55 @@ html, body {
     padding: 10px 0;
   }
 
-  /* Dropdown ocupa todo el ancho */
-  .dropdown-menu {
-    position: static !important;
-    width: 100%;
-    border-left: none;
-    border-right: none;
+  /* ===========================
+     MENÚ COLAPSADO (NORMAL)
+  ============================ */
+  .navbar-collapse {
+    background: rgba(17, 17, 17, 0.96);
+    backdrop-filter: blur(6px);
+    border-radius: 16px;
+
+    /* Glow normal */
+    border: 2px solid rgba(0, 238, 255, 0.9);
+    box-shadow: 0 0 22px rgba(0, 238, 255, 0.8);
+
+    margin: 8px 10px 0 10px;
+    padding: 15px 20px;
+    animation: menuDrop 0.25s ease-in-out;
   }
+
+  @keyframes menuDrop {
+    from { opacity: 0; transform: translateY(-10px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Links gamer */
+  .navbar-nav .nav-link {
+    font-size: 1rem;
+    padding: 8px 0;
+    color: #e0ffff !important;
+  }
+
+  .navbar-nav .nav-link:hover {
+    color: #00eaff !important;
+    text-shadow: 0 0 6px #00eaff;
+    transform: translateX(5px);
+  }
+}
+/* ===========================
+   FORZAR SOMBRA AL DROPDOWN ABIERTO (FIX REAL)
+=========================== */
+.dropdown-menu.show[data-bs-popper] {
+  box-shadow:
+    0 0 18px rgba(0, 238, 255, 0.7),
+    0 0 40px rgba(0, 238, 255, 0.55),
+    inset 0 0 12px rgba(0, 238, 255, 0.35) !important;
+
+  border: 2px solid rgba(0, 238, 255, 0.9) !important;
+  border-radius: 12px !important;
+
+  background: rgba(17, 17, 17, 0.92) !important;
+  backdrop-filter: blur(4px);
+
+  overflow: visible !important;
 }
