@@ -41,11 +41,11 @@ class Escena extends Phaser.Scene {
         const canvaHeight = this.sys.game.config.height;
 
         // Elementos de fondo
-        const hoja = this.add.sprite(canvaWidth / 2-60, canvaHeight / 2 - 60, 'hoja').setDepth(0).setScale(0.65);
-        const fondo = this.add.sprite(canvaWidth / 2, canvaHeight / 2, 'mapaSL').setScale(0.95);
-       const marco = this.add.sprite(canvaWidth / 2 - 10, canvaHeight / 2 - 46, 'marco').setScale(0.87);
+        const hoja = this.add.sprite(canvaWidth / 2-60, canvaHeight / 2-20, 'hoja').setDepth(0).setScale(0.69);
+        const fondo = this.add.sprite(canvaWidth / 2, canvaHeight / 2+30, 'mapaSL').setScale(0.95);
+       const marco = this.add.sprite(canvaWidth / 2 , canvaHeight / 2-1 , 'marco').setScale(1);
 
-        fondo.setScale(0.5).setOrigin(0.5, 0.5);
+        fondo.setScale(0.545).setOrigin(0.5, 0.5);
         //Titulo
         document.fonts.load('20px miFuente').then(() => {
 
@@ -79,7 +79,7 @@ class Escena extends Phaser.Scene {
             depId,
             color,
             targetZone,
-            scale = 0.32
+            scale = 0.35
         } = config;
 
         const departamento = this.add.sprite(x, y, key)
@@ -109,15 +109,15 @@ class Escena extends Phaser.Scene {
 
     crearZonasObjetivo() {
         return {
-            junin: new Phaser.Geom.Rectangle(663, 116, 100, 100),
-            ayacucho: new Phaser.Geom.Rectangle(547, 128, 100, 100),
-            sanMartin: new Phaser.Geom.Rectangle(641, 178, 64, 64),
-            dupuy: new Phaser.Geom.Rectangle(625, 473, 64, 64),
-            pueyrredon: new Phaser.Geom.Rectangle(559, 317, 64, 64),
-            pedernera: new Phaser.Geom.Rectangle(657, 311, 64, 64),
-            chacabuco: new Phaser.Geom.Rectangle(687, 192, 64, 64),
-            belgrano: new Phaser.Geom.Rectangle(550, 197, 64, 64),
-            pringles: new Phaser.Geom.Rectangle(623, 233, 64, 64)
+            junin: new Phaser.Geom.Rectangle(670, 126, 100, 100),
+            ayacucho: new Phaser.Geom.Rectangle(545, 139, 100, 100),
+            sanMartin: new Phaser.Geom.Rectangle(646, 194, 64, 64),
+            dupuy: new Phaser.Geom.Rectangle(627, 516, 64, 64),
+            pueyrredon: new Phaser.Geom.Rectangle(553, 344, 64, 64),
+            pedernera: new Phaser.Geom.Rectangle(661, 338, 64, 64),
+            chacabuco: new Phaser.Geom.Rectangle(695, 207, 64, 64),
+            belgrano: new Phaser.Geom.Rectangle(544, 213, 64, 64),
+            pringles: new Phaser.Geom.Rectangle(625, 254, 64, 64)
         };
     }
 
@@ -222,7 +222,7 @@ class Escena extends Phaser.Scene {
 
     mostrarInterfazFinal(time) {
         const sticker = this.add.sprite(290, 250, 'sticker2').setScale(0.8);
-          const botonRinicio = this.crearBoton(595, 600, "REINICIAR MAPA", '#1f6c24ff', () => {
+          const botonRinicio = this.crearBoton(595, 665, "REINICIAR MAPA", '#1f6c24ff', () => {
            this.scene.restart()
         });
         const mensajeFinal = this.add.text(330, 220, `¡FELICITACIONES!\n  COMPLETASTE\n     EL MAPA EN\n           ${time}\n   SEGUNDOS`, {
@@ -334,59 +334,49 @@ class Escena extends Phaser.Scene {
 }
 
 
-function resize() {
-    const canvas = document.querySelector("canvas");
-    const windowWidth = window.innerWidth;
-    const windowHeight = window.innerHeight;
-
-    const windowRatio = windowWidth / windowHeight;
-    const gameRatio = config.width / config.height;
-    if (windowRatio < gameRatio) {
-        canvas.style.width = '${windowWidth}px';
-        canvas.style.height = '${windowWidth / gameRatio}px';
-    } else {
-        canvas.style.width = '${windowHeight * gameRatio}px';
-        canvas.style.height = '${windowHeight}px';
-    }
-}
 
 const config = {
     type: Phaser.AUTO,
     width: 1280,
     height: 720,
     parent: 'phaser-container',
-    backgroundColor: '#d9fafb',
+    backgroundColor: "#d9fafb",
     scene: Escena,
+    
 
 };
 
 new Phaser.Game(config);
 
-
 function applyCssScale() {
     const canvas = document.querySelector('canvas');
     if (!canvas) return;
 
-    const ww = window.innerWidth;
-    const wh = window.innerHeight;
-    const scale = Math.min(ww / config.width, wh / config.height);
+    const container = document.getElementById('phaser-container');
+    if (!container) return;
 
-    // TAMAÑO DE CANVA BASE
+    const containerWidth = container.clientWidth;
+    const containerHeight = container.clientHeight;
+    
+    // Reduce el tamaño base (90% del contenedor en lugar de 100%)
+    const targetWidth = Math.min(config.width, containerWidth * 0.9);
+    const targetHeight = Math.min(config.height, containerHeight * 0.9);
+    
+    const scaleX = targetWidth / config.width;
+    const scaleY = targetHeight / config.height;
+    const scale = Math.min(scaleX, scaleY) ; // Reduce un 5% adicional
+
+    // Tamaño base del canvas
     canvas.style.width = config.width + 'px';
     canvas.style.height = config.height + 'px';
 
-    // TRANSFORM DE ESCALA
-    canvas.style.transformOrigin = 'top left';
-    canvas.style.transform = `scale(${scale})`;
-
-    // CENTRA
-    const offsetX = (ww - config.width * scale) / 2;
-    const offsetY = (wh - config.height * scale) / 2;
+    // Transformación combinada (centrado + escala)
+    canvas.style.transformOrigin = 'center';
     canvas.style.position = 'absolute';
-    canvas.style.left = `${offsetX}px`;
-    canvas.style.top = `${offsetY}px`;
+    canvas.style.left = '50%';
+    canvas.style.top = '45%';
+    canvas.style.transform = `translate(-50%, -50%) scale(${scale})`;
 }
-
 // CREA CANVA Y AJUSTA ESCALA
 function waitForCanvasThenApply() {
     const check = setInterval(() => {

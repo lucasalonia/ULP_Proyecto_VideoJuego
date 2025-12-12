@@ -6,31 +6,55 @@ block content
     // ---------------------- MEJORES TIEMPOS ----------------------
     .mejores-tiempos
       .titulo Mejores Tiempos
-      each tiempo in tiempos
+
+      if tiempos 
+        each tiempo in tiempos
+          .tiempo-item
+            span= tiempo.tiempoFormateado
+      else
         .tiempo-item
-          span= tiempo.tiempoFormateado
+          span No hay tiempos registrados.
 
     // ---------------------- DEPARTAMENTO Y PARAJES ----------------------
     .departamento
       .titulo Departamentos
-      .titulo #{actual.nombre}  
+
+      if actual
+        .titulo #{actual.nombre}
+      else
+        .titulo Departamento desconocido
+
       .icono-medalla
         img(src="/img/medalla3.png")
 
       .lista-parajes
-        each p in parajes
-          .paraje-item
-            .icono-trofeo
-             
+        if parajes && parajes.length
+          each p in parajes
+            .paraje-item
+              .icono-trofeo
                 img(src="/img/trofeo1.png")
-             
+              .nombre-paraje= p
+        else
+          .paraje-item
+            .nombre-paraje No hay logros.
 
-            .nombre-paraje= p
+      // ---------------------- FLECHA SIGUIENTE ----------------------
+      -
+        // índice del departamento actual
+        let indexActual = 0;
+        if (departamentos && actual) {
+          indexActual = departamentos.findIndex(d => d.departamento_id === actual.departamento_id);
+          if (indexActual < 0) indexActual = 0;
+        }
 
-      // ---------------------- FLECHA ----------------------
-      - const indexActual = departamentos.findIndex(d => d.departamento_id === actual.departamento_id);
-      - const siguiente = departamentos[indexActual + 1] || departamentos[0];
+        // siguiente departamento (con wrap-around)
+        let siguiente = null;
+        if (departamentos && departamentos.length) {
+          siguiente = departamentos[(indexActual + 1) % departamentos.length];
+        }
+
+        const idSiguiente = siguiente ? siguiente.departamento_id : 0;
 
       .flecha
-        a(href=`/logros/${siguiente.departamento_id}`)
+        a(href=`/logros/${idSiguiente}`)
           img(src="/img/flecha.png", alt="Ir")

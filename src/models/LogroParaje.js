@@ -37,16 +37,16 @@ const LogroParaje = {
     return rows.map(r => r.nombre);
   },
 
- async getParajesCompletadosUltimosTres(usuarioId, deptoId) {
+ async getParajesCompletadosUltimosTres(usuarioId) {
     const [rows] = await pool.query(
       `
   SELECT p.nombre
        FROM logro l
        INNER JOIN paraje p ON p.id = l.paraje_id
-       WHERE l.usuario_id = 1
+       WHERE l.usuario_id = ?
        ORDER BY fecha_fin DESC 
 LIMIT 3; `,
-      [usuarioId, deptoId]
+      [usuarioId]
     );
     return rows.map(r => r.nombre);
   },

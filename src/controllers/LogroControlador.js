@@ -20,11 +20,13 @@ module.exports = {
   async obtenerLogros(req, res) {
     const usuarioId = req.user.sub;                 // ID del user desde el JWT
     const departamentoId = req.params.departamentoId; // Puede venir o no por URL
-
+    console.log("Entro a logros", usuarioId);
+    console.log("Entro a logros sin id");
+    
     try {
       // 1) Obtener TODOS los departamentos donde el usuario completó parajes
       const departamentos = await Departamento.getDepartamentosConParajes(usuarioId);
-
+console.log("Departamentos obtenidos:", departamentos.length);
       if (!departamentos || departamentos.length === 0) {
         return res.render("usuario/logros", { tiempos: [], parajes: [], departamentos: [], actual: null });
       }
@@ -43,12 +45,12 @@ module.exports = {
 
       // 3) Obtener tiempos
       const tiempos = await Logro.getTiemposMapa(usuarioId);
-
+console.log("Tiempos obtenidos:", tiempos);
       const tiemposFormateados = tiempos.map(t => ({
         ...t,
         tiempoFormateado: formatearTiempo(t.tiempo)
       }));
-
+console.log("Tiempos formateados:", tiemposFormateados);
       // 4) Obtener los parajes COMPLETADOS del depto actual
       const parajesCompletados = await LogroParaje.getParajesCompletadosPorUsuarioYDeptoNombre(
         usuarioId,
@@ -70,6 +72,7 @@ module.exports = {
   },
   async obtenerUltimosLogros(req, res) {
     const usuarioId = req.user.sub;
+    console.log("Entro a ultimos logros", usuarioId);
     try {
       const tiempo = await Logro.getUltimoTiempoMapa(usuarioId);
 console.log(tiempo);
