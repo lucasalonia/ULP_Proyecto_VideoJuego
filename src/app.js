@@ -23,6 +23,7 @@ const departamentoRuta = require("./routes/departamentoRuta");
 const loginRuta = require("./routes/loginRuta");
 const logroRuta= require("./routes/logroRuta");
 const usuarioRuta= require("./routes/usuarioRuta");
+const nosotrosRuta = require("./routes/nosotrosRuta");
 
 const logroParajeRuta = require("./routes/logroParajeRuta");
 // Middleware
@@ -73,6 +74,8 @@ const pool = require("./config/db");
     console.error("❌ Error al conectar a la base de datos:", err.message);
   }
 })();
+
+app.use("/nosotros", nosotrosRuta);
 // Página 404
 app.use((req, res) => {
   res.status(404).render("notFound");
