@@ -1,10 +1,12 @@
 const Usuario = require("../models/Usuario");
 const authServiceHashing = require("../Services/authService");
 const authApiController = require("./AuthApiController");
+const { validarEmail } = require("../validators/emailValidator");
+const { validarPassword } = require("../validators/passwordValidator");
 
 const { hashPassword } = authServiceHashing;
 
-// 1. Registro de Nuevo Usuario
+
 async function registrarNuevoUsuario(req, res) {
   const { nickname, email, password, selectedProfileURL } = req.body;
 
@@ -18,8 +20,17 @@ async function registrarNuevoUsuario(req, res) {
     });
   }
   try {
-    const emailExistente = await Usuario.findUserByMail(email);
 
+    const errorEmail = await validarEmail(email);
+    if (errorEmail) {
+      return res.status(400).json({ message: errorEmail });
+    }
+    const errorPassword = await validarPassword(password);
+    if (errorPassword) {
+      return res.status(400).json({ message: errorPassword });
+    }
+
+    const emailExistente = await Usuario.findUserByMail(email);
     if (emailExistente != null) {
       return res.status(409).json({
         message: "El correo electrónico ya se encuentra registrado.",
@@ -75,7 +86,6 @@ async function registrarNuevoUsuario(req, res) {
     });
   }
 }
-
 // 2. Modificación de Contraseña
 async function modificarContraseña(req, res) {
   try {
@@ -97,19 +107,30 @@ async function modificarContraseña(req, res) {
       });
     }
     const usuario = await Usuario.findByPk(usuarioId);
-    
+
     if (!usuario) {
       return res.status(404).json({ message: "Usuario no encontrado." });
     }
     const passwordMatch = authServiceHashing.comparePassword(
       currentPassword,
-      usuario.password_hash 
+      usuario.password_hash
     );
 
     if (!passwordMatch) {
       return res
         .status(400)
         .json({ message: "La contraseña actual es incorrecta." });
+    }
+    const errorNist = cumpleNist(newPassword);
+    if (errorNist) {
+      return res.status(400).json({ message: errorNist });
+    }
+
+    const pwnCount = await pwnedPassword(newPassword);
+    if (pwnCount > 0) {
+      return res.status(400).json({
+        message: "La contraseña es muy común. Usá otra.",
+      });
     }
     if (newPassword !== repetirPassword) {
       return res
@@ -142,7 +163,7 @@ async function modificarNickname(req, res) {
   try {
     const currentPassword = req.body.currentPassword;
     const newNickname = req.body.nickname;
-    
+
     if (!currentPassword || !newNickname) {
       return res.status(400).json({
         message: "Faltan datos obligatorios para modificar el nickname.",
@@ -160,7 +181,7 @@ async function modificarNickname(req, res) {
     }
     const passwordMatch = authServiceHashing.comparePassword(
       currentPassword,
-      usuario.password_hash 
+      usuario.password_hash
     );
     if (!passwordMatch) {
       return res
@@ -179,7 +200,6 @@ async function modificarNickname(req, res) {
         .status(500)
         .json({ message: "Error al actualizar el nickname." });
     }
-
   } catch (error) {
     console.error("Error al modificar el nickname:", error);
     return res.status(500).json({
@@ -189,8 +209,51 @@ async function modificarNickname(req, res) {
   }
 }
 
+async function modificarFoto(req, res) {
+  try {
+    const newProfileURL = req.body.fotoUrl;
+    if (!newProfileURL) {
+      return res.status(400).json({
+        message: "Faltan datos obligatorios para modificar la foto de perfil.",
+      });
+    }
+    const usuarioId = res.locals.user.userId;
+    if (usuarioId == 0) {
+      return res.status(401).json({
+        message: "Usuario no autenticado.",
+      });
+    }
+    const usuario = await Usuario.findByPk(usuarioId);
+    if (!usuario) {
+      return res.status(404).json({ message: "Usuario no encontrado." });
+    }
+    const resultado = await Usuario.updateProfilePicture(
+      usuarioId,
+      newProfileURL
+    );
+    if (resultado) {
+      const updatedUser = await Usuario.findByPk(usuarioId);
+      authApiController.setJWTCookie(res, updatedUser);
+      return res
+        .status(200)
+        .json({ message: "Foto de perfil actualizada con éxito." });
+    } else {
+      return res
+        .status(500)
+        .json({ message: "Error al actualizar la foto de perfil." });
+    }
+  } catch (error) {
+    console.error("Error al modificar la foto de perfil:", error);
+    return res.status(500).json({
+      message: "Error interno del servidor al modificar la foto de perfil.",
+      details: error.message,
+    });
+  }
+}
+
 module.exports = {
   registrarNuevoUsuario,
   modificarContraseña,
   modificarNickname,
+  modificarFoto,
 };
