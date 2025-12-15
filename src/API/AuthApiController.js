@@ -53,6 +53,11 @@ function setJWTCookie(res, usuario) {
  * Maneja la solicitud POST /api/login y genera el JWT.
  */
 async function loginApi(req, res) {
+
+   // Test pantalla de carga spinner
+  // await new Promise(resolve => setTimeout(resolve, 8000));
+
+  
   const { mail, password } = req.body;
 
   if (!mail || !password) {
@@ -274,6 +279,11 @@ async function verifyTokenPromise(req) {
 }
 
 async function guestLogin(req, res) {
+
+
+  // Test pantalla de carga spinner
+  // await new Promise(resolve => setTimeout(resolve, 2000));
+
   const { nickname } = req.body;
 
   if (!nickname || nickname.trim() === "") {

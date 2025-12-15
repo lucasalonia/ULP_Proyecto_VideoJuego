@@ -10,6 +10,7 @@ html
       section.auth-box
         div.presentacion
           img.presentacion-logo(src="/img/logos/ulp_logo.png" alt="Logo ULP")
+          img.presentacion-logo-ulp(src="/img/logos/ulp-game-logo.svg", alt="Logo ULP Games")
           h1.presentacion-titulo COMARCAS DE SAN LUIS
           p.presetacion-subtitulo Juego educativo del area de Pensamiento Lógico
         h1.auth-title Iniciar sesión
@@ -22,9 +23,9 @@ html
           a(href="/register") Crear cuenta
           a(href="/guest") Jugar como invitado
 
-    #loadingSpinner.position-fixed.top-0.start-0.w-100.h-100.d-flex.justify-content-center.align-items-center.bg-dark.bg-opacity-50.d-none(style="z-index: 9999;")
-            .spinner-border.text-light(role="status" style="width: 3rem; height: 3rem;")
-                span.visually-hidden Loading...
+    #loadingSpinnerLog.position-fixed.top-0.start-0.w-100.h-100.d-flex.justify-content-center.align-items-center.bg-dark.bg-opacity-50.d-none(style="z-index: 9999;")
+      .spinner-border.text-secondary(role="status" style="width: 3rem; height: 3rem;")
+          span.visually-hidden Cargando...
     script(src='/js/login.js')
     script(src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js")
     script(src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js")

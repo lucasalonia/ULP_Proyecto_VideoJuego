@@ -19,7 +19,7 @@
 :root {
   --color-primary: #2766be; /* Azul principal */
   --color-secondary: #205bac; /* Azul oscuro (base del fondo) */
-  --color-tertiary: #205aaca8;
+   --color-tertiary: #1b487e8e;
   --color-title: #b9c3d1;
   --color-text-dark: #333333;
   --color-text-light: #f8f9fa;
@@ -66,15 +66,23 @@ body.body {
 }
 .presentacion-logo {
   width: 120px;
-  margin-top: 20px;
+  margin-top: 10px;
+}
+
+.presentacion-logo-ulp {
+  width: 60px;
+  margin-top: 10px;
+  border-radius: 100%;
+  margin-left: 170px;
 }
 .presentacion-titulo {
   font-family: "Roboto", sans-serif;
   text-align: center;
   color: var(--color-title);
   font-size: 1.5rem;
-  margin-top: 40px;
+  margin-top: 25px;
   margin-bottom: 0px;
+
 }
 .presetacion-subtitulo {
   font-family: "Roboto", sans-serif;
@@ -82,6 +90,7 @@ body.body {
   color: var(--color-title);
   font-size: 1rem;
   margin: 0;
+
 }
 /* Contenido del header (Logo, Título de la app, etc.) */
 .auth-box-header-content {
@@ -119,6 +128,25 @@ body.body {
   /* En la imagen de referencia dice "Login", ajustamos el margen */
   padding-top: 10px;
 }
+#loadingSpinnerLog {
+  background-image: url("/img/fondos/fondo-ULP-games.png");
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-color: transparent !important; 
+  opacity: 0; 
+  transition: opacity 0.5s ease; 
+}
+
+
+.fade-in {
+  opacity: 1 !important; 
+}
+
+#loadingSpinnerLog.bg-opacity-50 {
+    background-color: rgba(0, 0, 0, 0.5) !important;
+}
+
 
 /* --- ESTILOS DEL FORMULARIO --- */
 .auth-form {
