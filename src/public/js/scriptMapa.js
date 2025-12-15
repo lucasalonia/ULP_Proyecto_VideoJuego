@@ -17,7 +17,7 @@ class Escena extends Phaser.Scene {
         this.load.image('Belgrano', '/img/mapa/belgranoMapa.png');
         this.load.image('Pringles', '/img/mapa/pringlesMapa.png');
         this.load.image('hoja', '/img/mapa/pixelHoja.png');
-        this.load.image('marco', '/img/mapa/marcoFi.png');
+        this.load.image('marco', '/img/mapa/frame.png');
         this.load.image('sticker', '/img/mapa/notaPixel.png');
         this.load.image('sticker2', '/img/mapa/notaPixel2.png');
         this.load.audio('ok', './audio/ok2.wav');
@@ -56,7 +56,7 @@ class Escena extends Phaser.Scene {
     });
 
 });
-
+    
         
         // Texto del reloj
         this.textoReloj = this.add.text(canvaWidth / 2 - 100, 30, "Tiempo: 0:00", {
@@ -225,9 +225,9 @@ class Escena extends Phaser.Scene {
           const botonRinicio = this.crearBoton(595, 665, "REINICIAR MAPA", '#1f6c24ff', () => {
            this.scene.restart()
         });
-        const mensajeFinal = this.add.text(330, 220, `¡FELICITACIONES!\n  COMPLETASTE\n     EL MAPA EN\n           ${time}\n   SEGUNDOS`, {
+        const mensajeFinal = this.add.text(330, 225, `¡FELICITACIONES!\n  Completaste\n     El mapa en\n           ${time}\n      segundos`, {
             fontFamily: '"miFuente"',
-            fontSize: '25px',
+            fontSize: '30px',
             fill: '#232323ff'
         }).setOrigin(0.5).setDepth(20);
 
@@ -253,8 +253,8 @@ class Escena extends Phaser.Scene {
         }
         this.departamentoNombre = this.add.text(departamento.x + 5, departamento.y, `${departamento.textureKey}`, {
             fontFamily: '"miFuente"',
-            backgroundColor: "#fffffff7",
-            fontSize: '15px',
+            backgroundColor: "#B9EAEA",
+            fontSize: '19px',
             fill: '#000000ff',
         }).setOrigin(0.5).setDepth(20);
         // Crear container
@@ -263,19 +263,19 @@ class Escena extends Phaser.Scene {
         const sticker2 = this.add.sprite(920, 400, 'sticker').setScale(0.75);
         dialogo.add(sticker2);
 
-        const mensajeComarca = this.add.text(970, 380, `Deseas jugar\n       en\n ${departamento.textureKey}?`, {
+        const mensajeComarca = this.add.text(970, 380, `¿Deseas jugar\n       en\n ${departamento.textureKey}?`, {
             fontFamily: "miFuente",
             fontSize: '28px',
             fill: '#232323ff',
         }).setOrigin(0.5).setDepth(20);
         dialogo.add(mensajeComarca);
 
-        const botonSi = this.crearBoton(930, 460, "SI", '#3ed348ff', () => {
+        const botonSi = this.crearBoton(910, 460, "SI", '#3ed348ff', () => {
             window.location.href = `/departamento/${departamento.depId}`;
         });
         dialogo.add(botonSi);
 
-        const botonNo = this.crearBoton(975, 460, "NO", '#2d2d2d', () => {
+        const botonNo = this.crearBoton(955, 460, "NO", '#2d2d2d', () => {
             dialogo.destroy();
             this.dialogoActual = null;
         });
@@ -340,7 +340,7 @@ const config = {
     width: 1280,
     height: 720,
     parent: 'phaser-container',
-    backgroundColor: "#d9fafb",
+    backgroundColor: "#B9EAEA",
     scene: Escena,
     
 

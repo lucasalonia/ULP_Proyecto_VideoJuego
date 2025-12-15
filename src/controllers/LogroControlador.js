@@ -1,6 +1,7 @@
 const Logro = require("../models/Logro");
 const Departamento = require("../models/Departamento");
 const LogroParaje = require("../models/LogroParaje");
+const LogroParajeController = require("./LogroParajeController");
 
 module.exports = {
 
@@ -17,59 +18,88 @@ module.exports = {
     }
   },
 
-  async obtenerLogros(req, res) {
-    const usuarioId = req.user.sub;                 // ID del user desde el JWT
-    const departamentoId = req.params.departamentoId; // Puede venir o no por URL
-    console.log("Entro a logros", usuarioId);
-    console.log("Entro a logros sin id");
-    
-    try {
-      // 1) Obtener TODOS los departamentos donde el usuario completó parajes
-      const departamentos = await Departamento.getDepartamentosConParajes(usuarioId);
-console.log("Departamentos obtenidos:", departamentos.length);
-      if (!departamentos || departamentos.length === 0) {
-        return res.render("usuario/logros", { tiempos: [], parajes: [], departamentos: [], actual: null });
-      }
+async obtenerLogros(req, res) {
+  const usuarioId = req.user.sub;
+  const departamentoId = req.params.departamentoId;
 
-      // 2) Determinar cuál mostrar
-      let actual;
+  let insigniaCompletada = false;
 
-      if (departamentoId) {
-        actual = departamentos.find(d => d.departamento_id == departamentoId);
-      }
+  try {
 
-      // Si no vino ninguno por URL, usar el primero
-      if (!actual) {
-        actual = departamentos[0];
-      }
+    // ===================== OBTENER DEPARTAMENTOS CON PARAJES COMPLETADOS =====================
+    const departamentos = await Departamento.getDepartamentosConParajes(usuarioId);
 
-      // 3) Obtener tiempos
-      const tiempos = await Logro.getTiemposMapa(usuarioId);
-console.log("Tiempos obtenidos:", tiempos);
-      const tiemposFormateados = tiempos.map(t => ({
-        ...t,
-        tiempoFormateado: formatearTiempo(t.tiempo)
-      }));
-console.log("Tiempos formateados:", tiemposFormateados);
-      // 4) Obtener los parajes COMPLETADOS del depto actual
-      const parajesCompletados = await LogroParaje.getParajesCompletadosPorUsuarioYDeptoNombre(
+    if (!departamentos || departamentos.length === 0) {
+      return res.render("usuario/logros", {
+        tiempos: [],
+        parajes: [],
+        departamentos: [],
+        actual: null,
+        insigniaCompletada: false
+      });
+    }
+
+    // ===================== DETERMINAR DEPARTAMENTO ACTUAL =====================
+    let actual = null;
+
+    if (departamentoId) {
+      actual = departamentos.find(d => d.departamento_id == departamentoId);
+    }
+
+    // SI NO VIENE POR URL, USAR EL PRIMERO
+    if (!actual) {
+      actual = departamentos[0];
+    }
+
+    // ===================== OBTENER PARAJES DEL DEPARTAMENTO ACTUAL =====================
+    const parajes = await Departamento.getParajesByDepto(actual.departamento_id);
+
+    // ===================== OBTENER IDS DE PARAJES COMPLETADOS POR EL USUARIO =====================
+    const completadosIds = await LogroParaje.getParajesCompletadosPorUsuarioYDepto(
+      usuarioId,
+      actual.departamento_id
+    );
+
+    const completadosSet = new Set(completadosIds);
+
+    // ===================== BUSCAR SI HAY ALGUN PARAJE NO COMPLETADO =====================
+    const parajeNoCompletado = parajes.find(p => !completadosSet.has(p.id));
+
+    // ===================== SI NO HAY PARAJES PENDIENTES, EL DEPARTAMENTO ESTA COMPLETADO =====================
+    if (!parajeNoCompletado && parajes.length > 0) {
+      insigniaCompletada = true;
+    }
+
+    // ===================== OBTENER TIEMPOS =====================
+    const tiempos = await Logro.getTiemposMapa(usuarioId);
+
+    const tiemposFormateados = tiempos.map(t => ({
+      ...t,
+      tiempoFormateado: formatearTiempo(t.tiempo)
+    }));
+
+    // ===================== OBTENER PARAJES COMPLETADOS PARA MOSTRAR =====================
+    const parajesCompletados =
+      await LogroParaje.getParajesCompletadosPorUsuarioYDeptoNombre(
         usuarioId,
         actual.departamento_id
       );
 
-      // 5) Render
-      res.render("usuario/logros", {
-        tiempos: tiemposFormateados,
-        parajes: parajesCompletados,
-        departamentos,
-        actual
-      });
+    // ===================== RENDER =====================
+    res.render("usuario/logros", {
+      tiempos: tiemposFormateados,
+      parajes: parajesCompletados,
+      departamentos,
+      actual,
+      insigniaCompletada
+    });
 
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({ ok: false, error: "Error al obtener logros" });
-    }
-  },
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ ok: false, error: "Error al obtener logros" });
+  }
+},
+
   async obtenerUltimosLogros(req, res) {
     const usuarioId = req.user.sub;
     console.log("Entro a ultimos logros", usuarioId);
