@@ -14,7 +14,7 @@ const blacklist = [
 async function validarPassword(password) {
   if (!password) return "Debes ingresar una contraseña.";
 
-  if (password.length < 8) {
+  if (password.length < 6) {
     return "La contraseña debe tener al menos 8 caracteres.";
   }
 
