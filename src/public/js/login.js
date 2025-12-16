@@ -1,9 +1,25 @@
+const TRANSITION_DURATION = 500; 
+const spinner = document.getElementById("loadingSpinnerLog");
+
 function showSpinner() {
-    document.getElementById("loadingSpinner").classList.remove("d-none");
+  
+    spinner.classList.remove("d-none");
+    
+    
+    setTimeout(() => {
+       
+        spinner.classList.add("fade-in");
+    }, 10);
 }
 
 function hideSpinner() {
-    document.getElementById("loadingSpinner").classList.add("d-none");
+   
+    spinner.classList.remove("fade-in");
+    
+    
+    setTimeout(() => {
+        spinner.classList.add("d-none");
+    }, TRANSITION_DURATION);
 }
 function login(){
     if (typeof toastr !== 'undefined') {
@@ -15,7 +31,7 @@ function login(){
     }
 
     const loginForm = document.getElementById('loginForm');
-
+    
     if (loginForm) {
         loginForm.addEventListener('submit', async (e) => {
             e.preventDefault(); 

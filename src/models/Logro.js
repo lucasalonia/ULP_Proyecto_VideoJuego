@@ -49,8 +49,10 @@ const Logro = {
                 LIMIT 1
             `;
 
-    const [tiempos] = await pool.query(sql, [id]);
-    return tiempos;
-  },
-};
+        const [tiempos] = await pool.query(sql, [id]);
+        return tiempos;
+    }
+    
+        
+}
 module.exports = Logro;

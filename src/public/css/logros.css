@@ -1,328 +1,260 @@
-
-@font-face {
- font-family: "MiFuente";
- src: url("/fonts/GamePocket-Regular.ttf") format("truetype");
+/*fuente*/
+/* @font-face {
+  font-family: "MiFuente";
+  src: url("/fonts/GamePocket-Regular.ttf") format("truetype");
   font-weight: normal;
-}
-body {
-  background: #3FA66A;
-  
+} */
+
+/*contenedor general*/
+.logros-page {
+  background-image:url("/img/degradeNaranja.PNG"); ;
+  min-height: 100vh;
+  padding-top: 40px;
 }
 
 .contenedor-principal {
   display: flex;
   justify-content: center;
   align-items: flex-start;
-  gap: 40px;
-  margin-top: 40px;
 }
 
-/* ----------- Columna 1 ----------- */
-
+/*columna tiempos*/
 .mejores-tiempos {
-  background: #C9F3F9;
-  border: 3px solid #333;
+  
+  background: #96e0c9;
+  border: 5px solid #3c3c3c;
   padding: 20px;
-  width: 300px;
+ /* width: 300px;*/
+  box-shadow: 6px 5px 0px #3c3c3c, 5px 6px 0px #3c3c3c;
 }
-
-.titulo {
-  background: #F7F4A3;
-  font-family: "MiFuente";
-  font-weight: normal !important;
-  padding: 10px;
-  font-size: 30px;
-  text-align: center;
-  margin-bottom: 20px;
-  border: 2px solid #333;
-  width: 100%;
-   box-shadow:
-  
-    5px 4px 0px #3c3c3c,  /* sombra abajo */
-    4px 5px 0px #3c3c3c;  /* sombra derecha */
-}
-.nombre-paraje{
-  width: 75%;
-  background: #FBEAC7;
-  font-family: "MiFuente";
-  margin: 10px 2px;
-  padding: 5px;
-  font-size: 20px;
-  border: 3px solid #c6ab51;
-  text-align: center;
-   box-shadow:
-  
-    5px 4px 0px #3c3c3c,  /* sombra abajo */
-    4px 5px 0px #3c3c3c;  /* sombra derecha */
-}
-.item-logro,
+.icono-reloj img{ width: 45px;
+   float: right; 
+   margin-left: 15px; 
+   margin-right: 10px; }
 .tiempo-item {
-  width: 250px;
   background: #FBEAC7;
-  font-family: "MiFuente";
-  margin: 10px 2px;
-  padding: 5px;
-  font-size: 22px;
-  border: 3px solid #c6ab51;
+  font-family: "Press Start 2P", monospace;
+  font-size: 15px;
   text-align: center;
-   box-shadow:
-  
-    5px 4px 0px #3c3c3c,  /* sombra abajo */
-    4px 5px 0px #3c3c3c;  /* sombra derecha */
-    width: 100%;
+  padding: 4px;
+  margin: 1px 2px;
+  border: 3px solid #ad9b46;
+  box-shadow: 5px 4px 0px #ad9b46, 4px 5px 0px #ad9b46;
 }
 
 .tiempo-item.resaltado {
   background: #F8B07D;
 }
 
-/* ----------- Columna 2 ----------- */
+/*bloques de logros*/
+.logro-paraje,
+.logro-tiempo {
+  
+  background: #8bc4af;
+ font-family: "Press Start 2P", monospace;
+  font-size: 12px;
+  text-align: center;
+  display: inline-block;
+  padding: 8px 15px 20px 10px;
+  margin: 0 10px 4px 10px;
+  border: 4px solid #3c3c3c;
+  box-shadow: 5px 4px 0px #3c3c3c, 4px 5px 0px #3c3c3c;
+  white-space: nowrap;
+}
+.logro-paraje h3,
+.logro-tiempo h3 {
+ font-family: "Press Start 2P", monospace;
+  font-size: 20px;
+  text-align: center;
+  color: #3c3c3c;
+  margin-top: 1px;
+  margin-bottom: 1px;
+}
+/*departamento*/
 .departamento {
-  background: #C9F3F9;
-  border: 3px solid #333;
+  background: #f5f4c4 ;
+  border: 4px solid #3c3c3c;
   padding: 20px;
-  width: 800px;
+  width: 1000px;
+  position: relative;
+  box-shadow: 5px 4px 0px #3c3c3c, 4px 5px 0px #3c3c3c;
 }
 
-.icono-medalla img {
-  width: 70px;
-  float: right;
-  margin-top: -70px;
+.titulo {
+  background: #FEAD85;
+   font-family: "Press Start 2P", monospace;
+  font-size: 30px;
+  text-align: center;
+  padding: 5px 10px 1px 20px;
+  margin-bottom: 20px;
+  color: #3c3c3c;
+  border: 5px solid #3c3c3c;
+  box-shadow: 5px 4px 0px #3c3c3c, 4px 5px 0px #3c3c3c;
 }
-.icono-reloj img{
-   width: 45px;
-  float: right;
-  
-  margin-left: 15px;
-  margin-right: 22px;
+
+/*insignia*/
+.icono-insignia {
+  position: relative;
+  height: 150px;
+  margin-bottom: 10px;
 }
+
+.icono-insignia img {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 170px;
+}
+
+/*departamento completado*/
+.logro-completado {
+  position: absolute;
+  left: calc(50% + 90px);
+  top: 45%;
+  transform: translateY(-50%);
+  padding: 5px;
+  font-family: "Press Start 2P", monospace;
+  font-size: 30px;
+  text-align: center;
+  color: #1f3c21;
+  background: #79d88f;
+  border: 4px solid #3c3c3c;
+  box-shadow: 5px 4px 0px #3c3c3c, 4px 5px 0px #3c3c3c;
+}
+
+.logro-completado span {
+  display: block;
+  line-height: 1.1;
+}
+
+/*lista de parajes*/
 .lista-parajes {
   display: grid;
-  grid-template-columns: repeat(2, 1fr); /* 2 columnas */
-  gap: 10px; /* espacio entre columnas y filas */
+  grid-template-columns: repeat(4, 1fr);
+  gap: 5px;
 }
 
 .paraje-item {
   display: flex;
   align-items: center;
-  margin-bottom: 5px;
 }
 
 .icono-trofeo img {
-  width: 70px;
-  margin-right: 15px;
+  width: 50px;
 }
 
-/* .nombre-paraje {
-  background: #F7F4A3;
-  font-family: "MiFuente";
-  border: 2px solid #333;
-  padding: 15px 20px;
-  font-size: 22px;
-  margin-left: 10px;
-  width: 200px;
-} */
+.nombre-paraje {
+  width: 75%;
+  background: #FFF9C4;
+   font-family: "Press Start 2P", monospace;
+  font-size: 11px;
+  text-align: center;
+  padding: 5px;
+  border: 3px solid #ad9b46;
+  box-shadow: 5px 4px 0px #ad9b46, 4px 5px 0px #ad9b46;
+}
+
+/*flecha*/
+.flecha {
+  position: absolute;
+  right: 33px;
+  top: 52px;
+  transform: translateY(-50%);
+}
 
 .flecha img {
-  width: 150px;
-  margin-top: 20px;
+  width: 58px;
   display: block;
-  margin-left: auto;
-}
-.datos-usuario {
-  background: #C9F3F9;
-  border: 3px solid #333;
-  padding: 20px;
-  width: 50%;
-  font-family: "MiFuente";
-}
-.foto-perfil {
-  width: 150px;
-  height: 150px;
-  border-radius: 50%;
-  object-fit: cover;
-  border: 3px solid #333;
-  background: #F7F4A3;
-  display: block;
-  margin: 0 auto; /* centrado */
-}
-.datos-usuario .titulo {
-  background: #F7F4A3;
-  border: 2px solid #333;
-  padding: 10px;
-  font-size: 25px;
-  text-align: center;
-  font-family: "MiFuente";
-  margin-bottom: 20px;
 }
 
-/* Cada fila (Email, Nickname) */
-
-
-/* El valor (email y nickname) */
-.valor-dato {
-  color: #333;
-  font-family: "MiFuente";
-  font-weight: normal;
-}
-
-/* Botón de modificar */
-.text
-.btn-modificar,
-.btn-modificar-password {
-  background: #78e174;
-  border: 2px solid #333;
-  font-size: 15px;
-  font-family: "MiFuente";
-  padding: 8px 14px;
-  cursor: pointer;
-  margin-left: 10px;
-  
-}
-.btn-pixel-large {
-  font-size: 24px;            /* Más grande y consistente */
-  padding: 12px 18px;
-  display: inline-block;
-  text-align: center;
-  min-width: 220px;           /* Para que no se vea chiquito */
-  box-shadow:
-    5px 4px 0px #3c3c3c,
-    4px 5px 0px #3c3c3c;
-}
-.btn-modificar:hover,
-.btn-modificar-password:hover {
-  background: #F7F4A3;
-}
-
-/*---------- estilo pixelart ----------- */
-
-/* ============= PANEL / TARJETA PIXEL ============= */
+/*panel pixel*/
 .panel-pixel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
   background: #C9F3F9;
   border: 4px solid #77d0d5;
   padding: 20px;
   image-rendering: pixelated;
-  
-  box-shadow:
-  
-    5px 4px 0px #3c3c3c,  /* sombra abajo */
-    4px 5px 0px #3c3c3c;  /* sombra derecha */
+  box-shadow: 5px 4px 0px #3c3c3c, 4px 5px 0px #3c3c3c;
+}
 
-}
-.logros{
-   font-family: "MiFuente";
-  font-size: 25px;
-   text-align: center;
-   margin: 5px;
-}
-/* Título dentro del panel */
 .titulo-pixel {
   background: #F7F4A3;
   border: 3px solid #b4ab5c;
-  border-style: outset;
   padding: 7px;
-  font-family: "MiFuente";
+  font-family: "Press Start 2P", monospace;
   font-size: 20px;
   text-align: center;
   margin-bottom: 15px;
-  box-shadow:
-  
-    5px 4px 0px #3c3c3c,  /* sombra abajo */
-    4px 5px 0px #3c3c3c;  /* sombra derecha */
-
+  box-shadow: 5px 4px 0px #3c3c3c, 4px 5px 0px #3c3c3c;
 }
 
-/* ============= ITEMS DE DATOS ============= */
+/*datos usuario*/
 .dato-item {
   display: flex;
   align-items: center;
-  font-family: "MiFuente";
-  font-size: 22px;
-  margin-bottom: 12px;
-   background: #FBEAC7;
+  gap: 10px;
+  background: #FBEAC7;
   border: 3px solid #c6ab51;
   padding: 12px 15px;
+  font-family: "Press Start 2P", monospace;
   font-size: 20px;
   margin-bottom: 15px;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  box-shadow:
-  
-    5px 4px 0px #3c3c3c,  /* sombra abajo */
-    4px 5px 0px #3c3c3c;  /* sombra derecha */
+  box-shadow: 5px 4px 0px #3c3c3c, 4px 5px 0px #3c3c3c;
 }
 
-
-/* ============= BOTONES PIXEL ============= */
-.btn-pixel {
-  font-family: "MiFuente";
-  font-size: 22px;
-  padding: 8px 3px 3px 3px;
-  color: #fff;
-  border: none;
-  cursor: pointer;
-  margin-top: 2px;
-
- box-shadow:
-  
-    5px 4px 0px #3c3c3c,  /* sombra abajo */
-    4px 5px 0px #3c3c3c;  /* sombra derecha */
+.valor-dato {
+  font-family: "Press Start 2P", monospace;
 }
 
-
-.btn-pixel-warning { background: #ff7a73;  display: block;
-  margin: 0px 10px 0 auto;
-    width: 25%;
- }   /* rosa */
-.btn-pixel-danger  { background: #FF3B3B;
- display: block;
-  margin: 15px auto 0 auto;  }   /* rojo */
-.btn-pixel-primary { background: #47adc9; }   /* azul claro */
-
-.btn-pixel:active {
-  transform: translateY(4px);
-  box-shadow: none;
-}
-/* ============= FOTO PIXEL ============= */
+/*foto perfil*/
 .foto-perfil-pixel {
   width: 150px;
   height: 150px;
   image-rendering: pixelated;
   border: 4px solid #000;
-  box-shadow:
-  
-    5px 4px 0px #3c3c3c,  /* sombra abajo */
-    4px 5px 0px #3c3c3c;  /* sombra derecha */
+  box-shadow: 5px 4px 0px #3c3c3c, 4px 5px 0px #3c3c3c;
 }
 
-/* Ajuste responsive */
-@media (max-width: 768px) {
-  .titulo-pixel { font-size: 24px; }
-  .valor-dato { font-size: 18px; }
-  .btn-pixel { font-size: 18px; }
+/*botones pixel*/
+.btn-pixel {
+  font-family: "Press Start 2P", monospace;
+  font-size: 18px;
+  padding: 8px 3px 3px;
+  color: #fff;
+  cursor: pointer;
+  border: none;
+  box-shadow: 5px 4px 0px #3c3c3c, 4px 5px 0px #3c3c3c;
+  text-decoration: none;
 }
 
+.btn-pixel-primary { background: #47adc9;
+padding: 10px 10px 8px; }
+.btn-pixel-warning { background: #ff7a73; }
+.btn-pixel-danger  { background: #FF3B3B; }
+
+.btn-pixel:active {
+  transform: translateY(4px);
+  box-shadow: none;
+}
+
+/*responsive*/
 @media (max-width: 900px) {
   .contenedor-principal {
     flex-direction: column;
     align-items: center;
-    gap: 20px;
-    width: 100%;
   }
 
   .mejores-tiempos,
-  .departamento,
-  .datos-usuario {
-    width: 90%;        /* Que ocupen casi todo el ancho */
-    max-width: 500px;  /* Para que no se estiren demasiado */
+  .departamento {
+    width: 90%;
+    max-width: 500px;
   }
 
   .lista-parajes {
-    grid-template-columns: 1fr; /* De 2 columnas → 1 sola en móviles */
-  }
-
-  .flecha img {
-    width: 100px;      /* Más chico en móvil */
+    grid-template-columns: 1fr;
   }
 }

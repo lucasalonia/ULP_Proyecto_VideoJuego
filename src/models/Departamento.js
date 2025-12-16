@@ -32,11 +32,18 @@ const Departamento = {
 
   async getDepartamentosConParajes(usuarioId) {
     const [rows] = await pool.query(
-      `SELECT DISTINCT d.departamento_id, d.nombre
-        FROM departamento d
-        INNER JOIN paraje p ON p.departamento_id = d.departamento_id
-        INNER JOIN logro l ON l.paraje_id = p.id
-        WHERE l.usuario_id = ?;`,
+      `SELECT 
+        d.departamento_id,
+        d.nombre,
+        COUNT(l.logro_id) AS cantidad_logros
+     FROM departamento d
+     INNER JOIN paraje p 
+        ON p.departamento_id = d.departamento_id
+     INNER JOIN logro l 
+        ON l.paraje_id = p.id
+     WHERE l.usuario_id = 1
+     GROUP BY d.departamento_id, d.nombre
+     ORDER BY d.departamento_id;`,
       [usuarioId]
     );
     return rows;

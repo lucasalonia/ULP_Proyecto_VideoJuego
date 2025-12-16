@@ -1,11 +1,26 @@
+const TRANSITION_DURATION = 500; 
+const spinner = document.getElementById("loadingSpinnerLog");
+
 function showSpinner() {
-  document.getElementById("loadingSpinner").classList.remove("d-none");
+  
+    spinner.classList.remove("d-none");
+    
+    
+    setTimeout(() => {
+       
+        spinner.classList.add("fade-in");
+    }, 10);
 }
 
 function hideSpinner() {
-  document.getElementById("loadingSpinner").classList.add("d-none");
+   
+    spinner.classList.remove("fade-in");
+    
+    
+    setTimeout(() => {
+        spinner.classList.add("d-none");
+    }, TRANSITION_DURATION);
 }
-
 function ingresarComoInvitado() {
   if (typeof toastr !== "undefined") {
     toastr.options = {
@@ -47,9 +62,8 @@ function ingresarComoInvitado() {
           "¡Bienvenido!"
         );
 
-        setTimeout(() => {
           window.location.href = "/";
-        }, 800);
+
       } else {
         toastr.error(
           data.message || "No se pudo ingresar como invitado.",
