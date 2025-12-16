@@ -50,6 +50,8 @@ const Logro = {
         const [tiempos] = await pool.query(sql, [id]);
         return tiempos;
     }
+    
+        
 }
 module.exports = Logro;
 

@@ -17,7 +17,7 @@ class Escena extends Phaser.Scene {
         this.load.image('Belgrano', '/img/mapa/belgranoMapa.png');
         this.load.image('Pringles', '/img/mapa/pringlesMapa.png');
         this.load.image('hoja', '/img/mapa/pixelHoja.png');
-        this.load.image('marco', '/img/mapa/marcoFi.png');
+        this.load.image('marco', '/img/mapa/frame.png');
         this.load.image('sticker', '/img/mapa/notaPixel.png');
         this.load.image('sticker2', '/img/mapa/notaPixel2.png');
         this.load.audio('ok', './audio/ok2.wav');
@@ -54,22 +54,24 @@ class Escena extends Phaser.Scene {
         fontSize: "30px",
         color: "#000",
     });
-
-});
-
-        
-        // Texto del reloj
+              // Texto del reloj
         this.textoReloj = this.add.text(canvaWidth / 2 - 100, 30, "Tiempo: 0:00", {
             fontFamily: '"miFuente"',
             fontSize: "28px",
             fill: "#000",
 
         }).setDepth(50).setAlpha(0);
-
+        this.crearCartelInicial();
         // Inicializar zonas y departamentos
         const zonas = this.crearZonasObjetivo();
         this.inicializarDepartamentos(zonas);
         this.configurarEventosDrag();
+        
+
+});
+    
+        
+      
     }
     crearDepartamento(config) {
         const {
@@ -106,6 +108,28 @@ class Escena extends Phaser.Scene {
         this.departamentos.push(departamento);
         return departamento;
     }
+    //Cartel inicial
+crearCartelInicial() {
+    const cartel = this.add.container(0, 0).setDepth(100);
+
+    const sticker = this.add.sprite(110, 143, 'sticker2').setScale(0.6);
+    cartel.add(sticker);
+
+    const texto = this.add.text(145, 125,
+        "ARRASTRÁ CADA\nDEPARTAMENTO\nHASTA SU LUGAR\nCORRECTO",
+        {
+            fontFamily: '"miFuente"',
+            fontSize: '21px',
+            fill: '#232323',
+            align: 'center'
+        }
+    ).setOrigin(0.5);
+
+    cartel.add(texto);
+
+    this.cartelInicial = cartel;
+    this.cartelTimerIniciado = false;
+}
 
     crearZonasObjetivo() {
         return {
@@ -123,27 +147,41 @@ class Escena extends Phaser.Scene {
 
     inicializarDepartamentos(zonas) {
         const configDepartamentos = [
-            { key: 'Ayacucho', x: 250, y: 270, depId: 2, color: 0x0E88EC, targetZone: zonas.ayacucho },
+            { key: 'Ayacucho', x: 260, y: 310, depId: 2, color: 0x0E88EC, targetZone: zonas.ayacucho },
             { key: 'Junin', x: 950, y: 150, depId: 6, color: 0xFFCA7B, targetZone: zonas.junin },
             { key: 'San Martin', x: 950, y: 400, depId: 9, color: 0xA260F5, targetZone: zonas.sanMartin },
-            { key: 'Dupuy', x: 250, y: 400, depId: 5, color: 0xE4F10E, targetZone: zonas.dupuy },
+            { key: 'Dupuy', x: 250, y: 450, depId: 5, color: 0xE4F10E, targetZone: zonas.dupuy },
             { key: 'Pueyrredon', x: 1050, y: 300, depId: 8, color: 0x488D2D, targetZone: zonas.pueyrredon },
             { key: 'Pedernera', x: 1050, y: 500, depId: 7, color: 0xDF9CB8, targetZone: zonas.pedernera },
             { key: 'Chacabuco', x: 1100, y: 150, depId: 4, color: 0xCC448E, targetZone: zonas.chacabuco },
-            { key: 'Belgrano', x: 300, y: 550, depId: 3, color: 0x9E8982, targetZone: zonas.belgrano },
-            { key: 'Pringles', x: 270, y: 150, depId: 1, color: 0x1598DB, targetZone: zonas.pringles }
+            { key: 'Belgrano', x: 300, y: 590, depId: 3, color: 0x9E8982, targetZone: zonas.belgrano },
+            { key: 'Pringles', x: 300, y: 170, depId: 1, color: 0x1598DB, targetZone: zonas.pringles }
         ];
 
         configDepartamentos.forEach(config => {
             this.crearDepartamento(config);
         });
     }
+    //cuenta regresiva cartel inicial
+iniciarCuentaRegresivaCartel() {
+    if (!this.cartelInicial || this.cartelTimerIniciado) return;
+
+    this.cartelTimerIniciado = true;
+
+    this.time.delayedCall(2000, () => {
+        if (this.cartelInicial) {
+            this.cartelInicial.destroy();
+            this.cartelInicial = null;
+        }
+    });
+}
 
     configurarEventosDrag() {
         this.input.on('dragstart', (pointer, gameObject) => {
             if (!this.juegoIniciado) {
                 this.juegoIniciado = true;
                 this.iniciarReloj();
+                 this.iniciarCuentaRegresivaCartel();
             }
         });
 
@@ -225,9 +263,9 @@ class Escena extends Phaser.Scene {
           const botonRinicio = this.crearBoton(595, 665, "REINICIAR MAPA", '#1f6c24ff', () => {
            this.scene.restart()
         });
-        const mensajeFinal = this.add.text(330, 220, `¡FELICITACIONES!\n  COMPLETASTE\n     EL MAPA EN\n           ${time}\n   SEGUNDOS`, {
+        const mensajeFinal = this.add.text(330, 225, `¡FELICITACIONES!\n  Completaste\n     El mapa en\n           ${time}\n      segundos`, {
             fontFamily: '"miFuente"',
-            fontSize: '25px',
+            fontSize: '30px',
             fill: '#232323ff'
         }).setOrigin(0.5).setDepth(20);
 
@@ -253,8 +291,8 @@ class Escena extends Phaser.Scene {
         }
         this.departamentoNombre = this.add.text(departamento.x + 5, departamento.y, `${departamento.textureKey}`, {
             fontFamily: '"miFuente"',
-            backgroundColor: "#fffffff7",
-            fontSize: '15px',
+            backgroundColor: "#B9EAEA",
+            fontSize: '19px',
             fill: '#000000ff',
         }).setOrigin(0.5).setDepth(20);
         // Crear container
@@ -263,19 +301,19 @@ class Escena extends Phaser.Scene {
         const sticker2 = this.add.sprite(920, 400, 'sticker').setScale(0.75);
         dialogo.add(sticker2);
 
-        const mensajeComarca = this.add.text(970, 380, `Deseas jugar\n       en\n ${departamento.textureKey}?`, {
+        const mensajeComarca = this.add.text(970, 380, `¿Deseas jugar\n       en\n ${departamento.textureKey}?`, {
             fontFamily: "miFuente",
             fontSize: '28px',
             fill: '#232323ff',
         }).setOrigin(0.5).setDepth(20);
         dialogo.add(mensajeComarca);
 
-        const botonSi = this.crearBoton(930, 460, "SI", '#3ed348ff', () => {
+        const botonSi = this.crearBoton(910, 460, "SI", '#3ed348ff', () => {
             window.location.href = `/departamento/${departamento.depId}`;
         });
         dialogo.add(botonSi);
 
-        const botonNo = this.crearBoton(975, 460, "NO", '#2d2d2d', () => {
+        const botonNo = this.crearBoton(955, 460, "NO", '#2d2d2d', () => {
             dialogo.destroy();
             this.dialogoActual = null;
         });
@@ -340,7 +378,7 @@ const config = {
     width: 1280,
     height: 720,
     parent: 'phaser-container',
-    backgroundColor: "#d9fafb",
+    backgroundColor: "#B9EAEA",
     scene: Escena,
     
 

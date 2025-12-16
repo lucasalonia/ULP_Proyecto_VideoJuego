@@ -1,60 +1,69 @@
 extends ../layouts/mainLayout.pug
 
 block content
-  .contenedor-principal
+  // CONTENEDOR PRINCIPAL CON FONDO PROPIO
+  .contenedor-principal.logros-page
 
-    // ---------------------- MEJORES TIEMPOS ----------------------
-    .mejores-tiempos
-      .titulo Mejores Tiempos
+    // ===================== LOGROS POR DEPARTAMENTO =====================
+    .logro-paraje
+      h3 Parajes Completados
+      h3 por Departamento
+      
 
-      if tiempos 
-        each tiempo in tiempos
-          .tiempo-item
-            span= tiempo.tiempoFormateado
-      else
-        .tiempo-item
-          span No hay tiempos registrados.
-
-    // ---------------------- DEPARTAMENTO Y PARAJES ----------------------
-    .departamento
-      .titulo Departamentos
-
-      if actual
-        .titulo #{actual.nombre}
-      else
-        .titulo Departamento desconocido
-
-      .icono-medalla
-        img(src="/img/medalla3.png")
-
-      .lista-parajes
-        if parajes && parajes.length
-          each p in parajes
-            .paraje-item
-              .icono-trofeo
-                img(src="/img/trofeo1.png")
-              .nombre-paraje= p
+      .departamento
+        if actual
+          .titulo #{actual.nombre}
         else
-          .paraje-item
-            .nombre-paraje No hay logros.
+          .titulo Departamento desconocido
 
-      // ---------------------- FLECHA SIGUIENTE ----------------------
-      -
-        // índice del departamento actual
-        let indexActual = 0;
-        if (departamentos && actual) {
-          indexActual = departamentos.findIndex(d => d.departamento_id === actual.departamento_id);
-          if (indexActual < 0) indexActual = 0;
-        }
+        .icono-insignia
+          if insigniaCompletada
+            img(src=`/img/insignias/${actual.nombre}.png`)
+            span.logro-completado
+              span Departamento
+              span Completado
+          else
+            img(src=`/img/insignias/${actual.nombre}_blancoynegro.png`)
 
-        // siguiente departamento (con wrap-around)
-        let siguiente = null;
-        if (departamentos && departamentos.length) {
-          siguiente = departamentos[(indexActual + 1) % departamentos.length];
-        }
+        .lista-parajes
+          if parajes && parajes.length
+            each p in parajes
+              .paraje-item
+                .icono-trofeo
+                  img(src="/img/trofeo1.png")
+                .nombre-paraje= p
+          else
+            .paraje-item
+              .nombre-paraje No hay logros.
 
-        const idSiguiente = siguiente ? siguiente.departamento_id : 0;
+        -
+          let indexActual = 0;
+          if (departamentos && actual) {
+            indexActual = departamentos.findIndex(d => d.departamento_id === actual.departamento_id);
+            if (indexActual < 0) indexActual = 0;
+          }
 
-      .flecha
-        a(href=`/logros/${idSiguiente}`)
-          img(src="/img/flecha.png", alt="Ir")
+          let siguiente = null;
+          if (departamentos && departamentos.length) {
+            siguiente = departamentos[(indexActual + 1) % departamentos.length];
+          }
+
+          const idSiguiente = siguiente ? siguiente.departamento_id : 0;
+
+        .flecha
+          a(href=`/logros/${idSiguiente}`)
+            img(src="/img/flechaRoja.png", alt="Ir")
+
+    // ===================== LOGROS DE TIEMPO =====================
+    .logro-tiempo
+      h3 Mejores Tiempos
+      h3 realizando el Mapa
+
+      .mejores-tiempos
+        if tiempos && tiempos.length
+          each tiempo in tiempos
+            .tiempo-item
+              span= tiempo.tiempoFormateado
+        else
+          .tiempo-item
+            span No hay tiempos registrados.
