@@ -12,7 +12,8 @@
 
 /* ===== LOGO ===== */
 .logo-container {
-  width: 330px;
+  margin-top: 0px;
+  width: 530px;
 }
 
 .logo {
@@ -22,6 +23,7 @@
 
 /* ===== MENU ===== */
 .menu-container {
+  margin-top: 3%;
   display: flex;
   flex-direction: column;
   gap: 20px;
@@ -33,18 +35,13 @@
   font-family: "Press Start 2P", monospace !important;
   font-size: 15px;
   letter-spacing: 1px;
-
-  padding: 14px 45px;
-
+  padding: 18px 45px;
   background: #f2f2f2;
   border: 4px solid #000;       /* borde externo negro */
   outline: 4px solid #7f7f7f;    /* borde gris estilo GameBoy */
   border-radius: 0;              /* GameBoy es cuadrado */
-
   color: #000;
-
   box-shadow: 6px 6px 0 #3a3a3a; /* sombra pixel retro */
-
   cursor: pointer;
   transition: transform 0.1s ease-in-out, box-shadow 0.1s ease-in-out;
 }

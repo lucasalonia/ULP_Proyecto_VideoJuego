@@ -93,7 +93,16 @@ const Usuario = {
     `;
     const [updateResult] = await pool.query(updateQuery, [newNickname, userId]);
     return updateResult.affectedRows > 0;
-  }
+  },
+  async updateProfilePicture(userId, newProfileURL) {
+    const updateQuery = `
+        UPDATE usuario 
+        SET imagen_perfil = ? 
+        WHERE usuario_id = ?
+    `;
+    const [updateResult] = await pool.query(updateQuery, [newProfileURL, userId]);
+    return updateResult.affectedRows > 0;
+  },
 };
 
 module.exports = Usuario;
