@@ -7,7 +7,7 @@
 
 /*contenedor general*/
 .logros-page {
-  background: #98EAEA;
+  background-image:url("/img/degradeNaranja.PNG"); ;
   min-height: 100vh;
   padding-top: 40px;
 }
@@ -70,7 +70,7 @@
 }
 /*departamento*/
 .departamento {
-  background: #96e0c9;
+  background: #f5f4c4 ;
   border: 4px solid #3c3c3c;
   padding: 20px;
   width: 1000px;
