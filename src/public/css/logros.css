@@ -1,9 +1,9 @@
 /*fuente*/
-@font-face {
+/* @font-face {
   font-family: "MiFuente";
   src: url("/fonts/GamePocket-Regular.ttf") format("truetype");
   font-weight: normal;
-}
+} */
 
 /*contenedor general*/
 .logros-page {
@@ -20,10 +20,11 @@
 
 /*columna tiempos*/
 .mejores-tiempos {
+  
   background: #96e0c9;
   border: 5px solid #3c3c3c;
   padding: 20px;
-  width: 300px;
+ /* width: 300px;*/
   box-shadow: 6px 5px 0px #3c3c3c, 5px 6px 0px #3c3c3c;
 }
 .icono-reloj img{ width: 45px;
@@ -32,11 +33,11 @@
    margin-right: 10px; }
 .tiempo-item {
   background: #FBEAC7;
-  font-family: "MiFuente";
-  font-size: 20px;
+  font-family: "Press Start 2P", monospace;
+  font-size: 15px;
   text-align: center;
   padding: 4px;
-  margin: 10px 2px;
+  margin: 1px 2px;
   border: 3px solid #ad9b46;
   box-shadow: 5px 4px 0px #ad9b46, 4px 5px 0px #ad9b46;
 }
@@ -48,9 +49,10 @@
 /*bloques de logros*/
 .logro-paraje,
 .logro-tiempo {
+  
   background: #8bc4af;
-  font-family: "MiFuente";
-  font-size: 18px;
+ font-family: "Press Start 2P", monospace;
+  font-size: 12px;
   text-align: center;
   display: inline-block;
   padding: 8px 15px 20px 10px;
@@ -61,8 +63,8 @@
 }
 .logro-paraje h3,
 .logro-tiempo h3 {
-  font-family: "MiFuente";
-  font-size: 28px;
+ font-family: "Press Start 2P", monospace;
+  font-size: 20px;
   text-align: center;
   color: #3c3c3c;
   margin-top: 1px;
@@ -80,8 +82,8 @@
 
 .titulo {
   background: #FEAD85;
-  font-family: "MiFuente";
-  font-size: 35px;
+   font-family: "Press Start 2P", monospace;
+  font-size: 30px;
   text-align: center;
   padding: 5px 10px 1px 20px;
   margin-bottom: 20px;
@@ -93,8 +95,8 @@
 /*insignia*/
 .icono-insignia {
   position: relative;
-  height: 160px;
-  margin-bottom: 20px;
+  height: 150px;
+  margin-bottom: 10px;
 }
 
 .icono-insignia img {
@@ -112,11 +114,11 @@
   top: 45%;
   transform: translateY(-50%);
   padding: 5px;
-  font-family: "MiFuente";
+  font-family: "Press Start 2P", monospace;
   font-size: 30px;
   text-align: center;
-  color: #512532;
-  background: #FEAD85;
+  color: #1f3c21;
+  background: #79d88f;
   border: 4px solid #3c3c3c;
   box-shadow: 5px 4px 0px #3c3c3c, 4px 5px 0px #3c3c3c;
 }
@@ -130,7 +132,7 @@
 .lista-parajes {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 10px;
+  gap: 5px;
 }
 
 .paraje-item {
@@ -139,14 +141,14 @@
 }
 
 .icono-trofeo img {
-  width: 70px;
+  width: 50px;
 }
 
 .nombre-paraje {
   width: 75%;
   background: #FFF9C4;
-  font-family: "MiFuente";
-  font-size: 20px;
+   font-family: "Press Start 2P", monospace;
+  font-size: 11px;
   text-align: center;
   padding: 5px;
   border: 3px solid #ad9b46;
@@ -157,17 +159,21 @@
 .flecha {
   position: absolute;
   right: 33px;
-  top: 54px;
+  top: 52px;
   transform: translateY(-50%);
 }
 
 .flecha img {
-  width: 65px;
+  width: 58px;
   display: block;
 }
 
 /*panel pixel*/
 .panel-pixel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
   background: #C9F3F9;
   border: 4px solid #77d0d5;
   padding: 20px;
@@ -179,7 +185,7 @@
   background: #F7F4A3;
   border: 3px solid #b4ab5c;
   padding: 7px;
-  font-family: "MiFuente";
+  font-family: "Press Start 2P", monospace;
   font-size: 20px;
   text-align: center;
   margin-bottom: 15px;
@@ -194,14 +200,14 @@
   background: #FBEAC7;
   border: 3px solid #c6ab51;
   padding: 12px 15px;
-  font-family: "MiFuente";
+  font-family: "Press Start 2P", monospace;
   font-size: 20px;
   margin-bottom: 15px;
   box-shadow: 5px 4px 0px #3c3c3c, 4px 5px 0px #3c3c3c;
 }
 
 .valor-dato {
-  font-family: "MiFuente";
+  font-family: "Press Start 2P", monospace;
 }
 
 /*foto perfil*/
@@ -215,8 +221,8 @@
 
 /*botones pixel*/
 .btn-pixel {
-  font-family: "MiFuente";
-  font-size: 22px;
+  font-family: "Press Start 2P", monospace;
+  font-size: 18px;
   padding: 8px 3px 3px;
   color: #fff;
   cursor: pointer;
@@ -226,7 +232,7 @@
 }
 
 .btn-pixel-primary { background: #47adc9;
-padding: 15px 10px 10px; }
+padding: 10px 10px 8px; }
 .btn-pixel-warning { background: #ff7a73; }
 .btn-pixel-danger  { background: #FF3B3B; }
 

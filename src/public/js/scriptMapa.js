@@ -41,37 +41,38 @@ class Escena extends Phaser.Scene {
         const canvaHeight = this.sys.game.config.height;
 
         // Elementos de fondo
-        const hoja = this.add.sprite(canvaWidth / 2-60, canvaHeight / 2-20, 'hoja').setDepth(0).setScale(0.69);
-        const fondo = this.add.sprite(canvaWidth / 2, canvaHeight / 2+30, 'mapaSL').setScale(0.95);
-       const marco = this.add.sprite(canvaWidth / 2 , canvaHeight / 2-1 , 'marco').setScale(1);
+        const hoja = this.add.sprite(canvaWidth / 2 - 60, canvaHeight / 2 - 20, 'hoja').setDepth(0).setScale(0.69);
+        const fondo = this.add.sprite(canvaWidth / 2, canvaHeight / 2 + 30, 'mapaSL').setScale(0.95);
+        const marco = this.add.sprite(canvaWidth / 2, canvaHeight / 2 - 1, 'marco').setScale(1);
 
         fondo.setScale(0.545).setOrigin(0.5, 0.5);
         //Titulo
+
         document.fonts.load('20px miFuente').then(() => {
 
-    this.add.text(canvaWidth / 2  -140, 58, "SAN LUIS MI PROVINCIA", {
-        fontFamily: "miFuente",
-        fontSize: "30px",
-        color: "#000",
-    });
-              // Texto del reloj
-        this.textoReloj = this.add.text(canvaWidth / 2 - 100, 30, "Tiempo: 0:00", {
-            fontFamily: '"miFuente"',
-            fontSize: "28px",
-            fill: "#000",
+            this.add.text(canvaWidth / 2 - 140, 58, "SAN LUIS MI PROVINCIA", {
+                fontFamily: "miFuente",
+                fontSize: "30px",
+                color: "#000",
+            });
+            // Texto del reloj
+            this.textoReloj = this.add.text(canvaWidth / 2 - 100, 30, "Tiempo: 0:00", {
+                fontFamily: '"miFuente"',
+                fontSize: "28px",
+                fill: "#000",
 
-        }).setDepth(50).setAlpha(0);
-        this.crearCartelInicial();
-        // Inicializar zonas y departamentos
-        const zonas = this.crearZonasObjetivo();
-        this.inicializarDepartamentos(zonas);
-        this.configurarEventosDrag();
-        
+            }).setDepth(50).setAlpha(0);
+            this.crearCartelInicial();
+            // Inicializar zonas y departamentos
+            const zonas = this.crearZonasObjetivo();
+            this.inicializarDepartamentos(zonas);
+            this.configurarEventosDrag();
 
-});
-    
-        
-      
+
+        });
+
+
+
     }
     crearDepartamento(config) {
         const {
@@ -109,27 +110,27 @@ class Escena extends Phaser.Scene {
         return departamento;
     }
     //Cartel inicial
-crearCartelInicial() {
-    const cartel = this.add.container(0, 0).setDepth(100);
+    crearCartelInicial() {
+        const cartel = this.add.container(0, 0).setDepth(100);
 
-    const sticker = this.add.sprite(110, 143, 'sticker2').setScale(0.6);
-    cartel.add(sticker);
+        const sticker = this.add.sprite(110, 143, 'sticker2').setScale(0.6);
+        cartel.add(sticker);
 
-    const texto = this.add.text(145, 125,
-        "ARRASTRÁ CADA\nDEPARTAMENTO\nHASTA SU LUGAR\nCORRECTO",
-        {
-            fontFamily: '"miFuente"',
-            fontSize: '21px',
-            fill: '#232323',
-            align: 'center'
-        }
-    ).setOrigin(0.5);
+        const texto = this.add.text(145, 125,
+            "ARRASTRÁ CADA\nDEPARTAMENTO\nHASTA SU LUGAR\nCORRECTO",
+            {
+                fontFamily: '"miFuente"',
+                fontSize: '21px',
+                fill: '#232323',
+                align: 'center'
+            }
+        ).setOrigin(0.5);
 
-    cartel.add(texto);
+        cartel.add(texto);
 
-    this.cartelInicial = cartel;
-    this.cartelTimerIniciado = false;
-}
+        this.cartelInicial = cartel;
+        this.cartelTimerIniciado = false;
+    }
 
     crearZonasObjetivo() {
         return {
@@ -163,25 +164,25 @@ crearCartelInicial() {
         });
     }
     //cuenta regresiva cartel inicial
-iniciarCuentaRegresivaCartel() {
-    if (!this.cartelInicial || this.cartelTimerIniciado) return;
+    iniciarCuentaRegresivaCartel() {
+        if (!this.cartelInicial || this.cartelTimerIniciado) return;
 
-    this.cartelTimerIniciado = true;
+        this.cartelTimerIniciado = true;
 
-    this.time.delayedCall(2000, () => {
-        if (this.cartelInicial) {
-            this.cartelInicial.destroy();
-            this.cartelInicial = null;
-        }
-    });
-}
+        this.time.delayedCall(2000, () => {
+            if (this.cartelInicial) {
+                this.cartelInicial.destroy();
+                this.cartelInicial = null;
+            }
+        });
+    }
 
     configurarEventosDrag() {
         this.input.on('dragstart', (pointer, gameObject) => {
             if (!this.juegoIniciado) {
                 this.juegoIniciado = true;
                 this.iniciarReloj();
-                 this.iniciarCuentaRegresivaCartel();
+                this.iniciarCuentaRegresivaCartel();
             }
         });
 
@@ -232,8 +233,8 @@ iniciarCuentaRegresivaCartel() {
 
         const datos = {
             id_jugador: 1,
-             fecha_inicio: this.fechaInicio.toLocaleString("sv-SE"),
-        fecha_fin: fechaFin.toLocaleString("sv-SE"),
+            fecha_inicio: this.fechaInicio.toLocaleString("sv-SE"),
+            fecha_fin: fechaFin.toLocaleString("sv-SE"),
             tiempo: this.tiempo
         };
 
@@ -260,8 +261,8 @@ iniciarCuentaRegresivaCartel() {
 
     mostrarInterfazFinal(time) {
         const sticker = this.add.sprite(290, 250, 'sticker2').setScale(0.8);
-          const botonRinicio = this.crearBoton(595, 665, "REINICIAR MAPA", '#1f6c24ff', () => {
-           this.scene.restart()
+        const botonRinicio = this.crearBoton(595, 665, "REINICIAR MAPA", '#1f6c24ff', () => {
+            this.scene.restart()
         });
         const mensajeFinal = this.add.text(330, 225, `¡FELICITACIONES!\n  Completaste\n     El mapa en\n           ${time}\n      segundos`, {
             fontFamily: '"miFuente"',
@@ -380,7 +381,7 @@ const config = {
     parent: 'phaser-container',
     backgroundColor: "#B9EAEA",
     scene: Escena,
-    
+
 
 };
 
@@ -395,14 +396,14 @@ function applyCssScale() {
 
     const containerWidth = container.clientWidth;
     const containerHeight = container.clientHeight;
-    
+
     // Reduce el tamaño base (90% del contenedor en lugar de 100%)
     const targetWidth = Math.min(config.width, containerWidth * 0.9);
     const targetHeight = Math.min(config.height, containerHeight * 0.9);
-    
+
     const scaleX = targetWidth / config.width;
     const scaleY = targetHeight / config.height;
-    const scale = Math.min(scaleX, scaleY) ; // Reduce un 5% adicional
+    const scale = Math.min(scaleX, scaleY); // Reduce un 5% adicional
 
     // Tamaño base del canvas
     canvas.style.width = config.width + 'px';

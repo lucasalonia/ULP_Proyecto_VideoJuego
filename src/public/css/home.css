@@ -6,14 +6,19 @@
   justify-content: center;
   align-items: center;
   gap: 100px;
-
+ 
   font-family: "Press Start 2P", monospace;
 }
-
+body {
+  margin: 0;
+  padding: 0;
+  background-image: url("/img/degradeNaranja1.PNG");
+}
 /* ===== LOGO ===== */
 .logo-container {
   margin-top: 0px;
-  width: 530px;
+  width: 510px;
+  height: 810px;
 }
 
 .logo {
