@@ -7,6 +7,7 @@ module.exports = {
 
   async guardarTiempo(req, res) {
     const id = req.user.sub;
+    
     console.log("ID " + id);
     try {
       const { fecha_inicio, fecha_fin, tiempo } = req.body;

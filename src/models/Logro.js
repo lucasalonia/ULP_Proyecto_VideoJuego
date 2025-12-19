@@ -14,23 +14,23 @@ const Logro = {
   },
 
   async getTiemposMapa(id) {
-    const sql = `
+  const sql = `
     SELECT 
       MIN(tiempo_id) AS tiempo_id,
       usuario_id,
       tiempo,
-      fecha_inicio,
-      fecha_fin
+      MIN(fecha_inicio) AS fecha_inicio,
+      MAX(fecha_fin) AS fecha_fin
     FROM tiempo_mapa
     WHERE usuario_id = ?
-    GROUP BY tiempo
+    GROUP BY usuario_id, tiempo
     ORDER BY tiempo ASC
     LIMIT 10
   `;
 
-    const [tiempos] = await pool.query(sql, [id]);
-    return tiempos;
-  },
+  const [tiempos] = await pool.query(sql, [id]);
+  return tiempos;
+},
 
 
   //MODIFICACION CONSULTA SQL POR LUCA
