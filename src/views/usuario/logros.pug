@@ -7,7 +7,17 @@ block content
     // ===================== LOGROS POR DEPARTAMENTO =====================
     .logro-paraje
       h3 Parajes Completados por Departamento
-   
+
+      -
+        let nombreArchivo = "desconocido";
+
+        if (actual && actual.nombre) {
+          nombreArchivo = actual.nombre
+            .toLowerCase()
+            .normalize("NFD")
+            .replace(/[\u0300-\u036f]/g, "") // quitar tildes
+            .replace(/\s+/g, "");           // quitar espacios
+        }
 
       .departamento
         if actual
@@ -17,12 +27,18 @@ block content
 
         .icono-insignia
           if insigniaCompletada
-            img(src=`/img/insignias/${actual.nombre}.png`)
+            img(
+              src=`/img/insignias/${nombreArchivo}.png`
+              alt=`Insignia ${actual ? actual.nombre : ""}`
+            )
             span.logro-completado
               span Departamento
               span Completado
           else
-            img(src=`/img/insignias/${actual.nombre}_blancoynegro.png`)
+            img(
+              src=`/img/insignias/${nombreArchivo}_blancoynegro.png`
+              alt=`Insignia ${actual ? actual.nombre : ""}`
+            )
 
         .lista-parajes
           if parajes && parajes.length
@@ -38,7 +54,9 @@ block content
         -
           let indexActual = 0;
           if (departamentos && actual) {
-            indexActual = departamentos.findIndex(d => d.departamento_id === actual.departamento_id);
+            indexActual = departamentos.findIndex(
+              d => d.departamento_id === actual.departamento_id
+            );
             if (indexActual < 0) indexActual = 0;
           }
 
@@ -56,7 +74,6 @@ block content
     // ===================== LOGROS DE TIEMPO =====================
     .logro-tiempo
       h3 Tiempos del Mapa
-    
 
       .mejores-tiempos
         if tiempos && tiempos.length

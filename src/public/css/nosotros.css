@@ -1,19 +1,21 @@
-/* ===========================
-   CONTENEDOR PRINCIPAL
-=========================== */
+
+body {
+  min-height: 100vh;
+  background-repeat: repeat;
+  background-attachment: fixed;
+}
+
 .nosotros-container {
-  min-height: calc(100vh - 70px);
+  min-height: 100vh;
+  padding: 3rem 2rem;
+
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
 
-  padding: 3rem 2rem;
-  background-color: #3fa36c;
   font-family: 'Press Start 2P', Consolas, monospace;
   text-align: center;
 }
-
 /* ===========================
    TÍTULO PRINCIPAL
 =========================== */

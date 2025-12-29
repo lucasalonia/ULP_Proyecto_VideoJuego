@@ -1,17 +1,71 @@
-// /public/js/departamento.js
-
 document.addEventListener("DOMContentLoaded", () => {
-  // ================================
-  //  CRONÓMETRO POR PARAJE
-  // ================================
+
+  // ==================================================
+  //  LOCAL STORAGE – PROGRESO (CARTAS)
+  // ==================================================
+  function getProgresoLocal() {
+    return JSON.parse(localStorage.getItem("comarcas_progreso")) || {
+      cartas: {},
+      mapa: {}
+    };
+  }
+
+  function guardarParajeLocal(departamentoId, parajeId) {
+    const data = getProgresoLocal();
+
+    const depId = String(departamentoId);
+    const pId = String(parajeId);
+
+    if (!data.cartas[depId]) {
+      data.cartas[depId] = [];
+    }
+
+    if (!data.cartas[depId].includes(pId)) {
+      data.cartas[depId].push(pId);
+    }
+
+    localStorage.setItem("comarcas_progreso", JSON.stringify(data));
+  }
+
+  function parajeYaCompletado(departamentoId, parajeId) {
+    const data = getProgresoLocal();
+    return data.cartas[String(departamentoId)]?.includes(String(parajeId));
+  }
+
+  // ==================================================
+  //  DATOS DEL JUEGO (desde PUG)
+  // ==================================================
+  if (!window.JUEGO_DATA) return;
+
+  const {
+    ordenCorrecto = [],
+    usuarioId,
+    parajeId,
+    departamentoId,
+    nombreParaje = "Paraje",
+    urlSiguiente,
+    urlVolver
+  } = window.JUEGO_DATA;
+
+  const esInvitado = !usuarioId || isNaN(Number(usuarioId));
+
+  // 👉 MUY IMPORTANTE: esto va ANTES de iniciar el juego
+  if (esInvitado && parajeYaCompletado(departamentoId, parajeId)) {
+    if (urlSiguiente) {
+      window.location.href = urlSiguiente;
+    }
+    return;
+  }
+
+  // ==================================================
+  //  CRONÓMETRO
+  // ==================================================
   const cronometroEl = document.getElementById("cronometro");
   const startTime = Date.now();
   let cronometroInterval = null;
 
   function actualizarCronometro() {
-    const ahora = Date.now();
-    const diff = ahora - startTime;
-
+    const diff = Date.now() - startTime;
     const minutos = Math.floor(diff / 60000);
     const segundos = Math.floor((diff % 60000) / 1000);
     const centesimas = Math.floor((diff % 1000) / 10);
@@ -26,40 +80,33 @@ document.addEventListener("DOMContentLoaded", () => {
 
   cronometroInterval = setInterval(actualizarCronometro, 50);
 
-  // ================================
-  //  DATOS DEL JUEGO
-  // ================================
+  // ==================================================
+  //  ELEMENTOS DEL JUEGO
+  // ==================================================
   const fichas = [...document.querySelectorAll(".ficha")];
   const casilleros = [...document.querySelectorAll("button.casillero")];
 
-  // Si por algún motivo no hay fichas/casilleros, no seguimos.
-  if (!fichas.length || !casilleros.length || !window.JUEGO_DATA) return;
-
-  const ordenCorrecto = window.JUEGO_DATA.ordenCorrecto || [];
-  const usuarioId = window.JUEGO_DATA.usuarioId;
-  const parajeId = window.JUEGO_DATA.parajeId;
-  const nombreParaje = window.JUEGO_DATA.nombreParaje || "Paraje";
+  if (!fichas.length || !casilleros.length) return;
 
   let fichaSeleccionada = null;
 
-  // ================================
-  //  TOAST DE VICTORIA
-  // ================================
+  // ==================================================
+  //  TOAST
+  // ==================================================
   const toast = document.querySelector(".comarca-toast");
   const toastMsg = document.querySelector(".comarca-toast-msg");
 
   function mostrarToast(msg) {
     if (!toast || !toastMsg) return;
     toastMsg.textContent = msg;
-    toastMsg.style.color = "black"; // por las dudas si el fondo es blanco
+    toastMsg.style.color = "black";
     toast.classList.remove("comarca-toast--oculto");
     toast.classList.add("comarca-toast--visible");
   }
 
-
-  // ================================
-  //  LÓGICA DE FICHAS / CASILLEROS
-  // ================================
+  // ==================================================
+  //  LÓGICA DE JUEGO
+  // ==================================================
   const deseleccionarFicha = () => {
     if (fichaSeleccionada) {
       fichaSeleccionada.classList.remove("seleccionada");
@@ -68,7 +115,6 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   const asignarValorCasillero = (casillero, valor, idFicha = null) => {
-    // si el casillero ya tenía una ficha, la liberamos
     if (casillero.dataset.idFicha) {
       const anterior = document.querySelector(
         `.ficha[data-indice="${casillero.dataset.idFicha}"]`
@@ -91,10 +137,8 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   const verificarVictoria = () => {
-    // marcar casilleros correctos/incorrectos
     casilleros.forEach((c, i) => {
       const valor = c.dataset.valor;
-
       c.classList.remove("correcto", "incorrecto", "shake", "pop");
 
       if (!valor) return;
@@ -116,13 +160,11 @@ document.addEventListener("DOMContentLoaded", () => {
     );
 
     if (completo && correcto) {
-      // detener cronómetro
       clearInterval(cronometroInterval);
 
       const fin = Date.now();
       const tiempo = fin - startTime;
 
-      // guardar logro en el backend
       fetch("/logro-paraje", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -131,25 +173,27 @@ document.addEventListener("DOMContentLoaded", () => {
           paraje_id: parajeId,
           fecha_inicio: new Date(startTime),
           fecha_fin: new Date(fin),
-          tiempo: tiempo,
+          tiempo
         }),
       })
         .then(r => r.json())
         .then(data => {
           console.log("Logro guardado:", data);
+
+          // 👉 INVITADO → guardar en localStorage
+          if (data.guest) {
+            guardarParajeLocal(departamentoId, parajeId);
+          }
         })
         .catch(err => console.error("Error guardando logro:", err));
 
-      // mostrar toast
       mostrarToast(`¡Paraje completado: ${nombreParaje}!`);
     }
-
-    return correcto;
   };
 
-  // ================================
+  // ==================================================
   //  EVENTOS
-  // ================================
+  // ==================================================
   fichas.forEach(ficha => {
     ficha.dataset.usada = "0";
 
@@ -169,7 +213,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   casilleros.forEach(casillero => {
     casillero.addEventListener("click", () => {
-      // si hay ficha seleccionada, la colocamos
       if (fichaSeleccionada) {
         asignarValorCasillero(
           casillero,
@@ -186,7 +229,6 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
       }
 
-      // si no hay ficha seleccionada, y el casillero tiene algo, lo vaciamos
       if (casillero.dataset.valor) {
         asignarValorCasillero(casillero, null);
       }
