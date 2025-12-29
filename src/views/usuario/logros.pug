@@ -2,12 +2,26 @@ extends ../layouts/mainLayout.pug
 
 block content
   if user.userId > 0
-    // CONTENEDOR PRINCIPAL CON FONDO PROPIO
     .contenedor-principal.logros-page
 
-      // ===================== LOGROS POR DEPARTAMENTO =====================
       .logro-paraje
         h3 Parajes Completados por Departamento
+
+        -
+          let indexActual = 0;
+          if (departamentos && actual) {
+            indexActual = departamentos.findIndex(
+              d => d.departamento_id === actual.departamento_id
+            );
+            if (indexActual < 0) indexActual = 0;
+          }
+
+          let siguiente = null;
+          if (departamentos && departamentos.length) {
+            siguiente = departamentos[(indexActual + 1) % departamentos.length];
+          }
+
+          const idSiguiente = siguiente ? siguiente.departamento_id : 0;
 
         .departamento
           if actual
@@ -35,27 +49,11 @@ block content
               .paraje-item
                 .nombre-paraje No hay logros.
 
-        -
-          let indexActual = 0;
-          if (departamentos && actual) {
-            indexActual = departamentos.findIndex(
-              d => d.departamento_id === actual.departamento_id
-            );
-            if (indexActual < 0) indexActual = 0;
-          }
+          // ===== FLECHA (YA TIENE idSiguiente DEFINIDO) =====
+          .flecha
+            a(href=`/logros/${idSiguiente}`)
+              img(src="/img/flechaRoja.png", alt="Ir")
 
-          let siguiente = null;
-          if (departamentos && departamentos.length) {
-            siguiente = departamentos[(indexActual + 1) % departamentos.length];
-          }
-
-          const idSiguiente = siguiente ? siguiente.departamento_id : 0;
-
-        .flecha
-          a(href=`/logros/${idSiguiente}`)
-            img(src="/img/flechaRoja.png", alt="Ir")
-
-      // ===================== LOGROS DE TIEMPO =====================
       .logro-tiempo
         h3 Tiempos del Mapa
 
@@ -69,15 +67,15 @@ block content
               span No hay tiempos registrados.
 
   else
-  .container.py-5.text-center
-    .aviso-invitado
-      h1.aviso-titulo No tenés una cuenta personal todavía
-      
-      p.aviso-texto
-        | Para guardar tu progreso, desbloquear logros y personalizar tu cuenta,
-        br
-        | podés crear una cuenta gratuita cuando quieras.
+    .container.py-5.text-center
+      .aviso-invitado
+        h1.aviso-titulo No tenés una cuenta personal todavía
 
-      .mt-4
-        a.btn.btn-primary(href="/register") Crear Cuenta
-        a.btn.btn-secondary.ms-3(href="/") Volver al Inicio
+        p.aviso-texto
+          | Para guardar tu progreso, desbloquear logros y personalizar tu cuenta,
+          br
+          | podés crear una cuenta gratuita cuando quieras.
+
+        .mt-4
+          a.btn.btn-primary(href="/register") Crear Cuenta
+          a.btn.btn-secondary.ms-3(href="/") Volver al Inicio

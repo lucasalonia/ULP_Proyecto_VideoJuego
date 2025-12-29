@@ -260,7 +260,7 @@ padding: 10px 10px 8px; }
 }
 
 .aviso-invitado {
-  max-width: 750px;
+  max-width: 650px;
   margin: 0 auto;
   padding: 30px;
 
@@ -273,17 +273,17 @@ padding: 10px 10px 8px; }
 }
 
 .aviso-titulo {
-  font-size: 20px;
+  font-size: 18px;
   margin-bottom: 20px;
 }
 
 .aviso-subtitulo {
-  font-size: 16px;
+  font-size: 13px;
   margin-bottom: 18px;
 }
 
 .aviso-texto {
-  font-size: 16px;
+  font-size: 12px;
   line-height: 1.8;
 }
 
