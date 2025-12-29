@@ -41,7 +41,7 @@ const Departamento = {
         ON p.departamento_id = d.departamento_id
      INNER JOIN logro l 
         ON l.paraje_id = p.id
-     WHERE l.usuario_id = 1
+     WHERE l.usuario_id = ?
      GROUP BY d.departamento_id, d.nombre
      ORDER BY d.departamento_id;`,
       [usuarioId]

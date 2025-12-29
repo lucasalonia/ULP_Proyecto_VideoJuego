@@ -1,55 +1,11 @@
 extends ../layouts/mainLayout.pug
 
 block content
-  // CONTENEDOR PRINCIPAL CON FONDO PROPIO
-  .contenedor-principal.logros-page
+  if user.userId > 0
+    .contenedor-principal.logros-page
 
-    // ===================== LOGROS POR DEPARTAMENTO =====================
-    .logro-paraje
-      h3 Parajes Completados por Departamento
-
-      -
-        let nombreArchivo = "desconocido";
-
-        if (actual && actual.nombre) {
-          nombreArchivo = actual.nombre
-            .toLowerCase()
-            .normalize("NFD")
-            .replace(/[\u0300-\u036f]/g, "") // quitar tildes
-            .replace(/\s+/g, "");           // quitar espacios
-        }
-
-      .departamento
-        if actual
-          .titulo #{actual.nombre}
-        else
-          .titulo Departamento desconocido
-
-        .icono-insignia
-          if insigniaCompletada
-            img(
-              src=`/img/insignias/${nombreArchivo}.png`
-              alt=`Insignia ${actual ? actual.nombre : ""}`
-            )
-            span.logro-completado
-              span Departamento
-              span Completado
-          else
-            img(
-              src=`/img/insignias/${nombreArchivo}_blancoynegro.png`
-              alt=`Insignia ${actual ? actual.nombre : ""}`
-            )
-
-        .lista-parajes
-          if parajes && parajes.length
-            each p in parajes
-              .paraje-item
-                .icono-trofeo
-                  img(src="/img/trofeo1.png")
-                .nombre-paraje= p
-          else
-            .paraje-item
-              .nombre-paraje No hay logros.
+      .logro-paraje
+        h3 Parajes Completados por Departamento
 
         -
           let indexActual = 0;
@@ -67,19 +23,59 @@ block content
 
           const idSiguiente = siguiente ? siguiente.departamento_id : 0;
 
-        .flecha
-          a(href=`/logros/${idSiguiente}`)
-            img(src="/img/flechaRoja.png", alt="Ir")
+        .departamento
+          if actual
+            .titulo #{actual.nombre}
+          else
+            .titulo Departamento desconocido
 
-    // ===================== LOGROS DE TIEMPO =====================
-    .logro-tiempo
-      h3 Tiempos del Mapa
+          .icono-insignia
+            if insigniaCompletada
+              img(src=`/img/insignias/${actual.nombre}.png`)
+              span.logro-completado
+                span Departamento
+                span Completado
+            else
+              img(src=`/img/insignias/${actual.nombre}_blancoynegro.png`)
 
-      .mejores-tiempos
-        if tiempos && tiempos.length
-          each tiempo in tiempos
+          .lista-parajes
+            if parajes && parajes.length
+              each p in parajes
+                .paraje-item
+                  .icono-trofeo
+                    img(src="/img/trofeo1.png")
+                  .nombre-paraje= p
+            else
+              .paraje-item
+                .nombre-paraje No hay logros.
+
+          // ===== FLECHA (YA TIENE idSiguiente DEFINIDO) =====
+          .flecha
+            a(href=`/logros/${idSiguiente}`)
+              img(src="/img/flechaRoja.png", alt="Ir")
+
+      .logro-tiempo
+        h3 Tiempos del Mapa
+
+        .mejores-tiempos
+          if tiempos && tiempos.length
+            each tiempo in tiempos
+              .tiempo-item
+                span= tiempo.tiempoFormateado
+          else
             .tiempo-item
-              span= tiempo.tiempoFormateado
-        else
-          .tiempo-item
-            span No hay tiempos registrados.
+              span No hay tiempos registrados.
+
+  else
+    .container.py-5.text-center
+      .aviso-invitado
+        h1.aviso-titulo No tenés una cuenta personal todavía
+
+        p.aviso-texto
+          | Para guardar tu progreso, desbloquear logros y personalizar tu cuenta,
+          br
+          | podés crear una cuenta gratuita cuando quieras.
+
+        .mt-4
+          a.btn.btn-primary(href="/register") Crear Cuenta
+          a.btn.btn-secondary.ms-3(href="/") Volver al Inicio
