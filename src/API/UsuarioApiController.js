@@ -121,21 +121,15 @@ async function modificarContraseña(req, res) {
         .status(400)
         .json({ message: "La contraseña actual es incorrecta." });
     }
-    const errorNist = cumpleNist(newPassword);
-    if (errorNist) {
-      return res.status(400).json({ message: errorNist });
-    }
-
-    const pwnCount = await pwnedPassword(newPassword);
-    if (pwnCount > 0) {
-      return res.status(400).json({
-        message: "La contraseña es muy común. Usá otra.",
-      });
-    }
+   
     if (newPassword !== repetirPassword) {
       return res
         .status(400)
         .json({ message: "Las nuevas contraseñas no coinciden." });
+    }
+    const errorPassword = await validarPassword(newPassword);
+    if (errorPassword) {
+      return res.status(400).json({ message: errorPassword });
     }
 
     const hashedPassword = authServiceHashing.hashPassword(newPassword);

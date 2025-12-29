@@ -14,7 +14,8 @@ function verifyToken(req, res, next) {
         '/guest', 
         '/recover',
         '/.well-known/appspecific/com.chrome.devtools.json',
-        '/reset-password'
+        '/reset-password',
+        '/favicon.ico'
     ];
     
     const isPublicPath = PUBLIC_PATHS.includes(req.path); 
