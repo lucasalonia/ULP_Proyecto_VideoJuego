@@ -1,44 +1,46 @@
 extends ../layouts/mainLayout.pug
 
 block content
-  // CONTENEDOR PRINCIPAL CON FONDO PROPIO
-  .contenedor-principal.logros-page
+  if user.userId > 0
+    // CONTENEDOR PRINCIPAL CON FONDO PROPIO
+    .contenedor-principal.logros-page
 
-    // ===================== LOGROS POR DEPARTAMENTO =====================
-    .logro-paraje
-      h3 Parajes Completados por Departamento
-   
+      // ===================== LOGROS POR DEPARTAMENTO =====================
+      .logro-paraje
+        h3 Parajes Completados por Departamento
 
-      .departamento
-        if actual
-          .titulo #{actual.nombre}
-        else
-          .titulo Departamento desconocido
-
-        .icono-insignia
-          if insigniaCompletada
-            img(src=`/img/insignias/${actual.nombre}.png`)
-            span.logro-completado
-              span Departamento
-              span Completado
+        .departamento
+          if actual
+            .titulo #{actual.nombre}
           else
-            img(src=`/img/insignias/${actual.nombre}_blancoynegro.png`)
+            .titulo Departamento desconocido
 
-        .lista-parajes
-          if parajes && parajes.length
-            each p in parajes
+          .icono-insignia
+            if insigniaCompletada
+              img(src=`/img/insignias/${actual.nombre}.png`)
+              span.logro-completado
+                span Departamento
+                span Completado
+            else
+              img(src=`/img/insignias/${actual.nombre}_blancoynegro.png`)
+
+          .lista-parajes
+            if parajes && parajes.length
+              each p in parajes
+                .paraje-item
+                  .icono-trofeo
+                    img(src="/img/trofeo1.png")
+                  .nombre-paraje= p
+            else
               .paraje-item
-                .icono-trofeo
-                  img(src="/img/trofeo1.png")
-                .nombre-paraje= p
-          else
-            .paraje-item
-              .nombre-paraje No hay logros.
+                .nombre-paraje No hay logros.
 
         -
           let indexActual = 0;
           if (departamentos && actual) {
-            indexActual = departamentos.findIndex(d => d.departamento_id === actual.departamento_id);
+            indexActual = departamentos.findIndex(
+              d => d.departamento_id === actual.departamento_id
+            );
             if (indexActual < 0) indexActual = 0;
           }
 
@@ -53,16 +55,29 @@ block content
           a(href=`/logros/${idSiguiente}`)
             img(src="/img/flechaRoja.png", alt="Ir")
 
-    // ===================== LOGROS DE TIEMPO =====================
-    .logro-tiempo
-      h3 Tiempos del Mapa
-    
+      // ===================== LOGROS DE TIEMPO =====================
+      .logro-tiempo
+        h3 Tiempos del Mapa
 
-      .mejores-tiempos
-        if tiempos && tiempos.length
-          each tiempo in tiempos
+        .mejores-tiempos
+          if tiempos && tiempos.length
+            each tiempo in tiempos
+              .tiempo-item
+                span= tiempo.tiempoFormateado
+          else
             .tiempo-item
-              span= tiempo.tiempoFormateado
-        else
-          .tiempo-item
-            span No hay tiempos registrados.
+              span No hay tiempos registrados.
+
+  else
+  .container.py-5.text-center
+    .aviso-invitado
+      h1.aviso-titulo No tenés una cuenta personal todavía
+      
+      p.aviso-texto
+        | Para guardar tu progreso, desbloquear logros y personalizar tu cuenta,
+        br
+        | podés crear una cuenta gratuita cuando quieras.
+
+      .mt-4
+        a.btn.btn-primary(href="/register") Crear Cuenta
+        a.btn.btn-secondary.ms-3(href="/") Volver al Inicio
