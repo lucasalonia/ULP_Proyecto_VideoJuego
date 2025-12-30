@@ -16,10 +16,13 @@ block content
         .carta__interior
           .fichas
             each s, idx in silabas
-              button.ficha(type="button" data-silaba=s data-indice=idx)= s
+              button.ficha(
+                type="button"
+                data-silaba=s
+                data-indice=idx
+              )= s
 
           .carta__etiqueta= departamento.nombre
-
 
       // ==========================
       //     PANEL DERECHA
@@ -31,7 +34,7 @@ block content
           span.contador-departamentos #{numeroParaje} / #{totalParajes}
           span#cronometro.cronometro 00:00.00
 
-        // === CONTENEDOR DE CASILLEROS DINÁMICO ===
+        // === CASILLEROS ===
         .casilleros-area
           .casilleros
             each s, i in tokens
@@ -39,7 +42,10 @@ block content
                 div.casillero.casillero-espacio
                 br
               else
-                button.casillero(type="button" data-indice=i)
+                button.casillero(
+                  type="button"
+                  data-indice=i
+                )
 
         // === TOAST DE VICTORIA ===
         .toast-wrapper
@@ -51,17 +57,19 @@ block content
               if urlVolver
                 a.btn-volver(href=urlVolver) Volver
 
-
-  // ==== JSON PARA EL JS ====
+  // ==========================
+  //  DATA PARA JS
+  // ==========================
   script.
     window.JUEGO_DATA = {
       ordenCorrecto: !{JSON.stringify(ordenCorrecto)},
-      urlSiguiente: "#{urlSiguiente}",
-      urlVolver: "#{urlVolver}",
-      nombreParaje: "#{paraje.nombre}",
-      usuarioId: "#{usuarioId}",
-      parajeId: "#{paraje.id}",
-      departamentoId: "#{departamento.id}"
+      nombreParaje: !{JSON.stringify(paraje.nombre)},
+      usuarioId: !{usuarioId ? JSON.stringify(usuarioId) : 'null'},
+      parajeId: !{paraje && paraje.id ? JSON.stringify(paraje.id) : 'null'},
+      departamentoId: !{departamentoId ? JSON.stringify(departamentoId) : 'null'},
+      parajesDepartamento: !{parajes && parajes.length ? JSON.stringify(parajes) : '[]'}
     };
+
+
 
   script(src="/js/departamento.js")

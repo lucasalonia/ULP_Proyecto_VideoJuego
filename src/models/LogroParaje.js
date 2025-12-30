@@ -4,15 +4,17 @@ const LogroParaje = {
 
   async guardar({ usuario_id, paraje_id, fecha_inicio, fecha_fin, tiempo }) {
     const [result] = await pool.query(
-      `INSERT INTO logro (usuario_id, paraje_id, fecha_inicio, fecha_fin, tiempo)
-       VALUES (?, ?, ?, ?, ?);`,
+      `INSERT IGNORE INTO logro (usuario_id, paraje_id, fecha_inicio, fecha_fin, tiempo)
+     VALUES (?, ?, ?, ?, ?);`,
       [usuario_id, paraje_id, fecha_inicio, fecha_fin, tiempo]
     );
 
-    return result.insertId;
-  },
+    // Si fue ignorado (ya existía), affectedRows = 0
+    return result.insertId || 0;
+  }
+  ,
 
-// Parajes completados por un usuario en un departamento
+  // Parajes completados por un usuario en un departamento
   async getParajesCompletadosPorUsuarioYDepto(usuarioId, deptoId) {
     const [rows] = await pool.query(
       `SELECT l.paraje_id
@@ -37,7 +39,7 @@ const LogroParaje = {
     return rows.map(r => r.nombre);
   },
 
- async getParajesCompletadosUltimosTres(usuarioId) {
+  async getParajesCompletadosUltimosTres(usuarioId) {
     const [rows] = await pool.query(
       `
   SELECT p.nombre
@@ -50,6 +52,6 @@ LIMIT 3; `,
     );
     return rows.map(r => r.nombre);
   },
-  
+
 };
 module.exports = LogroParaje;

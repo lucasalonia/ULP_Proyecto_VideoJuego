@@ -1,7 +1,9 @@
 const Departamento = require("../models/Departamento");
 const LogroParaje = require("../models/LogroParaje");
 
-// 🎨 Añade colores e imágenes por defecto al departamento
+
+
+// Añade colores e imágenes por defecto al departamento
 function colorizeDepto(departamento) {
   return {
     ...departamento,
@@ -12,7 +14,7 @@ function colorizeDepto(departamento) {
   };
 }
 
-// 🔀 Mezcla aleatoriamente las sílabas
+// Mezcla aleatoriamente las sílabas
 function shuffle(arr) {
   return arr
     .map(v => ({ v, r: Math.random() }))
@@ -20,7 +22,7 @@ function shuffle(arr) {
     .map(o => o.v);
 }
 
-// 🧭 LISTAR DEPARTAMENTOS
+// LISTAR DEPARTAMENTOS
 async function listarDepartamentos(req, res) {
   try {
     const departamentos = await Departamento.getAll();
@@ -31,16 +33,18 @@ async function listarDepartamentos(req, res) {
   }
 }
 
-// 🎮 JUEGO POR PARAJE — FASE 3 COMPLETA
+// JUEGO POR PARAJE — LÓGICA CORRECTA
 async function verDepartamentoJuego(req, res) {
+  const { paraje: parajeQuery } = req.query;
+
   const { id } = req.params; // id del departamento
 
   try {
-    // Usuario temporal (hasta login real)
-    if (!req.session.usuarioId) {
-      req.session.usuarioId = 1;
-    }
-    const usuarioId = req.session.usuarioId;
+    // 👉 USUARIO REAL (JWT) O NULL SI INVITADO
+    const usuarioId =
+      req.user && !isNaN(Number(req.user.sub))
+        ? Number(req.user.sub)
+        : null;
 
     const departamento = await Departamento.getById(id);
     if (!departamento) return res.status(404).render("notFound");
@@ -49,28 +53,57 @@ async function verDepartamentoJuego(req, res) {
     const parajes = await Departamento.getParajesByDepto(id);
     if (!parajes?.length) return res.status(404).render("notFound");
 
-    // IDs de parajes ya completados por este usuario en este departamento
-    const completadosIds = await LogroParaje.getParajesCompletadosPorUsuarioYDepto(
-      usuarioId,
-      id
-    );
-    const completadosSet = new Set(completadosIds);
+    let paraje = null;
+    let indexParaje = 1;
 
-    // Elegir el PRIMER paraje no completado
-    const paraje = parajes.find(p => !completadosSet.has(p.id));
+    // 🔐 USUARIO LOGUEADO → progreso real desde DB
+    if (usuarioId) {
+      const completadosIds =
+        await LogroParaje.getParajesCompletadosPorUsuarioYDepto(
+          usuarioId,
+          id
+        );
 
-    // Si no hay → ya completó el departamento
-    if (!paraje) {
-      const dep = colorizeDepto(departamento);
-      return res.render("departamentoCompletado", {
-        departamento: dep,
-        totalParajes: parajes.length
-      });
+      const completadosSet = new Set(completadosIds);
+
+      // Elegir el PRIMER paraje no completado
+      paraje = parajes.find(p => !completadosSet.has(p.id));
+
+      // Si no hay → departamento COMPLETADO
+      if (!paraje) {
+        const dep = colorizeDepto(departamento);
+        return res.render("departamentoCompletado", {
+          departamento: dep,
+          totalParajes: parajes.length,
+        });
+      }
+
+      indexParaje = parajes.findIndex(p => p.id === paraje.id) + 1;
     }
+    // 👤 INVITADO → SIEMPRE renderiza el primero
+    // 👉 el avance real se maneja en el front con LocalStorage
+    else {
+      // 👉 si el front pide un paraje específico
+      if (parajeQuery) {
+        paraje = parajes.find(
+          p => String(p.id) === String(parajeQuery)
+        );
+      }
+
+      // fallback de seguridad
+      if (!paraje) {
+        paraje = parajes[0];
+      }
+
+      indexParaje = parajes.findIndex(p => p.id === paraje.id) + 1;
+    }
+
 
     const dep = colorizeDepto(departamento);
 
-    // Procesar sílabas
+    // ==========================
+    // PROCESAR SÍLABAS
+    // ==========================
     const palabras = (paraje.silabas || "").split("|");
 
     const silabasReales = [];
@@ -90,24 +123,27 @@ async function verDepartamentoJuego(req, res) {
       }
     });
 
-    // Preparar datos para la vista
     const ordenCorrecto = silabasReales;
     const silabasMezcladas = shuffle(silabasReales);
 
-    const totalParajes = parajes.length;
-    const indexParaje = parajes.findIndex(p => p.id === paraje.id) + 1;
-
+    // ==========================
+    // RENDER
+    // ==========================
     res.render("departamento", {
       departamento: dep,
+      departamentoId: departamento.departamento_id,
       paraje,
       usuarioId,
       tokens,
       silabas: silabasMezcladas,
       ordenCorrecto,
       numeroParaje: indexParaje,
-      totalParajes,
-      urlSiguiente: `/departamento/${id}`, // vuelve a cargar y toma siguiente
+      totalParajes: parajes.length,
+      urlSiguiente: `/departamento/${id}`, // solo fallback
       urlVolver: "/mapa",
+
+      // 🔑 CLAVE PARA LOCAL STORAGE
+      parajes, // 👈 ESTO FALTABA
     });
 
   } catch (err) {
@@ -116,7 +152,8 @@ async function verDepartamentoJuego(req, res) {
   }
 }
 
-// 📄 DETALLE
+
+// DETALLE
 async function verDepartamentoDetalle(req, res) {
   try {
     const departamento = await Departamento.getById(req.params.id);

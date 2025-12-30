@@ -5,12 +5,12 @@ module.exports = {
     try {
       const usuario_id = req.user?.sub;
 
-      // 🛑 INVITADO (guest_xxx o undefined)
+      // INVITADO (guest_xxx o undefined)
       if (!usuario_id || isNaN(Number(usuario_id))) {
         return res.json({
           ok: true,
           guest: true,
-          msg: "Logro guardado solo en localStorage"
+          msg: "Logro guardado solo en localStorage",
         });
       }
 
@@ -21,14 +21,23 @@ module.exports = {
         paraje_id,
         fecha_inicio: new Date(fecha_inicio),
         fecha_fin: new Date(fecha_fin),
-        tiempo
+        tiempo,
       });
 
-      res.json({ ok: true, logroId: id });
+      // Si id = 0, fue IGNORE (ya existía)
+      if (id === 0) {
+        return res.json({
+          ok: true,
+          guest: false,
+          duplicated: true,
+          msg: "Logro ya existía, no se duplicó",
+        });
+      }
 
+      return res.json({ ok: true, guest: false, logroId: id });
     } catch (err) {
       console.error("Error guardando logro:", err);
       res.status(500).json({ ok: false, error: "Error al guardar logro" });
     }
-  }
+  },
 };

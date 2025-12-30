@@ -1,7 +1,7 @@
 extends ../layouts/mainLayout.pug
 
 block content
-  if user.userId > 0
+  if user && user.userId > 0
     .contenedor-principal.logros-page
 
       .logro-paraje
@@ -30,13 +30,17 @@ block content
             .titulo Departamento desconocido
 
           .icono-insignia
-            if insigniaCompletada
-              img(src=`/img/insignias/${actual.nombre}.png`)
-              span.logro-completado
-                span Departamento
-                span Completado
+            if actual
+              if insigniaCompletada
+                img(src=`/img/insignias/${actual.nombre}.png`)
+                span.logro-completado
+                  span Departamento
+                  span Completado
+              else
+                img(src=`/img/insignias/${actual.nombre}_blancoynegro.png`)
             else
-              img(src=`/img/insignias/${actual.nombre}_blancoynegro.png`)
+              img(src="/img/insignias/insigniaGris.png")
+
 
           .lista-parajes
             if parajes && parajes.length
@@ -49,10 +53,11 @@ block content
               .paraje-item
                 .nombre-paraje No hay logros.
 
-          // ===== FLECHA (YA TIENE idSiguiente DEFINIDO) =====
-          .flecha
-            a(href=`/logros/${idSiguiente}`)
-              img(src="/img/flechaRoja.png", alt="Ir")
+          // ===== FLECHA =====
+          if idSiguiente && idSiguiente > 0
+            .flecha
+              a(href=`/logros/${idSiguiente}`)
+                img(src="/img/flechaRoja.png", alt="Ir")
 
       .logro-tiempo
         h3 Tiempos del Mapa

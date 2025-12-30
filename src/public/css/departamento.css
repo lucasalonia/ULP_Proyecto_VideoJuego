@@ -71,7 +71,7 @@ html, body {
 }
 
 /* ============================================================
-   ⚡ CASILLEROS — aislados dentro del PANEL
+   CASILLEROS — aislados dentro del PANEL
    ============================================================ */
 .juego-panel .casilleros {
   display: block;
@@ -272,3 +272,7 @@ html, body {
   margin-top: 20px;
 }
 
+.ficha.seleccionada {
+  filter: brightness(0.75);
+  transform: scale(0.96);
+}
