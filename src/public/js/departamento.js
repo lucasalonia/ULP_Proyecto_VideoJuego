@@ -7,10 +7,10 @@ document.addEventListener("DOMContentLoaded", () => {
     parajeId,
     departamentoId,
     nombreParaje = "Paraje",
-    parajesDepartamento = [],
   } = window.JUEGO_DATA;
 
-  const esInvitado = usuarioId === null;
+  const esInvitado = usuarioId === null || usuarioId === undefined;
+  let victoriaProcesada = false;
 
   // ==================================================
   // LOCAL STORAGE – SOLO INVITADOS
@@ -57,12 +57,15 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }, 50);
 
+  function getTiempoSegundos() {
+    return Math.max(0, Math.floor((Date.now() - startTime) / 1000));
+  }
+
   // ==================================================
   // ELEMENTOS
   // ==================================================
   const fichas = [...document.querySelectorAll(".ficha")];
   const casilleros = [...document.querySelectorAll("button.casillero")];
-
   let fichaSeleccionada = null;
 
   // ==================================================
@@ -72,6 +75,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const toastMsg = document.querySelector(".comarca-toast-msg");
 
   function mostrarToast(msg) {
+    if (!toast || !toastMsg) return;
     toastMsg.textContent = msg;
     toast.classList.remove("comarca-toast--oculto");
     toast.classList.add("comarca-toast--visible");
@@ -88,9 +92,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function liberarFicha(idFicha) {
-    const ficha = document.querySelector(
-      `.ficha[data-indice="${idFicha}"]`
-    );
+    const ficha = document.querySelector(`.ficha[data-indice="${idFicha}"]`);
     if (!ficha) return;
 
     ficha.dataset.usada = "0";
@@ -119,12 +121,49 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // ==================================================
+  // BACKEND – GUARDAR TIEMPO / LOGRO
+  // ==================================================
+  async function postJSON(url, payload) {
+    try {
+      const res = await fetch(url, {
+        method: "POST",
+        credentials: "same-origin",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+
+      if (!res.ok) return { ok: false };
+      return await res.json();
+    } catch {
+      return { ok: false };
+    }
+  }
+
+  async function guardarBD() {
+    const fecha_inicio = new Date(startTime).toISOString();
+    const fecha_fin = new Date().toISOString();
+    const tiempo = getTiempoSegundos();
+
+    await postJSON("/logro-paraje", {
+      paraje_id: parajeId,
+      fecha_inicio,
+      fecha_fin,
+      tiempo,
+    });
+
+    await postJSON("/tiempo_mapa", {
+      fecha_inicio,
+      fecha_fin,
+      tiempo,
+    });
+  }
+
+  // ==================================================
   // VERIFICAR VICTORIA
   // ==================================================
   function verificarVictoria() {
     casilleros.forEach((c, i) => {
       c.classList.remove("correcto", "incorrecto", "shake", "pop");
-
       if (!c.dataset.valor) return;
 
       if (c.dataset.valor === ordenCorrecto[i]) {
@@ -139,14 +178,16 @@ document.addEventListener("DOMContentLoaded", () => {
       (c, i) => c.dataset.valor === ordenCorrecto[i]
     );
 
-    if (completo && correcto) {
-      clearInterval(cronometroInterval);
+    if (!completo || !correcto || victoriaProcesada) return;
+    victoriaProcesada = true;
 
-      if (esInvitado) {
-        guardarParajeLocal(departamentoId, parajeId);
-      }
+    clearInterval(cronometroInterval);
+    mostrarToast(`¡Paraje completado: ${nombreParaje}!`);
 
-      mostrarToast(`¡Paraje completado: ${nombreParaje}!`);
+    if (esInvitado) {
+      guardarParajeLocal(departamentoId, parajeId);
+    } else {
+      guardarBD().catch(() => {});
     }
   }
 
@@ -188,31 +229,14 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   // ==================================================
-  // NAVEGACIÓN "SIGUIENTE" USANDO LOCAL STORAGE (INVITADOS)
+  // BOTÓN "SIGUIENTE" / "VOLVER"
+  // 👉 SOLO navega al href que puso el BACKEND
   // ==================================================
-  const btnSiguiente = document.querySelector(".btn-siguiente");
-
-  if (btnSiguiente && esInvitado) {
-    btnSiguiente.addEventListener("click", (e) => {
+  document.querySelectorAll(".btn-siguiente, .btn-volver").forEach((btn) => {
+    btn.addEventListener("click", (e) => {
       e.preventDefault();
-
-      const data = getProgresoLocal();
-      const depId = String(departamentoId);
-      const completados = data.cartas?.[depId] || [];
-
-      const siguiente = parajesDepartamento.find(
-        (p) => !completados.includes(String(p.id))
-      );
-
-      if (siguiente) {
-        window.location.href =
-          `/departamento/${departamentoId}?paraje=${siguiente.id}`;
-      } else {
-        window.location.href =
-          `/departamento/${departamentoId}/completado`;
-      }
-
-
+      const href = btn.getAttribute("href");
+      if (href) window.location.href = href;
     });
-  }
+  });
 });

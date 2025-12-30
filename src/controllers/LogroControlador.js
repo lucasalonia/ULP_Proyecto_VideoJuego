@@ -7,31 +7,47 @@ const LogroParaje = require("../models/LogroParaje");
 // ===================================================
 async function guardarTiempo(req, res) {
   try {
-    const usuario_id = req.user?.sub;
+    console.log("REQ.USER EN guardarTiempo:", req.user);
 
-    // 🛑 INVITADO (guest_xxx o undefined)
+    const usuario_id = req.user?.usuario_id;
+
+    // 🔒 Seguridad extra (nunca insertar sin usuario)
     if (!usuario_id || isNaN(Number(usuario_id))) {
-      return res.json({
-        ok: true,
-        guest: true,
-        msg: "Tiempo guardado solo en localStorage"
+      console.error("Usuario inválido en guardarTiempo:", req.user);
+      return res.status(401).json({
+        ok: false,
+        error: "Usuario no autenticado",
       });
     }
 
     const { fecha_inicio, fecha_fin, tiempo } = req.body;
 
-    await Logro.insertTiempoMapa({
+    // 🔒 Validación básica de datos
+    if (!fecha_inicio || !fecha_fin || tiempo == null) {
+      return res.status(400).json({
+        ok: false,
+        error: "Datos incompletos para guardar el tiempo",
+      });
+    }
+
+    // ✅ Llamada correcta al modelo (PARÁMETROS SUELTOS)
+    await Logro.insertTiempoMapa(
       usuario_id,
       fecha_inicio,
       fecha_fin,
       tiempo
+    );
+
+    return res.json({
+      ok: true,
+      mensaje: "Tiempo registrado",
     });
-
-    res.json({ ok: true, mensaje: "Tiempo registrado" });
-
   } catch (err) {
     console.error("Error guardando tiempo:", err);
-    res.status(500).json({ ok: false, error: "Error al guardar tiempo" });
+    return res.status(500).json({
+      ok: false,
+      error: "Error al guardar tiempo",
+    });
   }
 }
 
@@ -40,23 +56,23 @@ async function guardarTiempo(req, res) {
 // ===================================================
 async function obtenerLogros(req, res) {
   try {
-    const usuarioId = req.user?.sub;
+    const usuarioId = req.user?.usuario_id;
 
-    // 🛑 INVITADO → vista vacía (usa localStorage)
+    // 🛑 INVITADO → vista vacía
     if (!usuarioId || isNaN(Number(usuarioId))) {
       return res.render("usuario/logros", {
         tiempos: [],
         parajes: [],
         departamentos: [],
         actual: null,
-        insigniaCompletada: false
+        insigniaCompletada: false,
       });
     }
 
     const departamentoId = req.params.departamentoId;
     let insigniaCompletada = false;
 
-    // ===================== DEPARTAMENTOS CON LOGROS =====================
+    // ===================== DEPARTAMENTOS =====================
     const departamentos =
       await Departamento.getDepartamentosConParajes(usuarioId);
 
@@ -66,22 +82,21 @@ async function obtenerLogros(req, res) {
         parajes: [],
         departamentos: [],
         actual: null,
-        insigniaCompletada: false
+        insigniaCompletada: false,
       });
     }
 
-    // ===================== DEPARTAMENTO ACTUAL =====================
+    // ===================== DEPTO ACTUAL =====================
     let actual = departamentoId
-      ? departamentos.find(d => d.departamento_id == departamentoId)
+      ? departamentos.find((d) => d.departamento_id == departamentoId)
       : departamentos[0];
 
     if (!actual) actual = departamentos[0];
 
-    // ===================== PARAJES DEL DEPTO =====================
+    // ===================== PARAJES =====================
     const parajes =
       await Departamento.getParajesByDepto(actual.departamento_id);
 
-    // ===================== PARAJES COMPLETADOS =====================
     const completadosIds =
       await LogroParaje.getParajesCompletadosPorUsuarioYDepto(
         usuarioId,
@@ -91,7 +106,7 @@ async function obtenerLogros(req, res) {
     const completadosSet = new Set(completadosIds);
 
     const parajeNoCompletado = parajes.find(
-      p => !completadosSet.has(p.id)
+      (p) => !completadosSet.has(p.id)
     );
 
     if (!parajeNoCompletado && parajes.length > 0) {
@@ -100,12 +115,12 @@ async function obtenerLogros(req, res) {
 
     // ===================== TIEMPOS =====================
     const tiempos = await Logro.getTiemposMapa(usuarioId);
-    const tiemposFormateados = tiempos.map(t => ({
+    const tiemposFormateados = tiempos.map((t) => ({
       ...t,
-      tiempoFormateado: formatearTiempo(t.tiempo)
+      tiempoFormateado: formatearTiempo(t.tiempo),
     }));
 
-    // ===================== PARAJES PARA MOSTRAR =====================
+    // ===================== PARAJES COMPLETADOS =====================
     const parajesCompletados =
       await LogroParaje.getParajesCompletadosPorUsuarioYDeptoNombre(
         usuarioId,
@@ -113,17 +128,19 @@ async function obtenerLogros(req, res) {
       );
 
     // ===================== RENDER =====================
-    res.render("usuario/logros", {
+    return res.render("usuario/logros", {
       tiempos: tiemposFormateados,
       parajes: parajesCompletados,
       departamentos,
       actual,
-      insigniaCompletada
+      insigniaCompletada,
     });
-
   } catch (error) {
     console.error("Error obteniendo logros:", error);
-    res.status(500).json({ ok: false, error: "Error al obtener logros" });
+    return res.status(500).json({
+      ok: false,
+      error: "Error al obtener logros",
+    });
   }
 }
 
@@ -132,35 +149,37 @@ async function obtenerLogros(req, res) {
 // ===================================================
 async function obtenerUltimosLogros(req, res) {
   try {
-    const usuarioId = req.user?.sub;
+    const usuarioId = req.user?.usuario_id;
 
     // 🛑 INVITADO
     if (!usuarioId || isNaN(Number(usuarioId))) {
       return res.json({
         ok: true,
         tiempo: null,
-        parajesCompletados: []
+        parajesCompletados: [],
       });
     }
 
     const tiempo = await Logro.getUltimoTiempoMapa(usuarioId);
-    const tiemposFormateados = tiempo.map(t => ({
+    const tiemposFormateados = tiempo.map((t) => ({
       ...t,
-      tiempoFormateado: formatearTiempo(t.tiempo)
+      tiempoFormateado: formatearTiempo(t.tiempo),
     }));
 
     const parajesCompletados =
       await LogroParaje.getParajesCompletadosUltimosTres(usuarioId);
 
-    res.json({
+    return res.json({
       ok: true,
       tiempo: tiemposFormateados[0] || null,
-      parajesCompletados
+      parajesCompletados,
     });
-
   } catch (err) {
     console.error("Error obteniendo últimos logros:", err);
-    res.status(500).json({ ok: false, msg: "Error al obtener logros del perfil" });
+    return res.status(500).json({
+      ok: false,
+      msg: "Error al obtener logros del perfil",
+    });
   }
 }
 
@@ -170,7 +189,7 @@ async function obtenerUltimosLogros(req, res) {
 module.exports = {
   guardarTiempo,
   obtenerLogros,
-  obtenerUltimosLogros
+  obtenerUltimosLogros,
 };
 
 // ===================================================
@@ -180,5 +199,7 @@ function formatearTiempo(segundos) {
   const minutos = Math.floor(segundos / 60);
   const segs = segundos % 60;
 
-  return `${minutos < 10 ? "0" : ""}${minutos}:${segs < 10 ? "0" : ""}${segs}`;
+  return `${minutos < 10 ? "0" : ""}${minutos}:${
+    segs < 10 ? "0" : ""
+  }${segs}`;
 }

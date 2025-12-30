@@ -3,7 +3,11 @@ const LogroParaje = require("../models/LogroParaje");
 module.exports = {
   async guardarLogro(req, res) {
     try {
-      const usuario_id = req.user?.sub;
+      const usuario_id = req.user?.usuario_id;
+      if (!usuario_id) {
+        return res.status(401).json({ ok: false, msg: "No autenticado" });
+      }
+
 
       // INVITADO (guest_xxx o undefined)
       if (!usuario_id || isNaN(Number(usuario_id))) {

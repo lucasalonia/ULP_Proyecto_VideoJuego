@@ -61,14 +61,7 @@ block content
   //  DATA PARA JS
   // ==========================
   script.
-    window.JUEGO_DATA = {
-      ordenCorrecto: !{JSON.stringify(ordenCorrecto)},
-      nombreParaje: !{JSON.stringify(paraje.nombre)},
-      usuarioId: !{usuarioId ? JSON.stringify(usuarioId) : 'null'},
-      parajeId: !{paraje && paraje.id ? JSON.stringify(paraje.id) : 'null'},
-      departamentoId: !{departamentoId ? JSON.stringify(departamentoId) : 'null'},
-      parajesDepartamento: !{parajes && parajes.length ? JSON.stringify(parajes) : '[]'}
-    };
+    window.JUEGO_DATA = !{JSON.stringify(juegoData)};
 
 
 

@@ -36,27 +36,41 @@ async function listarDepartamentos(req, res) {
 // JUEGO POR PARAJE — LÓGICA CORRECTA
 async function verDepartamentoJuego(req, res) {
   const { paraje: parajeQuery } = req.query;
-
   const { id } = req.params; // id del departamento
 
   try {
-    // 👉 USUARIO REAL (JWT) O NULL SI INVITADO
+    // ==========================
+    // USUARIO (normalizado)
+    // ==========================
     const usuarioId =
-      req.user && !isNaN(Number(req.user.sub))
-        ? Number(req.user.sub)
+      req.user && !isNaN(Number(req.user.usuario_id))
+        ? Number(req.user.usuario_id)
         : null;
 
-    const departamento = await Departamento.getById(id);
-    if (!departamento) return res.status(404).render("notFound");
+    // ==========================
+    // DEPARTAMENTO
+    // ==========================
+    const departamentoDB = await Departamento.getById(id);
+    if (!departamentoDB) {
+      return res.status(404).render("notFound");
+    }
 
-    // TODOS los parajes del depto
+    const departamento = colorizeDepto(departamentoDB);
+
+    // ==========================
+    // PARAJES DEL DEPARTAMENTO
+    // ==========================
     const parajes = await Departamento.getParajesByDepto(id);
-    if (!parajes?.length) return res.status(404).render("notFound");
+    if (!parajes || parajes.length === 0) {
+      return res.status(404).render("notFound");
+    }
 
     let paraje = null;
     let indexParaje = 1;
 
-    // 🔐 USUARIO LOGUEADO → progreso real desde DB
+    // ==========================
+    // USUARIO LOGUEADO → PROGRESO DB
+    // ==========================
     if (usuarioId) {
       const completadosIds =
         await LogroParaje.getParajesCompletadosPorUsuarioYDepto(
@@ -66,40 +80,35 @@ async function verDepartamentoJuego(req, res) {
 
       const completadosSet = new Set(completadosIds);
 
-      // Elegir el PRIMER paraje no completado
+      // primer paraje NO completado
       paraje = parajes.find(p => !completadosSet.has(p.id));
 
-      // Si no hay → departamento COMPLETADO
+      // si no hay → departamento completado
       if (!paraje) {
-        const dep = colorizeDepto(departamento);
         return res.render("departamentoCompletado", {
-          departamento: dep,
+          departamento,
           totalParajes: parajes.length,
         });
       }
 
       indexParaje = parajes.findIndex(p => p.id === paraje.id) + 1;
     }
-    // 👤 INVITADO → SIEMPRE renderiza el primero
-    // 👉 el avance real se maneja en el front con LocalStorage
+    // ==========================
+    // INVITADO
+    // ==========================
     else {
-      // 👉 si el front pide un paraje específico
       if (parajeQuery) {
         paraje = parajes.find(
           p => String(p.id) === String(parajeQuery)
         );
       }
 
-      // fallback de seguridad
       if (!paraje) {
         paraje = parajes[0];
       }
 
       indexParaje = parajes.findIndex(p => p.id === paraje.id) + 1;
     }
-
-
-    const dep = colorizeDepto(departamento);
 
     // ==========================
     // PROCESAR SÍLABAS
@@ -124,33 +133,57 @@ async function verDepartamentoJuego(req, res) {
     });
 
     const ordenCorrecto = silabasReales;
-    const silabasMezcladas = shuffle(silabasReales);
+    const silabasMezcladas = shuffle([...silabasReales]);
+
+    // ==========================
+    // CONTADORES Y NAVEGACIÓN
+    // ==========================
+    const numeroParaje = indexParaje;
+    const totalParajes = parajes.length;
+
+    const idxActual = parajes.findIndex(p => p.id === paraje.id);
+    const siguiente = parajes[idxActual + 1];
+
+    const urlSiguiente = siguiente
+      ? `/departamento/${id}?paraje=${siguiente.id}`
+      : `/departamento/${id}/completado`;
+
+    const urlVolver = `/departamentos`;
+
+    // ==========================
+    // DATA PARA FRONTEND
+    // ==========================
+    const juegoData = {
+      usuarioId,
+      parajeId: paraje.id,
+      departamentoId: departamento.id,
+      parajesDepartamento: parajes,
+      nombreParaje: paraje.nombre,
+      ordenCorrecto,
+    };
 
     // ==========================
     // RENDER
     // ==========================
     res.render("departamento", {
-      departamento: dep,
-      departamentoId: departamento.departamento_id,
+      departamento,
       paraje,
-      usuarioId,
-      tokens,
-      silabas: silabasMezcladas,
+      parajes,
       ordenCorrecto,
-      numeroParaje: indexParaje,
-      totalParajes: parajes.length,
-      urlSiguiente: `/departamento/${id}`, // solo fallback
-      urlVolver: "/mapa",
-
-      // 🔑 CLAVE PARA LOCAL STORAGE
-      parajes, // 👈 ESTO FALTABA
+      silabas: silabasMezcladas,
+      tokens,
+      numeroParaje,
+      totalParajes,
+      urlSiguiente,
+      urlVolver,
+      juegoData,
     });
-
   } catch (err) {
-    console.error(err);
+    console.error("Error en verDepartamentoJuego:", err);
     res.status(500).send("Error al obtener el departamento");
   }
 }
+
 
 
 // DETALLE
