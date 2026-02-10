@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 09-02-2026 a las 16:09:46
+-- Tiempo de generación: 10-02-2026 a las 01:57:14
 -- Versión del servidor: 10.4.14-MariaDB
 -- Versión de PHP: 7.4.10
 
@@ -419,9 +419,18 @@ CREATE TABLE `usuario` (
   `usuario_id` int(11) NOT NULL,
   `nombre` varchar(200) NOT NULL,
   `mail` varchar(150) NOT NULL,
-  `password` varchar(200) NOT NULL,
-  `imagen_perfil` varchar(250) NOT NULL
+  `password_hash` varchar(1000) DEFAULT NULL,
+  `imagen_perfil` varchar(250) NOT NULL,
+  `rol` varchar(50) DEFAULT 'jugador',
+  `fecha_creacion` timestamp NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Volcado de datos para la tabla `usuario`
+--
+
+INSERT INTO `usuario` (`usuario_id`, `nombre`, `mail`, `password_hash`, `imagen_perfil`, `rol`, `fecha_creacion`) VALUES
+(1, 'invitado', 'salonialuca97@gmail.com', '$2b$12$XCvZ0PJy1MISV4CzRmbfwODvinygWOIQHfWbrL/0UxGZKB6Tku/Na', '/img/profiles/testimage2.png', 'admin', '2025-11-17 18:51:41');
 
 --
 -- Índices para tablas volcadas
@@ -459,7 +468,8 @@ ALTER TABLE `tiempo_mapa`
 -- Indices de la tabla `usuario`
 --
 ALTER TABLE `usuario`
-  ADD PRIMARY KEY (`usuario_id`);
+  ADD PRIMARY KEY (`usuario_id`),
+  ADD UNIQUE KEY `mail` (`mail`);
 
 --
 -- AUTO_INCREMENT de las tablas volcadas
@@ -475,7 +485,7 @@ ALTER TABLE `departamento`
 -- AUTO_INCREMENT de la tabla `logro`
 --
 ALTER TABLE `logro`
-  MODIFY `logro_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `logro_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `paraje`
@@ -487,13 +497,13 @@ ALTER TABLE `paraje`
 -- AUTO_INCREMENT de la tabla `tiempo_mapa`
 --
 ALTER TABLE `tiempo_mapa`
-  MODIFY `tiempo_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `tiempo_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `usuario`
 --
 ALTER TABLE `usuario`
-  MODIFY `usuario_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `usuario_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 
 --
 -- Restricciones para tablas volcadas
