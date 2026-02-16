@@ -2,11 +2,14 @@
    CONTENEDOR PRINCIPAL
 =========================== */
 .departamentos-container {
-  min-height: calc(100vh - 350px); /* ajustá 70px a la altura de tu navbar */
+  min-height: calc(100vh - 350px);
+  /* ajustá 70px a la altura de tu navbar */
   display: flex;
   flex-direction: column;
-  justify-content: center; /* centro vertical */
-  align-items: center;     /* centro horizontal */
+  justify-content: center;
+  /* centro vertical */
+  align-items: center;
+  /* centro horizontal */
 
   padding: 3rem 2rem;
   text-align: center;
@@ -21,7 +24,8 @@
   font-size: 22px;
   margin-bottom: 32px;
   color: #000;
-  text-shadow: 3px 3px 0 #0ff; /* pixel shadow */
+  text-shadow: 3px 3px 0 #0ff;
+  /* pixel shadow */
 }
 
 /* ===========================
@@ -41,7 +45,7 @@
 =========================== */
 .departamento-btn {
   background-color: #00c6d9;
-  color: #000;
+  color: #ffffff;
   padding: 16px 22px;
   text-decoration: none;
   text-transform: uppercase;
@@ -51,7 +55,7 @@
   border: 3px solid #000;
 
   /* sombra pixel */
-  box-shadow: 
+  box-shadow:
     4px 4px 0 #000;
 
   transition: transform 0.1s ease, box-shadow 0.1s ease;
@@ -62,7 +66,7 @@
 =========================== */
 .departamento-btn:hover {
   transform: translate(-2px, -2px);
-  box-shadow: 
+  box-shadow:
     6px 6px 0 #000;
 }
 
@@ -71,19 +75,99 @@
 =========================== */
 .departamento-btn:active {
   transform: translate(2px, 2px);
-  box-shadow: 
+  box-shadow:
     2px 2px 0 #000;
 }
 
 /* ===========================
-   RESPONSIVE
+   PANEL DE REGLAS
 =========================== */
+/* ===========================
+   PANEL DE REGLAS (más grande, kids-friendly)
+=========================== */
+.rules-panel {
+  width: 100%;
+  max-width: 980px;
+  /* más ancho */
+  margin: 0 auto 34px;
+  padding: 26px 28px;
+  /* más aire */
+
+  background: linear-gradient(180deg, #071a2c, #050f1d);
+  border: 5px solid #00eaff;
+
+  box-shadow:
+    0 0 18px rgba(0, 234, 255, 0.40),
+    8px 8px 0 #000;
+
+  text-align: left;
+}
+
+/* Título */
+.rules-title {
+  margin: 0 0 14px;
+  font-size: 18px;
+  /* antes 14px */
+  color: #ffffff;
+  letter-spacing: 1px;
+
+  text-shadow:
+    3px 3px 0 rgba(0, 0, 0, 0.9),
+    0 0 10px rgba(0, 234, 255, 0.35);
+}
+
+/* Texto */
+.rules-text {
+  margin: 0 0 16px;
+  font-size: 14px;
+  /* antes 11px */
+  line-height: 1.9;
+  /* más legible */
+  color: #eaffff;
+  text-shadow:
+    3px 3px 0 rgba(0, 0, 0, 0.85);
+}
+
+/* Lista */
+.rules-list {
+  margin: 0;
+  padding-left: 22px;
+}
+
+.rules-list li {
+  line-height: 2.1;
+  margin-bottom: 6px;
+  font-size: 13px;
+  /* antes 10px */
+  color: #ffffff;
+  text-shadow:
+    3px 3px 0 rgba(0, 0, 0, 0.85);
+}
+
 @media (max-width: 768px) {
+  .rules-panel {
+    padding: 16px 16px;
+    margin-bottom: 22px;
+  }
+
+  .rules-title {
+    font-size: 13px;
+  }
+
+  .rules-text {
+    font-size: 10px;
+  }
+
+  .rules-list li {
+    font-size: 9px;
+  }
+
   .departamento-btn {
     font-size: 10px;
     padding: 14px 18px;
   }
 }
+
 .departamento-btn::before {
   content: "▶";
   margin-right: 6px;

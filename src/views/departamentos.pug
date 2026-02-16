@@ -2,7 +2,22 @@ extends layouts/mainLayout.pug
 
 block content
   main.departamentos-container
+    // ===== PANEL REGLAS =====
+    section.rules-panel(aria-label="Reglas del juego")
+      h2.rules-title ¿Cómo se juega?
+      p.rules-text
+        | Elegí un departamento y armá el nombre del paraje usando sílabas.
+      ul.rules-list
+        li Seleccioná las sílabas y colocalas en el lugar correcto.
+        li Podés sacar las sílabas y volver a colocarlas las veces que quieras.
+        li Completá todos los parajes de un departamento para ganar.
+        li Cuando vuelvas al juego, tu progreso se guarda.
+        
     h1 Departamentos
+
     .departamentos-list
       each dep in departamentos
         a.departamento-btn(href=`/departamento/${dep.departamento_id}`)= dep.nombre
+
+
+
