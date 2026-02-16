@@ -25,7 +25,7 @@ document.addEventListener("DOMContentLoaded", () => {
   function openReglas() {
     if (!modalReglas) return;
 
-    // ✅ si está corriendo, pausamos por reglas
+    // si está corriendo, pausamos por reglas
     if (!isPaused && !victoriaProcesada) {
       pausedByRules = true;
       togglePausa();
@@ -146,7 +146,7 @@ document.addEventListener("DOMContentLoaded", () => {
         btnPausa.setAttribute("aria-pressed", "true");
       }
 
-      // 🔒 bloquear sílabas + casilleros
+      // bloquear sílabas + casilleros
       setPausedUI(true);
       // también sacamos selección para evitar confusión visual
       deseleccionarFicha();
@@ -164,7 +164,7 @@ document.addEventListener("DOMContentLoaded", () => {
       btnPausa.setAttribute("aria-pressed", "false");
     }
 
-    // 🔓 habilitar
+    // habilitar
     setPausedUI(false);
   }
 
@@ -247,7 +247,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // ==================================================
-  // BACKEND – GUARDAR TIEMPO / LOGRO
+  // BACKEND – GUARDAR LOGRO (NO guardar tiempo_mapa acá)
   // ==================================================
   async function postJSON(url, payload) {
     try {
@@ -270,6 +270,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const fecha_fin = new Date().toISOString();
     const tiempo = getTiempoSegundos();
 
+    // Solo logro (progreso del juego)
     await postJSON("/logro-paraje", {
       paraje_id: parajeId,
       fecha_inicio,
@@ -277,11 +278,7 @@ document.addEventListener("DOMContentLoaded", () => {
       tiempo,
     });
 
-    await postJSON("/tiempo_mapa", {
-      fecha_inicio,
-      fecha_fin,
-      tiempo,
-    });
+    // Importante: NO llamar /tiempo_mapa desde el juego
   }
 
   // ==================================================
@@ -309,7 +306,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (btnPausa) btnPausa.style.display = "none";
     stopCronometro();
-    setPausedUI(true); // al ganar, también bloqueamos para que no sigan tocando
+    setPausedUI(true); // al ganar, bloqueamos para que no sigan tocando
 
     if (btnPausa) {
       btnPausa.setAttribute("aria-pressed", "true");
@@ -321,7 +318,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (esInvitado) {
       guardarParajeLocal(departamentoId, parajeId);
     } else {
-      guardarBD().catch(() => { });
+      guardarBD().catch(() => {});
     }
   }
 
@@ -332,7 +329,7 @@ document.addEventListener("DOMContentLoaded", () => {
     ficha.dataset.usada = "0";
 
     ficha.addEventListener("click", () => {
-      if (isPaused) return; // 🔒 refuerzo
+      if (isPaused) return;
       if (ficha.dataset.usada === "1") return;
 
       if (fichaSeleccionada === ficha) {
@@ -351,7 +348,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // ==================================================
   casilleros.forEach((casillero) => {
     casillero.addEventListener("click", () => {
-      if (isPaused) return; // 🔒 refuerzo
+      if (isPaused) return;
 
       if (fichaSeleccionada) {
         asignarCasillero(casillero, fichaSeleccionada);
