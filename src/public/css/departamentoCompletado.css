@@ -1,99 +1,302 @@
-/* ===== CONTENEDOR PRINCIPAL ===== */
-.escena {
-  min-height: 100vh;
+/* =========================
+   DEPARTAMENTO COMPLETADO
+========================= */
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+}
+
+/* Página: claro + un toque suave */
+.departamento-completado-page {
+  min-height: calc(100dvh - var(--nav-h, 72px));
   width: 100%;
-  padding: 30px 20px;
+  overflow: hidden;
+
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
+  justify-content: center;
+  align-items: flex-start;
+
+  padding: 28px 24px 18px;
 
   background:
-    linear-gradient(rgba(255,255,255,0.85), rgba(255,255,255,0.85)),
-    var(--img-fondo) center/cover no-repeat,
-    var(--color-principal);
+    radial-gradient(circle at 15% 10%, rgba(0, 234, 255, 0.10), transparent 40%),
+    radial-gradient(circle at 85% 25%, rgba(255, 0, 255, 0.06), transparent 45%),
+    #f3f5f7;
 }
 
-/* ===== TITULOS ===== */
-.titulo {
-  color: var(--color-principal);
-  font-size: 2rem;
-  font-weight: 900;
-  text-align: center;
-  margin-bottom: 8px;
-}
+/* Tarjeta principal: clara */
+.departamento-completado-container {
+  width: min(1100px, 100%);
+  max-height: calc(100dvh - var(--nav-h, 72px) - 40px);
 
-.subtitulo {
-  font-size: 1.4rem;
-  color: #222;
-  text-align: center;
-  margin-bottom: 10px;
-  font-weight: 700;
-}
+  background: rgba(255, 255, 255, 0.94);
+  border-radius: 18px;
 
-.descripcion {
-  font-size: 1.1rem;
-  color: #444;
-  text-align: center;
-  margin-bottom: 25px;
-  font-weight: 500;
-}
+  border: 2px solid rgba(0, 238, 255, 0.55);
+  box-shadow:
+    0 0 18px rgba(0, 238, 255, 0.18),
+    0 18px 40px rgba(0, 0, 0, 0.10),
+    inset 0 0 14px rgba(0, 238, 255, 0.08);
 
-/* ===== ICONO DE FIESTA ===== */
-.icono-exito {
-  font-size: 4rem;
-  margin-bottom: 30px;
-  animation: popIn 0.5s ease-out;
-}
-
-/* ===== BOTONES ===== */
-.acciones {
+  padding: 22px;
   display: flex;
-  gap: 15px;
-  margin-top: 20px;
+  flex-direction: column;
+  gap: 14px;
 }
 
-.acciones a {
-  padding: 10px 18px;
-  border-radius: 12px;
+/* Header */
+.departamento-completado-header {
+  text-align: center;
+}
+
+.departamento-completado-title {
+  font-family: "Press Start 2P", monospace;
+  font-size: 28px;
+  line-height: 1.2;
+  margin: 0 0 6px 0;
+  color: #0f141a;
+}
+
+.departamento-completado-name {
+  font-family: "Consolas", "Press Start 2P", monospace;
+  font-size: 18px;
+  margin: 0 0 6px 0;
+  letter-spacing: 1px;
+  color: #111;
+}
+
+.departamento-completado-sub {
+  margin: 0;
+  font-size: 14px;
+  color: rgba(15, 20, 26, 0.85);
+}
+
+/* Panel tiempos */
+.tiempos-panel {
+  width: 100%;
+  height: 520px;
+  border-radius: 14px;
+
+  border: 2px solid rgba(0, 238, 255, 0.35);
+  background: rgba(255, 255, 255, 0.96);
+
+  box-shadow:
+    0 0 18px rgba(0, 238, 255, 0.12),
+    inset 0 0 10px rgba(0, 238, 255, 0.06);
+
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.tiempos-panel-title {
+  margin: 0;
+  padding: 14px 14px 10px;
+  text-align: center;
+  font-weight: 900;
+  color: #0f141a;
+
+  border-bottom: 1px solid rgba(0, 238, 255, 0.20);
+  background: rgba(240, 248, 250, 0.85);
+}
+
+/* Lista scrolleable */
+.tiempos-panel-list {
+  flex: 1;
+  overflow: auto;
+}
+
+.tiempo-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  padding: 10px 14px;
+  border-bottom: 1px solid rgba(15, 20, 26, 0.06);
+}
+
+.tiempo-row:last-child {
+  border-bottom: none;
+}
+
+.tiempo-nombre {
+  font-size: 14px;
+  color: rgba(15, 20, 26, 0.92);
+}
+
+.tiempo-valor {
+  font-family: "Consolas", monospace;
+  font-weight: 900;
+  font-size: 14px;
+  color: #007bb8;
+}
+
+.tiempo-empty {
+  padding: 18px 14px;
+  color: rgba(15, 20, 26, 0.65);
+}
+
+/* Footer del panel */
+.tiempos-panel-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+
+  padding: 10px 14px;
+  border-top: 1px solid rgba(0, 238, 255, 0.18);
+  background: rgba(240, 248, 250, 0.85);
+}
+
+.tiempo-total-label {
+  font-weight: 900;
+  color: rgba(15, 20, 26, 0.90);
+}
+
+.tiempo-total-valor {
+  font-family: "Consolas", monospace;
+  font-weight: 900;
+  color: #007bb8;
+}
+
+/* =========================
+   FOOTER (BOTONES)
+========================= */
+
+.departamento-completado-footer {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.departamento-completado-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+
+  gap: 12px;             /* espacio entre botones */
+  row-gap: 12px;         /* espacio si saltan de línea */
+  margin-top: 6px;
+}
+
+/* clave: que el form NO rompa la fila */
+.depto-reiniciar-form {
+  display: inline-flex;
+  margin: 0;
+}
+
+.depto-reiniciar-form button {
+  margin: 0;
+}
+
+/* =========================
+   BOTONES (pixel)
+========================= */
+
+.btn-accion,
+.btn-reiniciar {
+  font-family: "Press Start 2P", monospace;
+  font-size: 12px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+
+  border-radius: 0;
+  padding: 12px 16px;
   text-decoration: none;
-  font-weight: 800;
-  font-size: 1rem;
 
-  background: white;
-  border: 3px solid var(--color-principal);
-  color: var(--color-principal);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 
-  transition: 0.2s ease-in-out;
+  min-height: 44px;
+  line-height: 1;
+  box-sizing: border-box;
+
+  border: 3px solid #111;
+
+  box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.35);
+  transition: transform 0.12s ease, filter 0.12s ease, box-shadow 0.12s ease;
 }
 
-.acciones a:hover {
-  background: var(--color-principal);
-  color: white;
-  transform: scale(1.05);
+.btn-accion {
+  background: #00eaff;
+  color: rgb(255, 255, 255);
 }
 
-/* ===== ANIMACION POP ===== */
-@keyframes popIn {
-  0% { transform: scale(0.6); opacity: 0; }
-  70% { transform: scale(1.15); opacity: 1; }
-  100% { transform: scale(1); }
+.btn-accion:hover {
+  filter: brightness(1.05);
+  transform: translateY(-1px);
+  box-shadow:
+    0 0 0 2px rgba(0, 0, 0, 0.35),
+    0 0 22px rgba(0, 234, 255, 0.25);
 }
 
-/* ===== RESPONSIVE ===== */
-@media (max-width: 600px) {
-  .titulo { font-size: 1.7rem; }
-  .subtitulo { font-size: 1.3rem; }
-  .icono-exito { font-size: 3.2rem; }
+.btn-reiniciar {
+  background: red;
+  color: rgb(255, 255, 255);
+  cursor: pointer;
 
-  .acciones {
-    flex-direction: column;
-    width: 100%;
-    align-items: center;
+  box-shadow:
+    0 0 0 2px rgba(0, 0, 0, 0.35),
+    0 0 18px rgba(255, 75, 75, 0.14);
+}
+
+.btn-reiniciar:hover {
+  filter: brightness(1.05);
+  transform: translateY(-1px);
+  box-shadow:
+    0 0 0 2px rgba(0, 0, 0, 0.35),
+    0 0 22px rgba(255, 75, 75, 0.22);
+}
+
+/* =========================
+   Scrollbar suave
+========================= */
+
+.tiempos-panel-list::-webkit-scrollbar {
+  width: 10px;
+}
+
+.tiempos-panel-list::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.06);
+}
+
+.tiempos-panel-list::-webkit-scrollbar-thumb {
+  background: rgba(0, 123, 184, 0.28);
+  border-radius: 999px;
+}
+
+.tiempos-panel-list::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 123, 184, 0.42);
+}
+
+/* =========================
+   Responsive
+========================= */
+
+@media (max-width: 768px) {
+  .departamento-completado-title {
+    font-size: 20px;
   }
 
-  .acciones a {
-    width: 200px;
-    text-align: center;
+  .departamento-completado-name {
+    font-size: 16px;
+  }
+
+  .tiempos-panel {
+    height: 460px;
+  }
+
+  .btn-accion,
+  .btn-reiniciar {
+    font-size: 11px;
+    padding: 11px 14px;
+  }
+
+  .departamento-completado-actions {
+    gap: 10px;
+    row-gap: 10px;
   }
 }

@@ -1,17 +1,47 @@
-extends layouts/mainLayout.pug
+extends layouts/mainLayout
 
 block content
-  main.escena(
-    style=`--color-principal:${departamento.colorBorde};
-            --img-fondo:url(/img/bg/${departamento.imagen_fondo});`
-  )
-    header.barra-superior
-      h1.titulo ¡Departamento completado!
-      h2.subtitulo= departamento.nombre
-      p.descripcion Completaste los #{totalParajes} parajes de este departamento.
+  - const depto = departamento || {}
+  - const deptoNombre = depto.nombre || depto.name || 'Departamento'
+  - const deptoId = depto.id || depto.departamento_id
+  - const total = totalParajes || 0
+  - const lista = (tiempos && Array.isArray(tiempos)) ? tiempos : []
+  - const totalTiempo = tiempoTotalFormateado || '00:00'
 
-    .icono-exito 🎉
+  .departamento-completado-page
+    .departamento-completado-container
 
-    .acciones
-      a.btn-volver(href="/mapa") Volver al mapa
-      a.btn-otro(href="/departamentos") Elegir otro departamento
+      header.departamento-completado-header
+        h1.departamento-completado-title ¡Departamento completado! 🎉
+        h2.departamento-completado-name #{deptoNombre}
+        p.departamento-completado-sub Completaste los #{total} parajes de este departamento. 
+
+      section.tiempos-panel
+        h3.tiempos-panel-title Tiempos por paraje
+
+        .tiempos-panel-list
+          if lista.length
+            each item in lista
+              - const nombreParaje = item.parajeNombre || item.paraje || item.nombre || 'Paraje'
+              - const tiempoFmt = item.tiempoFormateado || item.tiempo || '--:--'
+              .tiempo-row
+                span.tiempo-nombre #{nombreParaje}
+                span.tiempo-valor #{tiempoFmt}
+          else
+            .tiempo-empty No hay tiempos registrados.
+
+        footer.tiempos-panel-footer
+          span.tiempo-total-label Tiempo total:
+          span.tiempo-total-valor #{totalTiempo}
+
+      footer.departamento-completado-footer
+        .departamento-completado-actions
+          a.btn-accion(href="/departamentos") Volver a departamentos
+          a.btn-accion(href="/mapa") Ir al mapa
+          if deptoId
+            form.depto-reiniciar-form(
+              method="POST"
+              action=`/departamento/${deptoId}/reiniciar`
+              onsubmit="return confirm('Esto eliminará todos los parajes completados y tiempos guardados para este departamento. Esta acción no se puede deshacer. ¿Continuar?');"
+            )
+              button.btn-reiniciar(type="submit") Reiniciar departamento

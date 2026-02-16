@@ -11,6 +11,7 @@ html(lang="en")
     link(href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet")
 
     // DESPUÉS TU CSS (ESTOS TIENEN PRIORIDAD)
+    link(rel="stylesheet", href="/css/layout.css")
     link(rel="stylesheet", href="/css/navbar.css")
     link(rel="stylesheet", href="/css/departamento.css")
     link(rel="stylesheet", href="/css/departamentos.css")
@@ -25,7 +26,8 @@ html(lang="en")
     block head
   body
     include ../partials/navbar.pug
-    block content
+    main.app-main
+      block content
 
     script(src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js")
     script(src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js")

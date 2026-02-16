@@ -1,0 +1,20 @@
+html,
+body {
+  height: 100%;
+  margin: 0;
+}
+
+/* Importante: no uses 100vw */
+body {
+  width: 100%;
+  overflow: hidden; /* saca el scroll general */
+}
+
+/* App shell: navbar + contenido */
+.app-main {
+  height: calc(100dvh - var(--nav-h, 72px));
+  overflow: hidden;
+}
+
+/* Si tu navbar NO es fixed, esto ayuda a que calc sea real:
+   le seteamos la variable con JS o a mano abajo */

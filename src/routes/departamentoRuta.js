@@ -6,6 +6,7 @@ const {
   verDepartamentoJuego,
   verDepartamentoDetalle,
   mostrarMapa,
+  reiniciarDepartamento,
 } = require("../controllers/DepartamentoController");
 
 // Listado general de departamentos
@@ -16,6 +17,8 @@ router.get("/departamento/:id", verDepartamentoJuego);
 
 // Detalle textual de un departamento
 router.get("/departamento/:id/detalle", verDepartamentoDetalle);
+
+router.post("/departamento/:id/reiniciar", reiniciarDepartamento);
 
 router.get("/mapa", mostrarMapa);
 

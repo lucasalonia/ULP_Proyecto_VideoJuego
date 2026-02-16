@@ -7,6 +7,24 @@ block content
           --img-fondo:url(/img/bg/${departamento.imagen_fondo});`
   )
 
+    // ====== BOTÓN REGLAS (ARRIBA) ======
+    .top-actions
+      button#btnReglas.btn-reglas(type="button") Reglas del juego
+
+    // ====== MODAL REGLAS ======
+    .modal-overlay#modalReglas(aria-hidden="true")
+      .modal-card(role="dialog" aria-modal="true" aria-labelledby="modalReglasTitle")
+        .modal-header
+          h2#modalReglasTitle.modal-title Reglas del juego
+          button#btnCerrarReglas.modal-close(type="button" aria-label="Cerrar") ✕
+        .modal-body
+          p Elegí un departamento y armá el nombre del paraje usando sílabas.
+          ul
+            li Seleccioná una sílaba y colócala en el lugar correcto.
+            li Podés cambiar las sílabas las veces que quieras.
+            li Completá todos los parajes del departamento para ganar.
+            li Cuando vuelvas al juego, tu progreso se guarda.
+
     .juego-layout
 
       // ==========================
@@ -31,8 +49,11 @@ block content
 
         header.barra-superior
           h1.titulo COMARCAS DE SAN LUIS
-          span.contador-departamentos #{numeroParaje} / #{totalParajes}
-          span#cronometro.cronometro 00:00.00
+
+          .barra-metas
+            span.contador-departamentos #{numeroParaje} / #{totalParajes}
+            span#cronometro.cronometro 00:00.00
+            button#btnPausa.btn-pausa(type="button" aria-pressed="false") Pausa
 
         // === CASILLEROS ===
         .casilleros-area
@@ -57,12 +78,6 @@ block content
               if urlVolver
                 a.btn-volver(href=urlVolver) Volver
 
-  // ==========================
-  //  DATA PARA JS
-  // ==========================
   script.
     window.JUEGO_DATA = !{JSON.stringify(juegoData)};
-
-
-
   script(src="/js/departamento.js")

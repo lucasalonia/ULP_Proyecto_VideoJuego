@@ -12,6 +12,50 @@ document.addEventListener("DOMContentLoaded", () => {
   const esInvitado = usuarioId === null || usuarioId === undefined;
   let victoriaProcesada = false;
 
+  // Para bloquear interacción cuando está en pausa
+  const escenaEl = document.querySelector(".escena");
+
+  // ==================================================
+  // MODAL REGLAS
+  // ==================================================
+  const btnReglas = document.getElementById("btnReglas");
+  const modalReglas = document.getElementById("modalReglas");
+  const btnCerrarReglas = document.getElementById("btnCerrarReglas");
+
+  function openReglas() {
+    if (!modalReglas) return;
+
+    // ✅ si está corriendo, pausamos por reglas
+    if (!isPaused && !victoriaProcesada) {
+      pausedByRules = true;
+      togglePausa();
+    } else {
+      pausedByRules = false;
+    }
+
+    modalReglas.classList.add("is-open");
+    modalReglas.setAttribute("aria-hidden", "false");
+  }
+
+  function closeReglas() {
+    if (!modalReglas) return;
+    modalReglas.classList.remove("is-open");
+    modalReglas.setAttribute("aria-hidden", "true");
+  }
+
+  if (btnReglas) btnReglas.addEventListener("click", openReglas);
+  if (btnCerrarReglas) btnCerrarReglas.addEventListener("click", closeReglas);
+
+  if (modalReglas) {
+    modalReglas.addEventListener("click", (e) => {
+      if (e.target === modalReglas) closeReglas();
+    });
+  }
+
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") closeReglas();
+  });
+
   // ==================================================
   // LOCAL STORAGE – SOLO INVITADOS
   // ==================================================
@@ -38,27 +82,99 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // ==================================================
-  // CRONÓMETRO
+  // CRONÓMETRO (con Pausa/Reanudar)
   // ==================================================
   const cronometroEl = document.getElementById("cronometro");
-  const startTime = Date.now();
+  const btnPausa = document.getElementById("btnPausa");
 
-  const cronometroInterval = setInterval(() => {
-    const diff = Date.now() - startTime;
-    const m = Math.floor(diff / 60000);
-    const s = Math.floor((diff % 60000) / 1000);
-    const c = Math.floor((diff % 1000) / 10);
+  const fechaInicioISO = new Date().toISOString();
+  let baseStart = Date.now();
+  let elapsedMs = 0;
+  let isPaused = false;
+  let pausedByRules = false;
+  let cronometroInterval = null;
 
-    if (cronometroEl) {
-      cronometroEl.textContent =
-        `${String(m).padStart(2, "0")}:` +
-        `${String(s).padStart(2, "0")}.` +
-        `${String(c).padStart(2, "0")}`;
+  function formatTiempo(ms) {
+    const m = Math.floor(ms / 60000);
+    const s = Math.floor((ms % 60000) / 1000);
+    const c = Math.floor((ms % 1000) / 10);
+
+    return (
+      `${String(m).padStart(2, "0")}:` +
+      `${String(s).padStart(2, "0")}.` +
+      `${String(c).padStart(2, "0")}`
+    );
+  }
+
+  function getElapsedMs() {
+    return elapsedMs + (isPaused ? 0 : Date.now() - baseStart);
+  }
+
+  function renderCronometro() {
+    if (!cronometroEl) return;
+    cronometroEl.textContent = formatTiempo(getElapsedMs());
+  }
+
+  function startCronometro() {
+    if (cronometroInterval) clearInterval(cronometroInterval);
+    cronometroInterval = setInterval(renderCronometro, 50);
+  }
+
+  function stopCronometro() {
+    if (cronometroInterval) clearInterval(cronometroInterval);
+    cronometroInterval = null;
+  }
+
+  function setPausedUI(paused) {
+    if (!escenaEl) return;
+    if (paused) escenaEl.classList.add("is-paused");
+    else escenaEl.classList.remove("is-paused");
+  }
+
+  function togglePausa() {
+    if (victoriaProcesada) return;
+
+    if (!isPaused) {
+      // pausar
+      elapsedMs += Date.now() - baseStart;
+      isPaused = true;
+      stopCronometro();
+      renderCronometro();
+
+      if (btnPausa) {
+        btnPausa.textContent = "Reanudar";
+        btnPausa.setAttribute("aria-pressed", "true");
+      }
+
+      // 🔒 bloquear sílabas + casilleros
+      setPausedUI(true);
+      // también sacamos selección para evitar confusión visual
+      deseleccionarFicha();
+
+      return;
     }
-  }, 50);
+
+    // reanudar
+    baseStart = Date.now();
+    isPaused = false;
+    startCronometro();
+
+    if (btnPausa) {
+      btnPausa.textContent = "Pausa";
+      btnPausa.setAttribute("aria-pressed", "false");
+    }
+
+    // 🔓 habilitar
+    setPausedUI(false);
+  }
+
+  if (btnPausa) btnPausa.addEventListener("click", togglePausa);
+
+  startCronometro();
+  renderCronometro();
 
   function getTiempoSegundos() {
-    return Math.max(0, Math.floor((Date.now() - startTime) / 1000));
+    return Math.max(0, Math.floor(getElapsedMs() / 1000));
   }
 
   // ==================================================
@@ -92,6 +208,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function liberarFicha(idFicha) {
+    if (idFicha === undefined || idFicha === null || idFicha === "") return;
     const ficha = document.querySelector(`.ficha[data-indice="${idFicha}"]`);
     if (!ficha) return;
 
@@ -99,7 +216,16 @@ document.addEventListener("DOMContentLoaded", () => {
     ficha.classList.remove("usada");
   }
 
+  // Si el casillero ya tenía una ficha, primero la liberamos
   function asignarCasillero(casillero, ficha) {
+    if (casillero.dataset.idFicha) {
+      liberarFicha(casillero.dataset.idFicha);
+      casillero.textContent = "";
+      delete casillero.dataset.valor;
+      delete casillero.dataset.idFicha;
+      casillero.classList.remove("correcto", "incorrecto");
+    }
+
     casillero.textContent = ficha.dataset.silaba;
     casillero.dataset.valor = ficha.dataset.silaba;
     casillero.dataset.idFicha = ficha.dataset.indice;
@@ -140,7 +266,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   async function guardarBD() {
-    const fecha_inicio = new Date(startTime).toISOString();
+    const fecha_inicio = fechaInicioISO;
     const fecha_fin = new Date().toISOString();
     const tiempo = getTiempoSegundos();
 
@@ -181,13 +307,21 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!completo || !correcto || victoriaProcesada) return;
     victoriaProcesada = true;
 
-    clearInterval(cronometroInterval);
+    if (btnPausa) btnPausa.style.display = "none";
+    stopCronometro();
+    setPausedUI(true); // al ganar, también bloqueamos para que no sigan tocando
+
+    if (btnPausa) {
+      btnPausa.setAttribute("aria-pressed", "true");
+      btnPausa.textContent = "Reanudar";
+    }
+
     mostrarToast(`¡Paraje completado: ${nombreParaje}!`);
 
     if (esInvitado) {
       guardarParajeLocal(departamentoId, parajeId);
     } else {
-      guardarBD().catch(() => {});
+      guardarBD().catch(() => { });
     }
   }
 
@@ -198,6 +332,7 @@ document.addEventListener("DOMContentLoaded", () => {
     ficha.dataset.usada = "0";
 
     ficha.addEventListener("click", () => {
+      if (isPaused) return; // 🔒 refuerzo
       if (ficha.dataset.usada === "1") return;
 
       if (fichaSeleccionada === ficha) {
@@ -216,6 +351,8 @@ document.addEventListener("DOMContentLoaded", () => {
   // ==================================================
   casilleros.forEach((casillero) => {
     casillero.addEventListener("click", () => {
+      if (isPaused) return; // 🔒 refuerzo
+
       if (fichaSeleccionada) {
         asignarCasillero(casillero, fichaSeleccionada);
         verificarVictoria();
@@ -230,7 +367,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // ==================================================
   // BOTÓN "SIGUIENTE" / "VOLVER"
-  // 👉 SOLO navega al href que puso el BACKEND
   // ==================================================
   document.querySelectorAll(".btn-siguiente, .btn-volver").forEach((btn) => {
     btn.addEventListener("click", (e) => {
