@@ -14,9 +14,9 @@ block content
 
       hr.my-4
 
-      .row
+      .row.justify-content-center
         // ==== COLUMNA IZQUIERDA - DATOS ====
-        .col-md-6.mb-4
+        .col-md-5
           .panel-pixel
             .titulo-pixel Datos del Usuario
 
@@ -38,23 +38,23 @@ block content
             ) Modificar Contraseña
 
         // ==== COLUMNA DERECHA - LOGROS ====
-        .col-md-6.mb-4
+        .col-md-5
           .panel-pixel
             .titulo-pixel Logros
 
               .card-body
-              // Tiempos del mapa
-              .mb-4
-                h5.card-title Tiempos del Mapa
-                ul#listaTiempos.list-group.list-group-flush
+                // Tiempos del mapa
+                .mb-4
+                  h5.card-title Tiempos del Mapa
+                  ul#listaTiempos.list-group.list-group-flush
 
-              // Logros recientes
-              .mb-3
+                // Logros recientes
+                .mb-3
                 h5.card-title Logros más Recientes
                 ul#listaParajes.list-group.list-group-flush
 
-              .text-center.mt-4
-               a.btn-pixel.btn-pixel-primary(href="/logros") Ver Todos los Logros
+            .text-center.mt-4
+            a.btn-pixel.btn-pixel-primary(href="/logros") Ver Todos los Logros
 
     // =====================================================================
     // MODAL: MODIFICAR CONTRASEÑA

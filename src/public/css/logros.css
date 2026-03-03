@@ -48,7 +48,8 @@
 
 /*bloques de logros*/
 .logro-paraje,
-.logro-tiempo {
+.logro-tiempo,
+.panel-pixel {
   
   background: #8bc4af;
  font-family: "Press Start 2P", monospace;
@@ -169,7 +170,7 @@
 }
 
 /*panel pixel*/
-.panel-pixel {
+/* .panel-pixel {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -179,7 +180,7 @@
   padding: 20px;
   image-rendering: pixelated;
   box-shadow: 5px 4px 0px #3c3c3c, 4px 5px 0px #3c3c3c;
-}
+} */
 
 .titulo-pixel {
   background: #F7F4A3;
@@ -220,7 +221,37 @@
 }
 
 /*botones pixel*/
+
+/* ===========================
+   BOTÓN RETRO
+=========================== */
 .btn-pixel {
+  background-color: #00c6d9;
+  color: #ffffff;
+  padding: 16px 22px;
+  text-decoration: none;
+  text-transform: uppercase;
+  font-size: 11px;
+  letter-spacing: 1px;
+
+  border: 3px solid #000;
+
+  /* sombra pixel */
+  box-shadow:
+    4px 4px 0 #000;
+
+  transition: transform 0.1s ease, box-shadow 0.1s ease;
+}
+/* ===========================
+   HOVER (LEVANTA)
+=========================== */
+.btn-pixel:hover {
+  transform: translate(-2px, -2px);
+  box-shadow:
+    6px 6px 0 #000;
+}
+
+/* .btn-pixel {
   font-family: "Press Start 2P", monospace;
   font-size: 18px;
   padding: 8px 3px 3px;
@@ -229,10 +260,10 @@
   border: none;
   box-shadow: 5px 4px 0px #3c3c3c, 4px 5px 0px #3c3c3c;
   text-decoration: none;
-}
+} */
 
 .btn-pixel-primary { background: #47adc9;
-padding: 10px 10px 8px; }
+ }
 .btn-pixel-warning { background: #ff7a73; }
 .btn-pixel-danger  { background: #FF3B3B; }
 

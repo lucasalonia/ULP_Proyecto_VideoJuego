@@ -11,17 +11,18 @@
         padding: 0;
       }
 
-      canvas {
-        display: block;
-        margin: 0 auto;
-        position: relative;
-        top: 0;
-        transform: none;
-      }
+  #phaser-container canvas {
+  display: block;
+  border-radius: 20px;
+  overflow: hidden;          /* importante */
+  -webkit-mask-image: -webkit-radial-gradient(white, black); /* fix render */
+}
 
-      #phaser-container {
-        background: #d9fafb;
-        position: relative;
-        width: 100%;
-        height: 100%;
-      }
+   #phaser-container {
+  background: #d9fafb;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: 20px;
+  overflow: hidden;   /* CLAVE */
+}

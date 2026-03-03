@@ -17,9 +17,10 @@ class Escena extends Phaser.Scene {
         this.load.image('Belgrano', '/img/mapa/belgranoMapa.png');
         this.load.image('Pringles', '/img/mapa/pringlesMapa.png');
         this.load.image('hoja', '/img/mapa/pixelHoja.png');
-        this.load.image('marco', '/img/mapa/frame.png');
+        this.load.image('marco', '/img/mapa/frame1.png');
         this.load.image('sticker', '/img/mapa/notaPixel.png');
         this.load.image('sticker2', '/img/mapa/notaPixel2.png');
+        this.load.image('lapiz', '/img/mapa/pen1.png');
         this.load.audio('ok', './audio/ok2.wav');
         this.load.audio('final', './audio/final.mp3');
         //this.load.audio('ok', './audio/ok.mp3');
@@ -43,7 +44,8 @@ class Escena extends Phaser.Scene {
         // Elementos de fondo
         const hoja = this.add.sprite(canvaWidth / 2 - 60, canvaHeight / 2 - 20, 'hoja').setDepth(0).setScale(0.69);
         const fondo = this.add.sprite(canvaWidth / 2, canvaHeight / 2 + 30, 'mapaSL').setScale(0.95);
-        const marco = this.add.sprite(canvaWidth / 2, canvaHeight / 2 - 1, 'marco').setScale(1);
+       // const marco = this.add.sprite(canvaWidth / 2, canvaHeight / 2 - 1, 'marco').setScale(1.01);
+        const lapiz = this.add.sprite(canvaWidth / 2-550, canvaHeight / 2 +100, 'lapiz').setScale(1).setAngle(-20);
 
         fondo.setScale(0.545).setOrigin(0.5, 0.5);
         //Titulo
@@ -379,7 +381,9 @@ const config = {
     width: 1280,
     height: 720,
     parent: 'phaser-container',
-    backgroundColor: "#B9EAEA",
+    backgroundColor: "#c48754",
+    transparent: true,
+  
     scene: Escena,
 
 
@@ -423,6 +427,8 @@ function waitForCanvasThenApply() {
         if (canvas) {
             clearInterval(check);
             applyCssScale();
+             canvas.style.borderRadius = "20px";
+            canvas.style.overflow = "hidden";
             window.addEventListener('resize', applyCssScale);
         }
     }, 50);
