@@ -37,6 +37,7 @@ class Escena extends Phaser.Scene {
         this.contador = 0;
         this.dialogoActual = null;
         this.departamentoNombre = null;
+        this.mensajeProgreso = null;
 
         const canvaWidth = this.sys.game.config.width;
         const canvaHeight = this.sys.game.config.height;
@@ -281,7 +282,7 @@ class Escena extends Phaser.Scene {
         });
     }
 
-    mostrarDialogoDepartamento(departamento) {
+    async mostrarDialogoDepartamento(departamento) {
 
         // Destruir diálogo anterior
         if (this.dialogoActual) {
@@ -291,6 +292,41 @@ class Escena extends Phaser.Scene {
         if (this.departamentoNombre) {
             this.departamentoNombre.destroy();
             this.departamentoNombre = null;
+        }
+        if (this.mensajeProgreso) {
+            this.mensajeProgreso.destroy();
+            this.mensajeProgreso = null;
+        }   
+         let progreso = 0;
+    let totalParajes = 0;
+        let invitado = false;
+    try {
+        const response = await fetch(`/api/progreso/${departamento.depId}`);
+        const data =  await response.json();
+if (data.invitado) {
+    invitado = true;
+}
+        progreso = data.parajesRealizados;
+        totalParajes = data.totalParajes;
+
+    } catch (error) {
+        console.log("Error obteniendo progreso", error);
+    }
+        if (invitado) {
+            this.mensajeProgreso = this.add.text(970, 430, `Inicia sesión\npara ver tu progreso`, {
+                 align: 'center',
+                fontFamily: '"miFuente"', fontSize: '18px', fill: '#232323ff',
+            }).setOrigin(0.5).setDepth(20);
+        } else {
+            const porcentaje = totalParajes > 0
+                ? Math.round((progreso / totalParajes) * 100)
+                : 0;
+            this.mensajeProgreso = this.add.text(970, 420, `Progreso: ${progreso}/${totalParajes} (${porcentaje}%)`, {
+                align: 'center',
+                fontFamily: '"miFuente"',
+                fontSize: '18px',
+                fill: '#232323ff',
+            }).setOrigin(0.5).setDepth(20);
         }
         this.departamentoNombre = this.add.text(departamento.x + 5, departamento.y, `${departamento.textureKey}`, {
             fontFamily: '"miFuente"',
@@ -304,19 +340,20 @@ class Escena extends Phaser.Scene {
         const sticker2 = this.add.sprite(920, 400, 'sticker').setScale(0.75);
         dialogo.add(sticker2);
 
-        const mensajeComarca = this.add.text(970, 380, `¿Deseas jugar\n       en\n ${departamento.textureKey}?`, {
+        const mensajeComarca = this.add.text(970, 350, `¿Deseas jugar\nen\n${departamento.textureKey}?`, {
+             align: 'center',
             fontFamily: "miFuente",
             fontSize: '28px',
             fill: '#232323ff',
         }).setOrigin(0.5).setDepth(20);
         dialogo.add(mensajeComarca);
 
-        const botonSi = this.crearBoton(910, 460, "SI", '#3ed348ff', () => {
+        const botonSi = this.crearBoton(910, 475, "SI", '#3ed348ff', () => {
             window.location.href = `/departamento/${departamento.depId}`;
         });
         dialogo.add(botonSi);
 
-        const botonNo = this.crearBoton(955, 460, "NO", '#2d2d2d', () => {
+        const botonNo = this.crearBoton(955, 475, "NO", '#2d2d2d', () => {
             dialogo.destroy();
             this.dialogoActual = null;
         });

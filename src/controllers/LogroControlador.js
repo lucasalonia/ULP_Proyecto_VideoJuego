@@ -184,12 +184,66 @@ async function obtenerUltimosLogros(req, res) {
 }
 
 // ===================================================
+// Paraje Por Departamento Patalla Mapa.
+// ===================================================
+async function obtenerProgresoDepartamento(req, res) {
+  try {
+    const usuarioId = req.user?.usuario_id;
+    const deptoId = req.params.deptoId;
+
+    // 🛑 INVITADO
+    if (!usuarioId || isNaN(Number(usuarioId))) {
+      return res.json({
+        ok: true,
+        invitado: true,
+        totalParajes: 0,
+        parajesRealizados: 0,
+        porcentaje: 0,
+      });
+    }
+
+    const parajesCompletados =
+      await LogroParaje.getParajesCompletadosPorUsuarioYDepto(
+        usuarioId,
+        deptoId
+      );
+
+    const totalParajes =
+      await Departamento.getParajesByDepto(deptoId).then((parajes) => parajes.length);
+
+    const cantidadCompletados = parajesCompletados.length;
+
+    const porcentaje =
+      totalParajes > 0
+        ? Math.round((cantidadCompletados / totalParajes) * 100)
+        : 0;
+
+    return res.json({
+      ok: true,
+      totalParajes,
+      parajesRealizados: cantidadCompletados,
+      porcentaje,
+      listaParajes: parajesCompletados,
+    });
+
+  } catch (err) {
+    console.error("Error obteniendo progreso del departamento:", err);
+    return res.status(500).json({
+      ok: false,
+      msg: "Error al obtener progreso del departamento",
+    });
+  }
+}
+
+
+// ===================================================
 // EXPORTS
 // ===================================================
 module.exports = {
   guardarTiempo,
   obtenerLogros,
   obtenerUltimosLogros,
+  obtenerProgresoDepartamento,
 };
 
 // ===================================================

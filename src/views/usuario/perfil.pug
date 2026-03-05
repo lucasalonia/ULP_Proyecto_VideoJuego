@@ -27,10 +27,12 @@ block content
             .dato-item
               strong Nickname:
               span.valor-dato #{user.userName}
-              button.btn-pixel.btn-pixel-warning(
+              button.btn-img(
+                type="button"
                 data-bs-toggle="modal"
                 data-bs-target="#modalNickname"
-              ) Modificar
+              )
+                img(src="/img/editar.png" alt="Modificar")
 
             button.btn-pixel.btn-pixel-danger(
               data-bs-toggle="modal"

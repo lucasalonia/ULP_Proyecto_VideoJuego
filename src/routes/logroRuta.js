@@ -10,6 +10,6 @@ router.post(
 );
 router.get('/logros', controlador.obtenerLogros);
 router.get('/logros/:departamentoId', controlador.obtenerLogros);
-
+router.get("/api/progreso/:deptoId",controlador.obtenerProgresoDepartamento)
 
 module.exports = router;

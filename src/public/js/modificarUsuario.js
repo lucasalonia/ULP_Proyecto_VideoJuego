@@ -10,31 +10,9 @@ function hideSpinner() {
   document.getElementById("loadingSpinner").classList.add("d-none");
 }
 
-// =====================================================================
-//   CARGAR TIEMPOS + LOGROS RECIENTES
-// =====================================================================
 
-document.addEventListener("DOMContentLoaded", async () => {
-  showSpinner();
 
-  try {
-    const res = await fetch("/logros/perfil/ultimos");
-    const data = await res.json();
 
-    if (!res.ok) throw new Error(data.message);
-
-    cargarTiempos(data.tiempo ? [data.tiempo] : []);
-    cargarParajes(data.parajesCompletados);
-  } catch (e) {
-    console.error(e);
-    toastr.error("No se pudieron cargar los datos del perfil.");
-  } finally {
-    hideSpinner();
-  }
-
-  modificarContraseña();
-  modificarNickname();
-});
 
 // =====================================================================
 //   CARGAR TIEMPOS
@@ -263,8 +241,26 @@ function modificarFoto() {
   });
 }
 
-document.addEventListener("DOMContentLoaded", function () {
+
+document.addEventListener("DOMContentLoaded", async () => {
+  // 1. Inicializamos los botones de los modales primero
   modificarContraseña();
   modificarNickname();
   modificarFoto();
+
+  // 2. Cargamos los datos del servidor
+  showSpinner();
+  try {
+    const res = await fetch("/logros/perfil/ultimos");
+    if (res.ok) {
+      const data = await res.json();
+      cargarTiempos(data.tiempo ? [data.tiempo] : []);
+      cargarParajes(data.parajesCompletados);
+    }
+  } catch (e) {
+    console.error("Error al cargar datos:", e);
+  } finally {
+
+    hideSpinner();
+  }
 });

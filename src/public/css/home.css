@@ -7,9 +7,14 @@
   align-items: center;
   gap: 100px;
   font-family: "Press Start 2P", monospace;
+  background-image: url("/img/hoja 2.PNG");
+  background-size: cover;
+  background-position: center;
+  background-repeat:repeat-y;
+
 }
 
-body { 
+body {
   margin: 0;
   padding: 0;
   background-image: url("/img/degradeNaranja1.PNG");
@@ -17,7 +22,7 @@ body {
 
 /* ===== LOGO ===== */
 .logo-container {
-  margin-top: 205px;
+  margin-top: 30px;
   width: 510px;
   height: 810px;
 }
@@ -41,7 +46,8 @@ body {
 
 .player-box {
   position: relative;
-  margin-bottom: 28px; /* un poquito más de aire */
+  margin-bottom: 28px;
+  /* un poquito más de aire */
 }
 
 /* Caja base */
@@ -49,16 +55,20 @@ body {
   position: relative;
 
   /* + grande */
-  min-width: 320px;     /* asegura presencia */
-  padding: 24px 44px;   /* más alto y más ancho */
+  min-width: 320px;
+  /* asegura presencia */
+  padding: 24px 44px;
+  /* más alto y más ancho */
   text-align: center;
 
   background: linear-gradient(180deg, #071a2c, #050f1d);
 
-  border: 4px solid #00eaff; /* un toque más grueso */
+  border: 4px solid #00eaff;
+  /* un toque más grueso */
 
   box-shadow:
-    0 0 14px rgba(0, 234, 255, 0.38); /* un poco más de glow */
+    0 0 14px rgba(0, 234, 255, 0.38);
+  /* un poco más de glow */
 
   overflow: hidden;
 }
@@ -66,8 +76,10 @@ body {
 /* Texto */
 .player-label {
   display: block;
-  font-size: 14px;          /* más grande */
-  color: #eaffff;           /* casi blanco para que se lea */
+  font-size: 14px;
+  /* más grande */
+  color: #eaffff;
+  /* casi blanco para que se lea */
   margin-bottom: 10px;
   letter-spacing: 1px;
 
@@ -79,7 +91,8 @@ body {
 
 .player-name {
   display: block;
-  font-size: 20px;          /* más presencia */
+  font-size: 20px;
+  /* más presencia */
   color: #ffffff;
   line-height: 1.15;
 
@@ -95,7 +108,8 @@ body {
   position: absolute;
   inset: 0;
 
-  border: 4px solid #00ffff; /* acompaña el grosor del borde */
+  border: 4px solid #00ffff;
+  /* acompaña el grosor del borde */
 
   box-shadow:
     0 0 6px rgba(0, 255, 255, 0.9),
