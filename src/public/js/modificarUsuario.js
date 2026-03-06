@@ -23,7 +23,7 @@ function cargarTiempos(tiempos = []) {
   cont.innerHTML = "";
 
   if (!tiempos.length) {
-    cont.innerHTML = `<li class="item-logro text-muted">Sin tiempos registrados</li>`;
+    cont.innerHTML = `<li class="item-logro text-muted fs-5 list-unstyled">Sin tiempos registrados</li>`;
     return;
   }
 
@@ -51,7 +51,7 @@ function cargarParajes(parajes = []) {
 
   if (!parajes.length) {
     cont.innerHTML = `
-      <div class="paraje-item">
+      <div class="paraje-item mt-4 mb-4">
         <div class="nombre-paraje">No desbloqueaste logros aún.</div>
       </div>`;
     return;

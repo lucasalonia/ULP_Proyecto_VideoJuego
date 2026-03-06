@@ -156,6 +156,8 @@
 
 .nombre-paraje {
   width: 75%;
+  margin-left: auto;
+  margin-right: auto;
   background: #FFF9C4;
    font-family: "Press Start 2P", monospace;
   font-size: 11px;
@@ -209,6 +211,9 @@ border: 4px solid #3c3c3c;
 
 /*datos usuario*/
 .dato-item {
+  flex-wrap: wrap;       /* Si no cabe el icono y el texto, se pone uno abajo del otro */
+  overflow: hidden;      /* Evita fugas de contenido */
+  word-break: break-word; /* Rompe palabras si son demasiado largas */
   display: flex;
   align-items: center;
   gap: 10px;
