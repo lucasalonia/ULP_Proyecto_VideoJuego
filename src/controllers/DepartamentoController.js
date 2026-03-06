@@ -3,12 +3,21 @@ const LogroParaje = require("../models/LogroParaje");
 
 // Añade colores e imágenes por defecto al departamento
 function colorizeDepto(departamento) {
+  const cartaFile = (departamento.imagen_carta || "default.png").trim();
+  const fondoFile = (departamento.imagen_fondo || "fondo-ULP-games.png").trim();
+
   return {
     ...departamento,
     colorFondo: departamento.color_fondo || "#4EC9F5",
     colorBorde: departamento.color_borde || "#007bb8",
-    imagen_carta: departamento.imagen_carta || "default.png",
-    imagen_fondo: departamento.imagen_fondo || "fondoJuego.png",
+
+    // lo que ya tenías (NOMBRES)
+    imagen_carta: cartaFile,
+    imagen_fondo: fondoFile,
+
+    // NUEVO: URLs listas para usar
+    imagen_carta_url: `/tarjetas/${cartaFile}`,
+    imagen_fondo_url: `/fondos/${fondoFile}`,
   };
 }
 
