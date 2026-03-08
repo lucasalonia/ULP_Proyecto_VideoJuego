@@ -7,6 +7,7 @@ body {
   min-height: 100%;
   overflow-x: hidden;
   font-family: "Press Start 2P", monospace;
+  
   background-image: url("/img/degradeNaranja1.PNG");
 }
 
@@ -47,7 +48,7 @@ main.app-main {
 .logo-container {
   margin-top: 30px;
   width: 510px;
-  height: 810px;
+  height: auto;
   flex-shrink: 0;
 }
 
@@ -81,10 +82,11 @@ main.app-main {
   padding: 36px 40px;
   text-align: center;
 
-  background:#fead85;
+  background:#FFEEB3;
 
   /* quitamos el borde sólido */
-  border: solid black;
+  border: 4px solid #00c6d9;
+  /*box-shadow: 5px 5px 0 #01b4c4;*/
 
   /* glow celeste degradado */
   /*
@@ -191,6 +193,7 @@ main.app-main {
   .home-container {
     gap: 48px;
     padding: 32px 20px;
+    
   }
 
   .logo-container {

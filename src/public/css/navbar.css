@@ -12,7 +12,7 @@ body {
    NAVBAR BASE
 =========================== */
 .navbar {
-  background: linear-gradient(180deg, #fead85, #fead85ea) !important;
+  background: linear-gradient(180deg, #FFEEB3, #FFEEB3) !important;
   padding: 15px 40px;
   font-family: "Press Start 2P", monospace !important;
 
