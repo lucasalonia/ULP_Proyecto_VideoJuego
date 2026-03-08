@@ -7,34 +7,37 @@ block head
       src: url("/fonts/GamePocket-Regular.ttf") format("truetype");
     }
 
-    html {
-     background: #98EAEA !important;
-
-    }
-
+    html,
     body {
-      overflow: hidden;
       margin: 0;
       padding: 0;
-     background-image:url("/img/degradeNaranja1.PNG"); ;
+      height: 100%;
+      overflow: hidden;
+      background: #98EAEA !important;
     }
 
-    canvas {
-      display: block;
-      margin: 0 auto;
-      margin-top: 20px;
-      position: relative;
-      top: 0;
-      transform: none;
+    .app-main {
+      height: calc(100dvh - var(--nav-h, 72px));
+      min-height: calc(100dvh - var(--nav-h, 72px));
+      overflow: hidden;
     }
 
     #phaser-container {
-      position: relative;
       width: 100%;
       height: 100%;
+      min-height: calc(100dvh - var(--nav-h, 72px));
+      position: relative;
+      overflow: hidden;
+      background: #d9fafb;
+    }
+
+    #phaser-container canvas {
+      display: block;
+      margin: 0 auto;
+      margin-top: 20px;
     }
 
 block content
   #phaser-container
-  script(src='../../phaser.min.js')
+  script(src='/phaser.min.js')
   script(src='/js/scriptMapa.js')
