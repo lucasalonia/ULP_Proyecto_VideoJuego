@@ -7,9 +7,9 @@ block content
           --img-fondo:url(/img/fondos/${departamento.imagen_fondo});`
   )
 
-    // ====== BOTÓN REGLAS (ARRIBA) ======
+    // ====== BOTÓN REGLAS ======
     .top-actions
-      button#btnReglas.btn-reglas(type="button") Reglas del juego
+      button#btnReglas.btn-ui(type="button") Reglas del juego
 
     // ====== MODAL REGLAS ======
     .modal-overlay#modalReglas(aria-hidden="true")
@@ -17,6 +17,7 @@ block content
         .modal-header
           h2#modalReglasTitle.modal-title Reglas del juego
           button#btnCerrarReglas.modal-close(type="button" aria-label="Cerrar") ✕
+
         .modal-body
           p Elegí un departamento y armá el nombre del paraje usando sílabas.
           ul
@@ -28,7 +29,7 @@ block content
     .juego-layout
 
       // ==========================
-      //     CARTA IZQUIERDA
+      // CARTA IZQUIERDA
       // ==========================
       section.carta
         .carta__interior
@@ -43,7 +44,7 @@ block content
           .carta__etiqueta= departamento.nombre
 
       // ==========================
-      //     PANEL DERECHA
+      // PANEL DERECHA
       // ==========================
       .juego-panel
 
@@ -52,10 +53,12 @@ block content
 
           .barra-metas
             span.contador-departamentos #{numeroParaje} / #{totalParajes}
-            span#cronometro.cronometro 00:00.00
-            button#btnPausa.btn-pausa(type="button" aria-pressed="false") Pausa
 
-        // === CASILLEROS ===
+            .cronometro-linea
+              span#cronometro.cronometro 00:00.00
+              button#btnPausa.btn-ui(type="button" aria-pressed="false") Pausa
+
+        // ===== CASILLEROS =====
         .casilleros-area
           .casilleros
             each s, i in tokens
@@ -68,16 +71,18 @@ block content
                   data-indice=i
                 )
 
-        // === TOAST DE VICTORIA ===
+        // ===== TOAST DE VICTORIA =====
         .toast-wrapper
           .comarca-toast.comarca-toast--oculto
             span.comarca-toast-msg
+
             .comarca-toast-botones
               if urlSiguiente
-                a.btn-siguiente(href=urlSiguiente) Siguiente
+                a.btn-ui(href=urlSiguiente) Siguiente
               if urlVolver
-                a.btn-volver(href=urlVolver) Volver
+                a.btn-ui(href=urlVolver) Volver
 
   script.
     window.JUEGO_DATA = !{JSON.stringify(juegoData)};
+
   script(src="/js/departamento.js")

@@ -6,13 +6,11 @@ block content
       img.logo(src="/img/banderaSanLuisPixelArt.png" alt="Escudo de San Luis")
 
     .menu-container
-      // ===== BLOQUE JUGADOR =====
       .player-box
         .player-box__inner
           span.player-label Bienvenido
           span.player-name #{user ? user.userName : 'Invitado'}
 
-      // ===== MENU =====
       a.menu-btn(href="/mapa") Mapa
       a.menu-btn(href="/departamentos") Departamentos
       a.menu-btn(href="/logros") Logros

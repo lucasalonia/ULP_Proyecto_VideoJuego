@@ -12,8 +12,9 @@ body {
 
 /* App shell: navbar + contenido */
 .app-main {
-  height: calc(100dvh - var(--nav-h, 72px));
-  overflow: hidden;
+  min-height: calc(100dvh - var(--nav-h, 72px));
+  width: 100%;
+  overflow: visible;
 }
 
 /* Si tu navbar NO es fixed, esto ayuda a que calc sea real:

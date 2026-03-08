@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 10-02-2026 a las 01:57:14
+-- Tiempo de generación: 08-03-2026 a las 01:02:50
 -- Versión del servidor: 10.4.14-MariaDB
 -- Versión de PHP: 7.4.10
 
@@ -40,15 +40,15 @@ CREATE TABLE `departamento` (
 --
 
 INSERT INTO `departamento` (`departamento_id`, `nombre`, `imagen_mapa`, `imagen_carta`, `imagen_fondo`) VALUES
-(1, 'PRINGLES', '', 'pringlesTarjeta.png', ''),
-(2, 'AYACUCHO', '', 'ayacuchoTarjeta.png', ''),
-(3, 'BELGRANO', '', 'belgranoTarjeta.png', ''),
-(4, 'CHACABUCO', '', 'chacabucoTarjeta.png', ''),
-(5, 'DUPUY', '', 'dupuyTarjeta.png', ''),
-(6, 'JUNIN', '', 'juninTarjeta.png', ''),
-(7, 'PEDERNERA', '', 'pederneraTarjeta.png', ''),
-(8, 'PUYRREDÓN', '', 'pueyrredonTarjeta.png', ''),
-(9, 'SAN MARTÍN', '', 'sanMartinTarjeta.png', '');
+(1, 'PRINGLES', '', 'pringlesTarjeta.png', 'fondoPringles.png'),
+(2, 'AYACUCHO', '', 'ayacuchoTarjeta.png', 'fondoAyacucho.png'),
+(3, 'BELGRANO', '', 'belgranoTarjeta.png', 'fondoBelgrano.png'),
+(4, 'CHACABUCO', '', 'chacabucoTarjeta.png', 'fondoChacabuco.png'),
+(5, 'DUPUY', '', 'dupuyTarjeta.png', 'fondoDupuy.png'),
+(6, 'JUNIN', '', 'juninTarjeta.png', 'fondoJunin.png'),
+(7, 'PEDERNERA', '', 'pederneraTarjeta.png', 'fondoPedernera.png'),
+(8, 'PUYRREDÓN', '', 'pueyrredonTarjeta.png', 'fondoPuyrredon.png'),
+(9, 'SAN MARTÍN', '', 'sanMartinTarjeta.png', 'fondoSanMartin.png');
 
 -- --------------------------------------------------------
 
@@ -426,13 +426,6 @@ CREATE TABLE `usuario` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Volcado de datos para la tabla `usuario`
---
-
-INSERT INTO `usuario` (`usuario_id`, `nombre`, `mail`, `password_hash`, `imagen_perfil`, `rol`, `fecha_creacion`) VALUES
-(1, 'invitado', 'salonialuca97@gmail.com', '$2b$12$XCvZ0PJy1MISV4CzRmbfwODvinygWOIQHfWbrL/0UxGZKB6Tku/Na', '/img/profiles/testimage2.png', 'admin', '2025-11-17 18:51:41');
-
---
 -- Índices para tablas volcadas
 --
 
@@ -485,7 +478,7 @@ ALTER TABLE `departamento`
 -- AUTO_INCREMENT de la tabla `logro`
 --
 ALTER TABLE `logro`
-  MODIFY `logro_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `logro_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
 
 --
 -- AUTO_INCREMENT de la tabla `paraje`
@@ -497,13 +490,13 @@ ALTER TABLE `paraje`
 -- AUTO_INCREMENT de la tabla `tiempo_mapa`
 --
 ALTER TABLE `tiempo_mapa`
-  MODIFY `tiempo_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `tiempo_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT de la tabla `usuario`
 --
 ALTER TABLE `usuario`
-  MODIFY `usuario_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+  MODIFY `usuario_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 
 --
 -- Restricciones para tablas volcadas

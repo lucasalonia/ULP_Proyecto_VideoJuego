@@ -9,31 +9,35 @@ body {
 }
 
 /* ===========================
-   NAVBAR BASE (ESCRITORIO)
+   NAVBAR BASE
 =========================== */
 .navbar {
-  background-color: #111 !important;
+  background: linear-gradient(180deg, #fead85, #fead85ea) !important;
   padding: 15px 40px;
-  font-family: "Consolas", "Press Start 2P", monospace;
+  font-family: "Press Start 2P", monospace !important;
 
-  /* Glow en escritorio */
-  border-bottom: 3px solid rgba(0, 238, 255, 0.8);
-  box-shadow: 0 0 12px rgba(0, 238, 255, 0.6);
+  box-shadow:
+    0 3px 6px rgba(0, 234, 255, 0.35),  /* sombra celeste suave */
+    0 4px 8px rgba(0,0,0,0.15);         /* sombra leve abajo */
 }
 
 /* ===========================
    LOGO
 =========================== */
 .navbar-brand {
-  color: #00eaff !important;
-  font-size: 1.2rem;
-  font-weight: bold;
-  letter-spacing: 2px;
-  transition: color 0.3s ease;
+  color: #000000 !important;
+  font-family: "Press Start 2P", monospace !important;
+  font-size: 14px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+
+  text-shadow: none;
+
+  transition: transform 0.1s ease;
 }
 
 .navbar-brand:hover {
-  color: #ff00ff !important;
+  transform: translate(-1px, -1px);
 }
 
 /* ===========================
@@ -42,151 +46,154 @@ body {
 .navbar-nav {
   display: flex;
   align-items: center;
-  gap: 30px;
+  gap: 36px; /* más separación */
 }
 
 .navbar-nav .nav-link {
-  color: #ffffff !important;
-  font-size: 0.95rem;
-  transition: color 0.3s ease, transform 0.2s ease;
+  color: #000000 !important;
+  font-family: "Press Start 2P", monospace !important;
+  font-size: 11px;
+  line-height: 1.6;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+
+  padding: 10px 0 !important;
+
+  text-shadow:
+    none;
+
+  transition: color 0.2s ease, transform 0.1s ease;
 }
 
 .navbar-nav .nav-link:hover {
   color: #00eaff !important;
-  transform: scale(1.1);
+
+  transform: translateY(-1px);
+
+  text-shadow:
+    2px 2px 0 #0d5f8c,
+    0 0 6px rgba(0, 234, 255, 0.55);
 }
 
 /* ===========================
-   DROPDOWN PERFIL (NORMAL)
+   DROPDOWN PERFIL
 =========================== */
 .dropdown-menu {
-  background: rgba(17, 17, 17, 0.92) !important;
-  border: 2px solid rgba(0, 238, 255, 0.9) !important;
-  border-radius: 12px !important;
-  padding: 6px 0;
-  backdrop-filter: blur(4px);
+  background: linear-gradient(180deg, #1c9adc, #167fb5) !important;
+  border: 3px solid #00eaff !important;
+  border-radius: 0 !important;
+  padding: 8px 0;
+  font-family: "Press Start 2P", monospace !important;
 
-  /* Glow normal */
   box-shadow:
-    0 0 18px rgba(0, 238, 255, 0.7),
-    inset 0 0 12px rgba(0, 238, 255, 0.35);
+    0 6px 0 #000,
+    0 0 12px rgba(0, 238, 255, 0.45);
 
   overflow: visible !important;
+  min-width: 220px;
 }
 
 .dropdown-item {
-  color: #fff !important;
-  padding: 8px 15px;
-  transition: background-color 0.25s ease, color 0.25s ease;
+  color: #ffffff !important;
+  font-family: "Press Start 2P", monospace !important;
+  font-size: 10px;
+  line-height: 1.7;
+  text-transform: uppercase;
+
+  padding: 10px 14px;
+
+  transition: background-color 0.15s ease, transform 0.1s ease;
 }
 
 .dropdown-item:hover {
   background-color: #00eaff !important;
-  color: #111 !important;
+  color: #0a0a0a !important;
+  transform: translateX(4px);
 }
 
 .dropdown-divider {
-  height: 1px;
+  height: 2px;
+  margin: 6px 10px;
   background-color: #ff00ff !important;
-  box-shadow: 0 0 8px #ff00ff;
+  box-shadow: 0 0 6px rgba(255, 0, 255, 0.8);
 }
 
 .dropdown-item.text-danger {
-  color: #ff4444 !important;
+  color: #ff5c5c !important;
 }
 
 .dropdown-item.text-danger:hover {
-  background-color: #ff4444 !important;
+  background-color: #ff5c5c !important;
   color: #111 !important;
 }
 
 /* ===========================
-   BOTÓN HAMBURGUESA (SUAVE)
+   BOTÓN HAMBURGUESA
 =========================== */
 .navbar-toggler {
-  border-radius: 12px !important;
-  border: 2px solid rgba(0, 238, 255, 0.7) !important;
+  padding: 8px 10px !important;
+  border-radius: 0 !important;
+  border: 3px solid #00eaff !important;
 
-  /* Glow suave */
+  background: linear-gradient(180deg, #1c9adc, #167fb5) !important;
+
   box-shadow:
-    0 0 12px rgba(0, 238, 255, 0.5),
-    inset 0 0 6px rgba(0, 238, 255, 0.3);
+    0 4px 0 #000,
+    0 0 10px rgba(0, 238, 255, 0.45);
 
-  background: rgba(17, 17, 17, 0.85);
+  transition: transform 0.1s ease, box-shadow 0.1s ease;
+}
+
+.navbar-toggler:hover {
+  transform: translate(-2px, -2px);
+
+  box-shadow:
+    0 6px 0 #000,
+    0 0 12px rgba(0, 238, 255, 0.6);
 }
 
 .navbar-toggler-icon {
-  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='%2300eaff' stroke-width='3' stroke-linecap='round' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e") !important;
-  filter: none !important;
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='%23ffffff' stroke-width='3' stroke-linecap='square' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e") !important;
 }
 
 /* ===========================
-   RESPONSIVE (MÓVIL)
+   RESPONSIVE
 =========================== */
 @media (max-width: 992px) {
 
-  /* Navbar en móvil SIN glow */
   .navbar {
-    padding: 15px 20px;
+    padding: 14px 18px;
   }
 
-  /* Lista vertical */
+  .navbar-brand {
+    font-size: 11px;
+  }
+
   .navbar-nav {
     flex-direction: column;
-    gap: 15px;
+    gap: 14px;
     align-items: flex-start;
-    padding: 10px 0;
   }
 
-  /* ===========================
-     MENÚ COLAPSADO (NORMAL)
-  ============================ */
   .navbar-collapse {
-    background: rgba(17, 17, 17, 0.96);
-    backdrop-filter: blur(6px);
-    border-radius: 16px;
+    background: linear-gradient(180deg, #1c9adc, #167fb5) !important;
 
-    /* Glow normal */
-    border: 2px solid rgba(0, 238, 255, 0.9);
-    box-shadow: 0 0 22px rgba(0, 238, 255, 0.8);
+    border-radius: 0 !important;
+    border: 3px solid #00eaff;
 
-    margin: 8px 10px 0 10px;
-    padding: 15px 20px;
-    animation: menuDrop 0.25s ease-in-out;
+    box-shadow:
+      0 6px 0 #000,
+      0 0 12px rgba(0, 238, 255, 0.45);
+
+    margin-top: 10px;
+    padding: 14px 16px;
   }
 
-  @keyframes menuDrop {
-    from { opacity: 0; transform: translateY(-10px); }
-    to   { opacity: 1; transform: translateY(0); }
-  }
-
-  /* Links gamer */
   .navbar-nav .nav-link {
-    font-size: 1rem;
-    padding: 8px 0;
-    color: #e0ffff !important;
+    font-size: 10px;
   }
 
-  .navbar-nav .nav-link:hover {
-    color: #00eaff !important;
-    text-shadow: 0 0 6px #00eaff;
-    transform: translateX(5px);
+  .dropdown-menu {
+    min-width: 100%;
   }
-}
-/* ===========================
-   FORZAR SOMBRA AL DROPDOWN ABIERTO (FIX REAL)
-=========================== */
-.dropdown-menu.show[data-bs-popper] {
-  box-shadow:
-    0 0 18px rgba(0, 238, 255, 0.7),
-    0 0 40px rgba(0, 238, 255, 0.55),
-    inset 0 0 12px rgba(0, 238, 255, 0.35) !important;
-
-  border: 2px solid rgba(0, 238, 255, 0.9) !important;
-  border-radius: 12px !important;
-
-  background: rgba(17, 17, 17, 0.92) !important;
-  backdrop-filter: blur(4px);
-
-  overflow: visible !important;
 }
