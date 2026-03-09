@@ -93,8 +93,8 @@
   padding: 26px 28px;
   /* más aire */
 
-  background: linear-gradient(180deg, #071a2c, #050f1d);
-  border: 5px solid #00eaff;
+  background: linear-gradient(180deg, #3c3c3c, #5c5c5c);
+  border: 5px solid #7deaff;
 
   box-shadow:
     0 0 18px rgba(0, 234, 255, 0.40),
@@ -108,7 +108,7 @@
   margin: 0 0 14px;
   font-size: 18px;
   /* antes 14px */
-  color: #ffffff;
+  color: #7deaff;
   letter-spacing: 1px;
 
   text-shadow:

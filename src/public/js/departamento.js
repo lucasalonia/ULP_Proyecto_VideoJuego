@@ -1,4 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
+
   if (!window.JUEGO_DATA) return;
 
   const {
@@ -8,24 +9,82 @@ document.addEventListener("DOMContentLoaded", () => {
     departamentoId,
     nombreParaje = "Paraje",
   } = window.JUEGO_DATA;
+  // ======================================
+  // CONTINUAR PROGRESO LOCAL
+  // ======================================
 
+  if (usuarioId === null || usuarioId === undefined) {
+
+    const progreso = JSON.parse(localStorage.getItem("comarcas_progreso") || "{}");
+
+    const completados = progreso.cartas?.[departamentoId];
+
+    if (Array.isArray(completados) && completados.length > 0) {
+
+      const ultimo = completados[completados.length - 1];
+
+      const parajes = window.JUEGO_DATA.parajesDepartamento;
+
+      const index = parajes.findIndex(p => String(p.id) === String(ultimo));
+
+      const siguiente = parajes[index + 1];
+
+      if (siguiente && !window.location.search.includes("paraje")) {
+
+        window.location.href = `/departamento/${departamentoId}?paraje=${siguiente.id}`;
+
+      }
+
+    }
+
+  }
   const esInvitado = usuarioId === null || usuarioId === undefined;
   let victoriaProcesada = false;
 
-  // Para bloquear interacción cuando está en pausa
   const escenaEl = document.querySelector(".escena");
+
+
+  // ==================================================
+  // RECUPERAR PROGRESO LOCAL (SIN REDIRECCIÓN)
+  // ==================================================
+
+  function obtenerUltimoParajeLocal() {
+
+    const progreso = JSON.parse(localStorage.getItem("comarcas_progreso") || "{}");
+
+    if (!progreso.cartas) return null;
+
+    const completados = progreso.cartas[departamentoId];
+
+    if (!Array.isArray(completados) || completados.length === 0) return null;
+
+    return completados[completados.length - 1];
+  }
+
+  if (esInvitado) {
+
+    const ultimo = obtenerUltimoParajeLocal();
+
+    if (ultimo) {
+      console.log("Último paraje completado:", ultimo);
+    }
+
+  }
+
+
 
   // ==================================================
   // MODAL REGLAS
   // ==================================================
+
   const btnReglas = document.getElementById("btnReglas");
   const modalReglas = document.getElementById("modalReglas");
   const btnCerrarReglas = document.getElementById("btnCerrarReglas");
 
   function openReglas() {
+
     if (!modalReglas) return;
 
-    // si está corriendo, pausamos por reglas
     if (!isPaused && !victoriaProcesada) {
       pausedByRules = true;
       togglePausa();
@@ -38,7 +97,9 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function closeReglas() {
+
     if (!modalReglas) return;
+
     modalReglas.classList.remove("is-open");
     modalReglas.setAttribute("aria-hidden", "true");
   }
@@ -56,10 +117,14 @@ document.addEventListener("DOMContentLoaded", () => {
     if (e.key === "Escape") closeReglas();
   });
 
+
+
   // ==================================================
-  // LOCAL STORAGE – SOLO INVITADOS
+  // LOCAL STORAGE
   // ==================================================
+
   function getProgresoLocal() {
+
     return (
       JSON.parse(localStorage.getItem("comarcas_progreso")) || {
         cartas: {},
@@ -69,11 +134,14 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function guardarParajeLocal(departamentoId, parajeId) {
+
     const data = getProgresoLocal();
+
     const depId = String(departamentoId);
     const pId = String(parajeId);
 
     if (!data.cartas[depId]) data.cartas[depId] = [];
+
     if (!data.cartas[depId].includes(pId)) {
       data.cartas[depId].push(pId);
     }
@@ -81,20 +149,27 @@ document.addEventListener("DOMContentLoaded", () => {
     localStorage.setItem("comarcas_progreso", JSON.stringify(data));
   }
 
+
+
   // ==================================================
-  // CRONÓMETRO (con Pausa/Reanudar)
+  // CRONÓMETRO
   // ==================================================
+
   const cronometroEl = document.getElementById("cronometro");
   const btnPausa = document.getElementById("btnPausa");
 
   const fechaInicioISO = new Date().toISOString();
+
   let baseStart = Date.now();
   let elapsedMs = 0;
+
   let isPaused = false;
   let pausedByRules = false;
+
   let cronometroInterval = null;
 
   function formatTiempo(ms) {
+
     const m = Math.floor(ms / 60000);
     const s = Math.floor((ms % 60000) / 1000);
     const c = Math.floor((ms % 1000) / 10);
@@ -107,37 +182,51 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function getElapsedMs() {
+
     return elapsedMs + (isPaused ? 0 : Date.now() - baseStart);
   }
 
   function renderCronometro() {
+
     if (!cronometroEl) return;
+
     cronometroEl.textContent = formatTiempo(getElapsedMs());
   }
 
   function startCronometro() {
+
     if (cronometroInterval) clearInterval(cronometroInterval);
+
     cronometroInterval = setInterval(renderCronometro, 50);
   }
 
   function stopCronometro() {
+
     if (cronometroInterval) clearInterval(cronometroInterval);
+
     cronometroInterval = null;
   }
 
   function setPausedUI(paused) {
+
     if (!escenaEl) return;
+
     if (paused) escenaEl.classList.add("is-paused");
     else escenaEl.classList.remove("is-paused");
   }
 
+
+
   function togglePausa() {
+
     if (victoriaProcesada) return;
 
     if (!isPaused) {
-      // pausar
+
       elapsedMs += Date.now() - baseStart;
+
       isPaused = true;
+
       stopCronometro();
       renderCronometro();
 
@@ -146,17 +235,15 @@ document.addEventListener("DOMContentLoaded", () => {
         btnPausa.setAttribute("aria-pressed", "true");
       }
 
-      // bloquear sílabas + casilleros
       setPausedUI(true);
-      // también sacamos selección para evitar confusión visual
       deseleccionarFicha();
 
       return;
     }
 
-    // reanudar
     baseStart = Date.now();
     isPaused = false;
+
     startCronometro();
 
     if (btnPausa) {
@@ -164,7 +251,6 @@ document.addEventListener("DOMContentLoaded", () => {
       btnPausa.setAttribute("aria-pressed", "false");
     }
 
-    // habilitar
     setPausedUI(false);
   }
 
@@ -173,34 +259,51 @@ document.addEventListener("DOMContentLoaded", () => {
   startCronometro();
   renderCronometro();
 
+
+
   function getTiempoSegundos() {
+
     return Math.max(0, Math.floor(getElapsedMs() / 1000));
   }
+
+
 
   // ==================================================
   // ELEMENTOS
   // ==================================================
+
   const fichas = [...document.querySelectorAll(".ficha")];
   const casilleros = [...document.querySelectorAll("button.casillero")];
+
   let fichaSeleccionada = null;
+
+
 
   // ==================================================
   // TOAST
   // ==================================================
+
   const toast = document.querySelector(".comarca-toast");
   const toastMsg = document.querySelector(".comarca-toast-msg");
 
   function mostrarToast(msg) {
+
     if (!toast || !toastMsg) return;
+
     toastMsg.textContent = msg;
+
     toast.classList.remove("comarca-toast--oculto");
     toast.classList.add("comarca-toast--visible");
   }
 
+
+
   // ==================================================
   // UTILIDADES
   // ==================================================
+
   function deseleccionarFicha() {
+
     if (fichaSeleccionada) {
       fichaSeleccionada.classList.remove("seleccionada");
       fichaSeleccionada = null;
@@ -208,29 +311,40 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function liberarFicha(idFicha) {
+
     if (idFicha === undefined || idFicha === null || idFicha === "") return;
+
     const ficha = document.querySelector(`.ficha[data-indice="${idFicha}"]`);
+
     if (!ficha) return;
 
     ficha.dataset.usada = "0";
     ficha.classList.remove("usada");
   }
 
-  // Si el casillero ya tenía una ficha, primero la liberamos
+
+
   function asignarCasillero(casillero, ficha) {
+
     if (casillero.dataset.idFicha) {
+
       liberarFicha(casillero.dataset.idFicha);
+
       casillero.textContent = "";
+
       delete casillero.dataset.valor;
       delete casillero.dataset.idFicha;
+
       casillero.classList.remove("correcto", "incorrecto");
     }
 
     casillero.textContent = ficha.dataset.silaba;
+
     casillero.dataset.valor = ficha.dataset.silaba;
     casillero.dataset.idFicha = ficha.dataset.indice;
 
     ficha.dataset.usada = "1";
+
     ficha.classList.remove("seleccionada");
     ficha.classList.add("usada");
 
@@ -238,19 +352,27 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function limpiarCasillero(casillero) {
+
     liberarFicha(casillero.dataset.idFicha);
 
     casillero.textContent = "";
+
     delete casillero.dataset.valor;
     delete casillero.dataset.idFicha;
+
     casillero.classList.remove("correcto", "incorrecto");
   }
 
+
+
   // ==================================================
-  // BACKEND – GUARDAR LOGRO (NO guardar tiempo_mapa acá)
+  // BACKEND
   // ==================================================
+
   async function postJSON(url, payload) {
+
     try {
+
       const res = await fetch(url, {
         method: "POST",
         credentials: "same-origin",
@@ -259,34 +381,41 @@ document.addEventListener("DOMContentLoaded", () => {
       });
 
       if (!res.ok) return { ok: false };
+
       return await res.json();
+
     } catch {
+
       return { ok: false };
     }
   }
 
   async function guardarBD() {
+
     const fecha_inicio = fechaInicioISO;
     const fecha_fin = new Date().toISOString();
     const tiempo = getTiempoSegundos();
 
-    // Solo logro (progreso del juego)
     await postJSON("/logro-paraje", {
       paraje_id: parajeId,
       fecha_inicio,
       fecha_fin,
       tiempo,
     });
-
-    // Importante: NO llamar /tiempo_mapa desde el juego
   }
+
+
 
   // ==================================================
   // VERIFICAR VICTORIA
   // ==================================================
+
   function verificarVictoria() {
+
     casilleros.forEach((c, i) => {
+
       c.classList.remove("correcto", "incorrecto", "shake", "pop");
+
       if (!c.dataset.valor) return;
 
       if (c.dataset.valor === ordenCorrecto[i]) {
@@ -297,16 +426,20 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     const completo = casilleros.every((c) => c.dataset.valor);
+
     const correcto = casilleros.every(
       (c, i) => c.dataset.valor === ordenCorrecto[i]
     );
 
     if (!completo || !correcto || victoriaProcesada) return;
+
     victoriaProcesada = true;
 
     if (btnPausa) btnPausa.style.display = "none";
+
     stopCronometro();
-    setPausedUI(true); // al ganar, bloqueamos para que no sigan tocando
+
+    setPausedUI(true);
 
     if (btnPausa) {
       btnPausa.setAttribute("aria-pressed", "true");
@@ -318,17 +451,22 @@ document.addEventListener("DOMContentLoaded", () => {
     if (esInvitado) {
       guardarParajeLocal(departamentoId, parajeId);
     } else {
-      guardarBD().catch(() => {});
+      guardarBD().catch(() => { });
     }
   }
 
+
+
   // ==================================================
-  // EVENTOS FICHAS
+  // EVENTOS
   // ==================================================
+
   fichas.forEach((ficha) => {
+
     ficha.dataset.usada = "0";
 
     ficha.addEventListener("click", () => {
+
       if (isPaused) return;
       if (ficha.dataset.usada === "1") return;
 
@@ -338,16 +476,17 @@ document.addEventListener("DOMContentLoaded", () => {
       }
 
       deseleccionarFicha();
+
       ficha.classList.add("seleccionada");
+
       fichaSeleccionada = ficha;
     });
   });
 
-  // ==================================================
-  // EVENTOS CASILLEROS
-  // ==================================================
   casilleros.forEach((casillero) => {
+
     casillero.addEventListener("click", () => {
+
       if (isPaused) return;
 
       if (fichaSeleccionada) {
@@ -362,14 +501,4 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
-  // ==================================================
-  // BOTÓN "SIGUIENTE" / "VOLVER"
-  // ==================================================
-  document.querySelectorAll(".btn-siguiente, .btn-volver").forEach((btn) => {
-    btn.addEventListener("click", (e) => {
-      e.preventDefault();
-      const href = btn.getAttribute("href");
-      if (href) window.location.href = href;
-    });
-  });
 });

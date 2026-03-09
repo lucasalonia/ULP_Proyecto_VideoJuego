@@ -2,12 +2,14 @@ html,
 body {
   height: 100%;
   margin: 0;
+  padding: 0;
 }
 
 /* Importante: no uses 100vw */
 body {
   width: 100%;
   overflow: hidden; /* saca el scroll general */
+  overflow-y: auto;
 }
 
 /* App shell: navbar + contenido */
@@ -15,6 +17,7 @@ body {
   min-height: calc(100dvh - var(--nav-h, 72px));
   width: 100%;
   overflow: visible;
+  
 }
 
 /* Si tu navbar NO es fixed, esto ayuda a que calc sea real:

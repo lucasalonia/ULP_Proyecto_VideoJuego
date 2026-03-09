@@ -190,7 +190,7 @@ async function verDepartamentoJuego(req, res) {
     const juegoData = {
       usuarioId,
       parajeId: paraje.id,
-      departamentoId: departamento.id,
+      departamentoId: id,
       parajesDepartamento: parajes,
       nombreParaje: paraje.nombre,
       ordenCorrecto,
