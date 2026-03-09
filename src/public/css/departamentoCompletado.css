@@ -54,14 +54,14 @@ body {
 .departamento-completado-title {
   font-family: "Press Start 2P", monospace;
   font-size: 28px;
-  line-height: 1.2;
+  
   margin: 0 0 6px 0;
   color: #0f141a;
 }
 
 .departamento-completado-name {
   font-family: "Consolas", "Press Start 2P", monospace;
-  font-size: 18px;
+  font-size: 28px;
   margin: 0 0 6px 0;
   letter-spacing: 1px;
   color: #111;
