@@ -12,32 +12,43 @@ body {
    NAVBAR BASE
 =========================== */
 .navbar {
-  background: linear-gradient(180deg, #FFEEB3, #FFEEB3) !important;
+  background: #ffefb3 !important;
   padding: 15px 40px;
-  font-family: "Press Start 2P", monospace !important;
-
   box-shadow:
-    0 3px 6px rgba(0, 234, 255, 0.35),  /* sombra celeste suave */
-    0 4px 8px rgba(0,0,0,0.15);         /* sombra leve abajo */
+    0 3px 6px rgba(0, 234, 255, 0.35),
+    0 4px 8px rgba(0, 0, 0, 0.15);
+}
+.navbar .dropdown-menu,
+.navbar .dropdown-menu * {
+  font-family: "Press Start 2P", monospace !important;
+}
+.navbar .container-fluid {
+  display: flex;
+  align-items: center;
 }
 
 /* ===========================
    LOGO
 =========================== */
 .navbar-brand {
+  display: flex;
+  align-items: center;
   color: #000000 !important;
   font-family: "Press Start 2P", monospace !important;
   font-size: 14px;
   letter-spacing: 1px;
   text-transform: uppercase;
-
   text-shadow: none;
-
-  transition: transform 0.1s ease;
+  transition: color 0.2s ease, transform 0.1s ease;
 }
 
 .navbar-brand:hover {
+  color: #00eaff !important;
   transform: translate(-1px, -1px);
+}
+
+.navbar-brand span {
+  line-height: 1.3;
 }
 
 /* ===========================
@@ -46,7 +57,7 @@ body {
 .navbar-nav {
   display: flex;
   align-items: center;
-  gap: 36px; /* más separación */
+  gap: 36px;
 }
 
 .navbar-nav .nav-link {
@@ -56,144 +67,186 @@ body {
   line-height: 1.6;
   text-transform: uppercase;
   letter-spacing: 1px;
-
   padding: 10px 0 !important;
-
-  text-shadow:
-    none;
-
+  text-shadow: none;
   transition: color 0.2s ease, transform 0.1s ease;
 }
 
 .navbar-nav .nav-link:hover {
   color: #00eaff !important;
-
   transform: translateY(-1px);
-
-  text-shadow:
-    2px 2px 0 #0d5f8c,
-    0 0 6px rgba(0, 234, 255, 0.55);
+  text-shadow: none;
 }
 
 /* ===========================
    DROPDOWN PERFIL
 =========================== */
 .dropdown-menu {
-  background: linear-gradient(180deg, #1c9adc, #167fb5) !important;
-  border: 3px solid #00eaff !important;
+  background: #eea47f !important;
+  border: 4px solid #4f4f4f !important;
   border-radius: 0 !important;
-  padding: 8px 0;
+  padding: 6px 0;
+  min-width: 220px;
   font-family: "Press Start 2P", monospace !important;
-
+  font-size: 10px;
   box-shadow:
     0 6px 0 #000,
-    0 0 12px rgba(0, 238, 255, 0.45);
-
-  overflow: visible !important;
-  min-width: 220px;
+    inset 0 0 0 3px #f6d9b8;
 }
 
 .dropdown-item {
-  color: #ffffff !important;
+  color: #111111 !important;
   font-family: "Press Start 2P", monospace !important;
   font-size: 10px;
   line-height: 1.7;
   text-transform: uppercase;
-
   padding: 10px 14px;
-
-  transition: background-color 0.15s ease, transform 0.1s ease;
+  transition: background-color 0.15s ease, transform 0.1s ease, color 0.15s ease;
 }
 
 .dropdown-item:hover {
-  background-color: #00eaff !important;
-  color: #0a0a0a !important;
+  background-color: #f6d9b8 !important;
+  color: #000000 !important;
   transform: translateX(4px);
 }
 
 .dropdown-divider {
   height: 2px;
   margin: 6px 10px;
-  background-color: #ff00ff !important;
-  box-shadow: 0 0 6px rgba(255, 0, 255, 0.8);
+  background-color: #00eaff !important;
+  
 }
 
 .dropdown-item.text-danger {
-  color: #ff5c5c !important;
+  color: #ffffff !important;
 }
 
 .dropdown-item.text-danger:hover {
-  background-color: #ff5c5c !important;
-  color: #111 !important;
+  background-color: #f6d9b8 !important;
+  color: #ff0000 !important;
+}
+/* ===========================
+   FIX DROPDOWN BOOTSTRAP
+=========================== */
+
+.dropdown-item:focus,
+.dropdown-item:active,
+.dropdown-item.active {
+  background-color: transparent !important;
+  color: #111111 !important;
 }
 
+.dropdown-item.text-danger:focus,
+.dropdown-item.text-danger:active,
+.dropdown-item.text-danger.active {
+  background-color: #f6d9b8 !important;
+  color: #ff0000 !important;
+}
 /* ===========================
    BOTÓN HAMBURGUESA
 =========================== */
 .navbar-toggler {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   padding: 8px 10px !important;
   border-radius: 0 !important;
-  border: 3px solid #00eaff !important;
-
-  background: linear-gradient(180deg, #1c9adc, #167fb5) !important;
-
+  border: 4px solid #4f4f4f !important;
+  background: #eea47f !important;
   box-shadow:
     0 4px 0 #000,
-    0 0 10px rgba(0, 238, 255, 0.45);
-
+    inset 0 0 0 3px #f6d9b8;
   transition: transform 0.1s ease, box-shadow 0.1s ease;
 }
 
 .navbar-toggler:hover {
   transform: translate(-2px, -2px);
-
   box-shadow:
     0 6px 0 #000,
-    0 0 12px rgba(0, 238, 255, 0.6);
+    inset 0 0 0 3px #f6d9b8;
+}
+
+.navbar-toggler:focus {
+  box-shadow:
+    0 4px 0 #000,
+    inset 0 0 0 3px #f6d9b8 !important;
+  outline: none !important;
 }
 
 .navbar-toggler-icon {
-  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='%23ffffff' stroke-width='3' stroke-linecap='square' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e") !important;
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='%23333333' stroke-width='3' stroke-linecap='square' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e") !important;
 }
 
 /* ===========================
-   RESPONSIVE
+   MOBILE / TABLET
 =========================== */
-@media (max-width: 992px) {
-
+@media (max-width: 991.98px) {
   .navbar {
     padding: 14px 18px;
   }
 
+  .navbar .container-fluid {
+    justify-content: space-between;
+    flex-wrap: wrap;
+  }
+
   .navbar-brand {
+    gap: 8px;
+    margin-right: 0;
     font-size: 11px;
+    max-width: calc(100% - 70px);
+  }
+
+  .navbar-brand span {
+    display: inline-block;
+    font-size: 11px;
+    line-height: 1.4;
+  }
+
+  .navbar-toggler {
+    margin-left: auto;
+    flex-shrink: 0;
+  }
+
+  .navbar-collapse {
+    width: 100%;
+    margin-top: 12px;
+    padding: 14px 16px;
+    background: #eea47f !important;
+    border: 4px solid #4f4f4f;
+    border-radius: 0 !important;
+    box-shadow:
+      0 6px 0 #000,
+      inset 0 0 0 3px #f6d9b8;
   }
 
   .navbar-nav {
     flex-direction: column;
-    gap: 14px;
     align-items: flex-start;
+    gap: 10px;
+    width: 100%;
   }
 
-  .navbar-collapse {
-    background: linear-gradient(180deg, #1c9adc, #167fb5) !important;
-
-    border-radius: 0 !important;
-    border: 3px solid #00eaff;
-
-    box-shadow:
-      0 6px 0 #000,
-      0 0 12px rgba(0, 238, 255, 0.45);
-
-    margin-top: 10px;
-    padding: 14px 16px;
+  .navbar-nav.ms-auto,
+  .navbar-nav.ms-3 {
+    margin-left: 0 !important;
   }
 
   .navbar-nav .nav-link {
     font-size: 10px;
+    line-height: 1.8;
+    padding: 6px 0 !important;
+    color: #111 !important;
+  }
+
+  .navbar-nav .nav-link:hover {
+    color: #00eaff !important;
+    transform: none;
+    text-shadow: none;
   }
 
   .dropdown-menu {
     min-width: 100%;
+    margin-top: 8px;
   }
 }
