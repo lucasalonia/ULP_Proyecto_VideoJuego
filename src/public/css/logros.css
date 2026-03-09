@@ -16,7 +16,7 @@
     pointer-events: all; /* Solo captura clics cuando está visible */
 }
 .logros-page {
-  background-image:url("/img/degradeNaranja.PNG"); ;
+  background-image:url("/img/degradeNaranja1.PNG"); ;
   min-height: 100vh;
   padding-top: 40px;
 }

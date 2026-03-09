@@ -17,9 +17,9 @@ class Escena extends Phaser.Scene {
         this.load.image('Belgrano', '/img/mapa/belgranoMapa.png');
         this.load.image('Pringles', '/img/mapa/pringlesMapa.png');
         this.load.image('hoja', '/img/mapa/pixelHoja.png');
-        this.load.image('marco', '/img/mapa/frame1.png');
+        this.load.image('marco', '/img/mapa/frame2.png');
         this.load.image('sticker', '/img/mapa/notaPixel.png');
-        this.load.image('sticker2', '/img/mapa/notaPixel2.png');
+        this.load.image('sticker2', '/img/mapa/Nota2.png');
         this.load.image('lapiz', '/img/mapa/pen1.png');
         this.load.audio('ok', './audio/ok2.wav');
         this.load.audio('final', './audio/final.mp3');
@@ -43,20 +43,20 @@ class Escena extends Phaser.Scene {
         const canvaHeight = this.sys.game.config.height;
 
         // Elementos de fondo
-        const hoja = this.add.sprite(canvaWidth / 2 - 60, canvaHeight / 2 - 20, 'hoja').setDepth(0).setScale(0.69);
-        const fondo = this.add.sprite(canvaWidth / 2, canvaHeight / 2 + 30, 'mapaSL').setScale(0.95);
-       // const marco = this.add.sprite(canvaWidth / 2, canvaHeight / 2 - 1, 'marco').setScale(1.01);
-        const lapiz = this.add.sprite(canvaWidth / 2-550, canvaHeight / 2 +100, 'lapiz').setScale(1).setAngle(-20);
+        //const hoja = this.add.sprite(canvaWidth / 2 - 60, canvaHeight / 2 - 20, 'hoja').setDepth().setScale(0.69);
+        const fondo = this.add.sprite(canvaWidth / 2, canvaHeight / 2 + 30, 'mapaSL').setScale(0.95).setAlpha(0.6);
+        const marco = this.add.sprite(canvaWidth / 2, canvaHeight / 2 , 'marco').setScale(1).setDepth(-1);
+       // const lapiz = this.add.sprite(canvaWidth / 2 - 550, canvaHeight / 2 + 100, 'lapiz').setScale(1).setAngle(-20);
 
         fondo.setScale(0.545).setOrigin(0.5, 0.5);
         //Titulo
 
         document.fonts.load('20px miFuente').then(() => {
 
-            this.add.text(canvaWidth / 2 - 140, 58, "SAN LUIS MI PROVINCIA", {
+            this.add.text(canvaWidth / 2 - 190, 40, "SAN LUIS MI PROVINCIA", {
                 fontFamily: "miFuente",
-                fontSize: "30px",
-                color: "#000",
+                fontSize: "35px",
+                color: "#ffffff",
             });
             // Texto del reloj
             this.textoReloj = this.add.text(canvaWidth / 2 - 100, 30, "Tiempo: 0:00", {
@@ -116,7 +116,7 @@ class Escena extends Phaser.Scene {
     crearCartelInicial() {
         const cartel = this.add.container(0, 0).setDepth(100);
 
-        const sticker = this.add.sprite(110, 143, 'sticker2').setScale(0.6);
+        const sticker = this.add.sprite(120, 143, 'sticker2').setScale(0.27).setAlpha(0.6);
         cartel.add(sticker);
 
         const texto = this.add.text(145, 125,
@@ -156,7 +156,7 @@ class Escena extends Phaser.Scene {
             { key: 'San Martin', x: 950, y: 400, depId: 9, color: 0xA260F5, targetZone: zonas.sanMartin },
             { key: 'Dupuy', x: 250, y: 450, depId: 5, color: 0xE4F10E, targetZone: zonas.dupuy },
             { key: 'Pueyrredon', x: 1050, y: 300, depId: 8, color: 0x488D2D, targetZone: zonas.pueyrredon },
-            { key: 'Pedernera', x: 1050, y: 500, depId: 7, color: 0xDF9CB8, targetZone: zonas.pedernera },
+            { key: 'Pedernera', x: 1080, y: 550, depId: 7, color: 0xDF9CB8, targetZone: zonas.pedernera },
             { key: 'Chacabuco', x: 1100, y: 150, depId: 4, color: 0xCC448E, targetZone: zonas.chacabuco },
             { key: 'Belgrano', x: 300, y: 590, depId: 3, color: 0x9E8982, targetZone: zonas.belgrano },
             { key: 'Pringles', x: 300, y: 170, depId: 1, color: 0x1598DB, targetZone: zonas.pringles }
@@ -213,8 +213,9 @@ class Escena extends Phaser.Scene {
             gameObject.input.draggable = false;
             gameObject.setDepth(1);
             this.contador += 1;
-            console.log(`${gameObject.textureKey} encajó en su zona`);
-            console.log('contador:', this.contador);
+            //CONSOLE LOGS PARA DEBUG
+            // console.log(`${gameObject.textureKey} encajó en su zona`);
+            // console.log('contador:', this.contador);
             this.sound.play('ok', { volume: 0.5 });
 
             if (this.contador === 9) {
@@ -296,25 +297,25 @@ class Escena extends Phaser.Scene {
         if (this.mensajeProgreso) {
             this.mensajeProgreso.destroy();
             this.mensajeProgreso = null;
-        }   
-         let progreso = 0;
-    let totalParajes = 0;
+        }
+        let progreso = 0;
+        let totalParajes = 0;
         let invitado = false;
-    try {
-        const response = await fetch(`/api/progreso/${departamento.depId}`);
-        const data =  await response.json();
-if (data.invitado) {
-    invitado = true;
-}
-        progreso = data.parajesRealizados;
-        totalParajes = data.totalParajes;
+        try {
+            const response = await fetch(`/api/progreso/${departamento.depId}`);
+            const data = await response.json();
+            if (data.invitado) {
+                invitado = true;
+            }
+            progreso = data.parajesRealizados;
+            totalParajes = data.totalParajes;
 
-    } catch (error) {
-        console.log("Error obteniendo progreso", error);
-    }
+        } catch (error) {
+            console.log("Error obteniendo progreso", error);
+        }
         if (invitado) {
             this.mensajeProgreso = this.add.text(970, 430, `Inicia sesión\npara ver tu progreso`, {
-                 align: 'center',
+                align: 'center',
                 fontFamily: '"miFuente"', fontSize: '18px', fill: '#232323ff',
             }).setOrigin(0.5).setDepth(20);
         } else {
@@ -341,7 +342,7 @@ if (data.invitado) {
         dialogo.add(sticker2);
 
         const mensajeComarca = this.add.text(970, 350, `¿Deseas jugar\nen\n${departamento.textureKey}?`, {
-             align: 'center',
+            align: 'center',
             fontFamily: "miFuente",
             fontSize: '28px',
             fill: '#232323ff',
@@ -418,9 +419,9 @@ const config = {
     width: 1280,
     height: 720,
     parent: 'phaser-container',
-    backgroundColor: "#c48754",
+    backgroundColor: "#6aa561",
     transparent: true,
-  
+
     scene: Escena,
 
 
@@ -454,7 +455,7 @@ function applyCssScale() {
     canvas.style.transformOrigin = 'center';
     canvas.style.position = 'absolute';
     canvas.style.left = '50%';
-    canvas.style.top = '45%';
+    canvas.style.top = '47%';
     canvas.style.transform = `translate(-50%, -50%) scale(${scale})`;
 }
 // CREA CANVA Y AJUSTA ESCALA
@@ -464,7 +465,7 @@ function waitForCanvasThenApply() {
         if (canvas) {
             clearInterval(check);
             applyCssScale();
-             canvas.style.borderRadius = "20px";
+           // canvas.style.borderRadius = "20px";
             canvas.style.overflow = "hidden";
             window.addEventListener('resize', applyCssScale);
         }
