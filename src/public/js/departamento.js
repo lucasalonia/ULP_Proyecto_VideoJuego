@@ -276,6 +276,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const casilleros = [...document.querySelectorAll("button.casillero")];
 
   let fichaSeleccionada = null;
+  let animandoError = false;
 
 
 
@@ -410,7 +411,11 @@ document.addEventListener("DOMContentLoaded", () => {
   // VERIFICAR VICTORIA
   // ==================================================
 
-  function verificarVictoria() {
+  async function verificarVictoria() {
+
+    if (animandoError) return;
+
+    const casillerosIncorrectos = [];
 
     casilleros.forEach((c, i) => {
 
@@ -422,6 +427,7 @@ document.addEventListener("DOMContentLoaded", () => {
         c.classList.add("correcto", "pop");
       } else {
         c.classList.add("incorrecto", "shake");
+        casillerosIncorrectos.push(c);
       }
     });
 
@@ -430,6 +436,22 @@ document.addEventListener("DOMContentLoaded", () => {
     const correcto = casilleros.every(
       (c, i) => c.dataset.valor === ordenCorrecto[i]
     );
+
+    if (completo && !correcto) {
+      animandoError = true;
+
+      deseleccionarFicha();
+
+      await new Promise((resolve) => setTimeout(resolve, 450));
+
+      casillerosIncorrectos.forEach((casillero) => {
+        limpiarCasillero(casillero);
+        casillero.classList.remove("shake");
+      });
+
+      animandoError = false;
+      return;
+    }
 
     if (!completo || !correcto || victoriaProcesada) return;
 
@@ -465,8 +487,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
     ficha.dataset.usada = "0";
 
-    ficha.addEventListener("click", () => {
+      ficha.addEventListener("click", () => {
 
+      if (animandoError) return;
       if (isPaused) return;
       if (ficha.dataset.usada === "1") return;
 
@@ -487,6 +510,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     casillero.addEventListener("click", () => {
 
+      if (animandoError) return;
       if (isPaused) return;
 
       if (fichaSeleccionada) {
