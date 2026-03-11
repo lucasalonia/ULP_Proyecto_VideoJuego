@@ -6,7 +6,6 @@ class Escena extends Phaser.Scene {
 
     preload() {
         this.load.image('mapaSL', '/img/mapa/mapaSanLuis.png');
-        this.load.spritesheet('blocks', 'assets/sprites/heartstar.png', { frameWidth: 64, frameHeight: 64 });
         this.load.image('Ayacucho', '/img/mapa/ayacuchoMapa.png');
         this.load.image('Junin', '/img/mapa/juninMapa.png');
         this.load.image('San Martin', '/img/mapa/sanMartinMapa.png');
@@ -19,8 +18,7 @@ class Escena extends Phaser.Scene {
         this.load.image('hoja', '/img/mapa/pixelHoja.png');
         this.load.image('marco', '/img/mapa/pizarron1.png');
         this.load.image('sticker', '/img/mapa/notaPixel.png');
-        this.load.image('sticker2', '/img/mapa/Nota2.png');
-        this.load.image('lapiz', '/img/mapa/pen1.png');
+        this.load.image('sticker2', '/img/mapa/Nota2.png');   
         this.load.audio('ok', './audio/ok2.wav');
         this.load.audio('final', './audio/final.mp3');
         //this.load.audio('ok', './audio/ok.mp3');
@@ -30,7 +28,7 @@ class Escena extends Phaser.Scene {
 
         this.fechaInicio = new Date();
         const d = new Date();
-        console.log("toString:", d.toString());
+        
         this.tiempo = 0;
         this.juegoIniciado = false;
         this.timer = null;
