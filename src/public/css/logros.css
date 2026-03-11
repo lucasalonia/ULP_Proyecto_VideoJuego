@@ -188,25 +188,32 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-
+  justify-content: flex-start;
+  /* Eliminamos max-height para que no se achique */
+  min-width: 320px; /* Asegura un ancho mínimo agradable */
+  max-width: 90%;   /* No se pega a los bordes en móviles */
+  
   background: #8bc4af;
- font-family: "Press Start 2P", monospace;
+  font-family: "Press Start 2P", monospace;
   font-size: 12px;
   text-align: center;
-border: 4px solid #3c3c3c;
-  box-shadow: 5px 4px 0px #3c3c3c, 4px 5px 0px #3c3c3c;
-  padding: 20px;
+  border: 4px solid #3c3c3c;
+  padding: 20px; /* Un poco más de aire */
   image-rendering: pixelated;
   box-shadow: 5px 4px 0px #3c3c3c, 4px 5px 0px #3c3c3c;
-} 
+  
+  margin: 10px auto; /* Centrado */
+}
 
 .titulo-pixel {
+  margin-top: 0;
+  
   background: #FEAD85;
    font-family: "Press Start 2P", monospace;
-  font-size: 30px;
+  font-size: 20px;
   text-align: center;
   padding: 5px 10px 1px 20px;
-  /* margin-bottom: 20px; */
+   margin-bottom: 10px;
   color: #3c3c3c;
   border: 5px solid #3c3c3c;
   box-shadow: 5px 4px 0px #3c3c3c, 4px 5px 0px #3c3c3c;
@@ -214,19 +221,21 @@ border: 4px solid #3c3c3c;
 
 /*datos usuario*/
 .dato-item {
-  flex-wrap: wrap;       /* Si no cabe el icono y el texto, se pone uno abajo del otro */
-  overflow: hidden;      /* Evita fugas de contenido */
-  word-break: break-word; /* Rompe palabras si son demasiado largas */
+  width: 100%; /* Para que todos midan lo mismo */
+  box-sizing: border-box;
+  flex-wrap: wrap;
+  overflow: hidden;
+  word-break: break-word;
   display: flex;
   align-items: center;
   gap: 10px;
   background: #FBEAC7;
   border: 3px solid #c6ab51;
-  padding: 12px 15px;
+  padding: 10px 12px; /* Reducido un poco */
   font-family: "Press Start 2P", monospace;
-  font-size: 20px;
-  margin-bottom: 15px;
-  box-shadow: 5px 4px 0px #3c3c3c, 4px 5px 0px #3c3c3c;
+  font-size: 14px;    /* Reducido de 20px a 14px para ganar espacio */
+  margin-bottom: 12px;
+  box-shadow: 4px 3px 0px #3c3c3c;
 }
 
 .valor-dato {
@@ -235,13 +244,13 @@ border: 4px solid #3c3c3c;
 
 /*foto perfil*/
 .foto-perfil-pixel {
-  width: 150px;
-  height: 150px;
+  width: 120px;  /* Reducido de 150px a 120px */
+  height: 120px;
   image-rendering: pixelated;
   border: 4px solid #000;
-  box-shadow: 5px 4px 0px #3c3c3c, 4px 5px 0px #3c3c3c;
+ 
+  box-shadow: 5px 4px 0px #3c3c3c;
 }
-
 /*botones pixel*/
 
 /* ===========================
@@ -250,10 +259,10 @@ border: 4px solid #3c3c3c;
 .btn-pixel {
   background-color: #00c6d9;
   color: #ffffff;
-  padding: 16px 22px;
+  padding: 16px 22px 10px 20px;
   text-decoration: none;
   text-transform: uppercase;
-  font-size: 11px;
+  font-size: 10px;
   letter-spacing: 1px;
 
   border: 3px solid #000;

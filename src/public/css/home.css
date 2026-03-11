@@ -35,7 +35,7 @@ main.app-main {
   justify-content: center;
   align-items: flex-start;
   padding-top: 20px;
-  gap: 100px;
+  gap: 70px;
   padding: 0;
   margin: 0;
 
@@ -57,9 +57,11 @@ main.app-main {
 
 .logo {
   width: 100%;
+  opacity: 0.9; 
   height: auto;
   display: block;
   image-rendering: pixelated;
+  filter: drop-shadow(4px 4px 0 #7c7878);
 }
 
 /* ===== BLOQUE DERECHO ===== */
