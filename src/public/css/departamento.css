@@ -304,7 +304,8 @@ body {
   font-weight: 800;
   font-size: 20px;
   cursor: pointer;
-  transition: 0.2s;
+  transition: background-color 0.2s, border-color 0.2s, box-shadow 0.2s,
+    transform 0.2s;
 }
 
 .juego-panel .casillero-espacio {
@@ -323,6 +324,45 @@ body {
   background: #ffb3b3 !important;
   border-color: #c40000 !important;
   box-shadow: 0 0 10px rgba(255, 0, 0, 0.3);
+}
+
+.juego-panel .casillero.shake {
+  animation: casillero-shake 0.45s ease;
+}
+
+.juego-panel .casillero.pop {
+  animation: casillero-pop 0.25s ease;
+}
+
+@keyframes casillero-shake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  20% {
+    transform: translateX(-6px);
+  }
+  40% {
+    transform: translateX(6px);
+  }
+  60% {
+    transform: translateX(-4px);
+  }
+  80% {
+    transform: translateX(4px);
+  }
+}
+
+@keyframes casillero-pop {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.06);
+  }
+  100% {
+    transform: scale(1);
+  }
 }
 
 /* ============================================================
