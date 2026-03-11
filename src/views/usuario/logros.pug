@@ -2,25 +2,21 @@ extends ../layouts/mainLayout.pug
 
 block content
   if user && user.userId > 0
+    //- Contenedor principal
     .contenedor-principal.logros-page
 
+      //- SECCIÓN DE PARAJES (Bloque 1)
       .logro-paraje
         h3 Parajes Completados por Departamento
-
+        
+        //- Lógica de JS (asegúrate de que el guión esté bien alineado)
         -
           let indexActual = 0;
           if (departamentos && actual) {
-            indexActual = departamentos.findIndex(
-              d => d.departamento_id === actual.departamento_id
-            );
+            indexActual = departamentos.findIndex(d => d.departamento_id === actual.departamento_id);
             if (indexActual < 0) indexActual = 0;
           }
-
-          let siguiente = null;
-          if (departamentos && departamentos.length) {
-            siguiente = departamentos[(indexActual + 1) % departamentos.length];
-          }
-
+          let siguiente = (departamentos && departamentos.length) ? departamentos[(indexActual + 1) % departamentos.length] : null;
           const idSiguiente = siguiente ? siguiente.departamento_id : 0;
 
         .departamento
@@ -41,27 +37,24 @@ block content
             else
               img(src="/img/insignias/insigniaGris.png")
 
-
           .lista-parajes
             if parajes && parajes.length
               each p in parajes
                 .paraje-item
-                  .icono-trofeo
-                    img(src="/img/trofeo1.png")
+                  .icono-trofeo: img(src="/img/trofeo1.png")
                   .nombre-paraje= p
             else
-              .paraje-item
-                .nombre-paraje No hay logros.
+              .paraje-item: .nombre-paraje No hay logros.
 
-          // ===== FLECHA =====
           if idSiguiente && idSiguiente > 0
             .flecha
               a(href=`/logros/${idSiguiente}`)
                 img(src="/img/flechaRoja.png", alt="Ir")
 
+      //- SECCIÓN DE TIEMPOS (Bloque 2)
+      //- IMPORTANTE: Esta línea debe estar alineada con .logro-paraje
       .logro-tiempo
         h3 Tiempos del Mapa
-
         .mejores-tiempos
           if tiempos && tiempos.length
             each tiempo in tiempos

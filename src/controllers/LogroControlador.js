@@ -75,44 +75,43 @@ async function obtenerLogros(req, res) {
     // ===================== DEPARTAMENTOS =====================
     const departamentos =
       await Departamento.getDepartamentosConParajes(usuarioId);
+    let actual = null;
+    let parajesCompletados = [];
+    
+    if (departamentos && departamentos.length > 0) {
 
-    if (!departamentos || departamentos.length === 0) {
-      return res.render("usuario/logros", {
-        tiempos: [],
-        parajes: [],
-        departamentos: [],
-        actual: null,
-        insigniaCompletada: false,
-      });
-    }
+      // ===================== DEPTO ACTUAL =====================
+      actual = departamentoId
+        ? departamentos.find((d) => d.departamento_id == departamentoId)
+        : departamentos[0];
 
-    // ===================== DEPTO ACTUAL =====================
-    let actual = departamentoId
-      ? departamentos.find((d) => d.departamento_id == departamentoId)
-      : departamentos[0];
+      if (!actual) actual = departamentos[0];
 
-    if (!actual) actual = departamentos[0];
+      // ===================== PARAJES =====================
+      const parajes =
+        await Departamento.getParajesByDepto(actual.departamento_id);
 
-    // ===================== PARAJES =====================
-    const parajes =
-      await Departamento.getParajesByDepto(actual.departamento_id);
+      const completadosIds =
+        await LogroParaje.getParajesCompletadosPorUsuarioYDepto(
+          usuarioId,
+          actual.departamento_id
+        );
 
-    const completadosIds =
-      await LogroParaje.getParajesCompletadosPorUsuarioYDepto(
+      const completadosSet = new Set(completadosIds);
+
+      const parajeNoCompletado = parajes.find(
+        (p) => !completadosSet.has(p.id)
+      );
+
+      if (!parajeNoCompletado && parajes.length > 0) {
+        insigniaCompletada = true;
+      }
+        parajesCompletados =
+      await LogroParaje.getParajesCompletadosPorUsuarioYDeptoNombre(
         usuarioId,
         actual.departamento_id
       );
-
-    const completadosSet = new Set(completadosIds);
-
-    const parajeNoCompletado = parajes.find(
-      (p) => !completadosSet.has(p.id)
-    );
-
-    if (!parajeNoCompletado && parajes.length > 0) {
-      insigniaCompletada = true;
     }
-
     // ===================== TIEMPOS =====================
     const tiempos = await Logro.getTiemposMapa(usuarioId);
     const tiemposFormateados = tiempos.map((t) => ({
@@ -121,11 +120,7 @@ async function obtenerLogros(req, res) {
     }));
 
     // ===================== PARAJES COMPLETADOS =====================
-    const parajesCompletados =
-      await LogroParaje.getParajesCompletadosPorUsuarioYDeptoNombre(
-        usuarioId,
-        actual.departamento_id
-      );
+  
 
     // ===================== RENDER =====================
     return res.render("usuario/logros", {
@@ -253,7 +248,6 @@ function formatearTiempo(segundos) {
   const minutos = Math.floor(segundos / 60);
   const segs = segundos % 60;
 
-  return `${minutos < 10 ? "0" : ""}${minutos}:${
-    segs < 10 ? "0" : ""
-  }${segs}`;
+  return `${minutos < 10 ? "0" : ""}${minutos}:${segs < 10 ? "0" : ""
+    }${segs}`;
 }

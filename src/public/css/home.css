@@ -8,7 +8,7 @@ body {
   overflow-x: hidden;
   font-family: "Press Start 2P", monospace;
   
-  background-image: url("/img/degradeNaranja1.PNG");
+ /* background-image: url("/img/degradeNaranja1.PNG");*/
 }
 
 .dropdown-menu,
@@ -41,14 +41,16 @@ main.app-main {
 
   background-repeat: repeat-y;
   background-size: 100% auto;
-  background-position: top center;
+  background-position: top ;
   image-rendering: pixelated;
+  background-image: url("/img/fondoHome1.png");
+  background-color:#faea9d ;
 }
 
 /* ===== LOGO ===== */
 .logo-container {
   margin-top: 30px;
-  width: 510px;
+  width: 450px;
   height: auto;
   flex-shrink: 0;
 }

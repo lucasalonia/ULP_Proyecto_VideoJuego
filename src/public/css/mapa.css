@@ -9,7 +9,7 @@
         overflow: hidden;
         margin: 0;
         padding: 0;
-        
+        font-family: "miFuente", sans-serif;
       }
 
   #phaser-container      canvas {
@@ -21,7 +21,7 @@
       }
 
     #phaser-container {
-        background: #d9fafb;
+        background-color: #ffffff;
         position: relative;
         width: 100%;
         height: 100%;

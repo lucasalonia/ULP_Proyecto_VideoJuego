@@ -141,7 +141,7 @@
 /*lista de parajes*/
 .lista-parajes {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: 5px;
 }
 
@@ -160,7 +160,7 @@
   margin-right: auto;
   background: #FFF9C4;
    font-family: "Press Start 2P", monospace;
-  font-size: 11px;
+  font-size: 14px;
   text-align: center;
   padding: 5px;
   border: 3px solid #ad9b46;
@@ -304,18 +304,40 @@ border: 4px solid #3c3c3c;
 /*responsive*/
 @media (max-width: 900px) {
   .contenedor-principal {
-    flex-direction: column;
-    align-items: center;
+    display: flex;
+    flex-direction: column; /* Alinea los hijos uno debajo del otro */
+    align-items: center;    /* Centra los hijos horizontalmente */
+    justify-content: center;
+    width: 100%;           /* Asegura que ocupe todo el ancho */
   }
 
   .mejores-tiempos,
   .departamento {
     width: 90%;
     max-width: 500px;
+    /* Reseteamos márgenes para evitar desplazamientos */
+    margin-left: auto;
+    margin-right: auto;
+    float: none; 
+    
+    /* Si el elemento tiene un position: absolute o fixed previo, 
+       asegúrate de que sea relative aquí */
+    position: relative; 
+    left: 0;
   }
 
   .lista-parajes {
     grid-template-columns: 1fr;
+  }
+  
+  /* Ajuste adicional para elementos internos que usaban absolute */
+  .logro-completado {
+    position: relative; /* Cambia a relativo para que fluya en el centro */
+    left: 0;
+    top: 0;
+    transform: none;
+    margin: 20px auto;
+    width: fit-content;
   }
 }
 

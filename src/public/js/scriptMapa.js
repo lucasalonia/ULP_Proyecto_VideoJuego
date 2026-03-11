@@ -17,7 +17,7 @@ class Escena extends Phaser.Scene {
         this.load.image('Belgrano', '/img/mapa/belgranoMapa.png');
         this.load.image('Pringles', '/img/mapa/pringlesMapa.png');
         this.load.image('hoja', '/img/mapa/pixelHoja.png');
-        this.load.image('marco', '/img/mapa/frame2.png');
+        this.load.image('marco', '/img/mapa/pizarron1.png');
         this.load.image('sticker', '/img/mapa/notaPixel.png');
         this.load.image('sticker2', '/img/mapa/Nota2.png');
         this.load.image('lapiz', '/img/mapa/pen1.png');
@@ -51,18 +51,19 @@ class Escena extends Phaser.Scene {
         fondo.setScale(0.545).setOrigin(0.5, 0.5);
         //Titulo
 
-        document.fonts.load('20px miFuente').then(() => {
+       document.fonts.load('20px "Press Start 2P"').then(() => {
 
-            this.add.text(canvaWidth / 2 - 190, 40, "SAN LUIS MI PROVINCIA", {
-                fontFamily: "miFuente",
-                fontSize: "35px",
+            this.add.text(canvaWidth / 2 - 260, 70, "SAN LUIS MI PROVINCIA", {
+                fontFamily: "'Press Start 2P'", // Comillas simples dentro de dobles
+        fontSize: "25px",
                 color: "#ffffff",
+                
             });
             // Texto del reloj
-            this.textoReloj = this.add.text(canvaWidth / 2 - 100, 30, "Tiempo: 0:00", {
-                fontFamily: '"miFuente"',
-                fontSize: "28px",
-                fill: "#000",
+            this.textoReloj = this.add.text(canvaWidth / 2 - 100, 25, "Tiempo: 0:00", {
+               fontFamily: "'Press Start 2P'", // Comillas simples dentro de dobles
+        fontSize: "20px",
+                fill: "#ffffff",
 
             }).setDepth(50).setAlpha(0);
             this.crearCartelInicial();
@@ -118,18 +119,20 @@ class Escena extends Phaser.Scene {
 
         const sticker = this.add.sprite(120, 143, 'sticker2').setScale(0.27).setAlpha(0.6);
         cartel.add(sticker);
+        document.fonts.load('21px "miFuente"').then(() => {
+            const texto = this.add.text(145, 125,
+                "ARRASTRÁ CADA\nDEPARTAMENTO\nHASTA SU LUGAR\nCORRECTO",
+                {
+                    fontFamily: '"miFuente"',
+                    fontSize: '21px',
+                    fill: '#232323',
+                    align: 'center'
+                }
+            ).setOrigin(0.5);
+              cartel.add(texto);
+        });
 
-        const texto = this.add.text(145, 125,
-            "ARRASTRÁ CADA\nDEPARTAMENTO\nHASTA SU LUGAR\nCORRECTO",
-            {
-                fontFamily: '"miFuente"',
-                fontSize: '21px',
-                fill: '#232323',
-                align: 'center'
-            }
-        ).setOrigin(0.5);
-
-        cartel.add(texto);
+      
 
         this.cartelInicial = cartel;
         this.cartelTimerIniciado = false;
@@ -264,13 +267,14 @@ class Escena extends Phaser.Scene {
     }
 
     mostrarInterfazFinal(time) {
-        const sticker = this.add.sprite(290, 250, 'sticker2').setScale(0.8);
-        const botonRinicio = this.crearBoton(595, 665, "REINICIAR MAPA", '#1f6c24ff', () => {
+        const sticker = this.add.sprite(290, 250, 'sticker').setScale(0.8);
+        const botonRinicio = this.crearBoton(580, 665, "REINICIAR MAPA", '#1f6c24ff', () => {
             this.scene.restart()
         });
-        const mensajeFinal = this.add.text(330, 225, `¡FELICITACIONES!\n  Completaste\n     El mapa en\n           ${time}\n      segundos`, {
-            fontFamily: '"miFuente"',
-            fontSize: '30px',
+        const mensajeFinal = this.add.text(330, 225, `¡FELICITACIONES!\nCompletaste\nEl mapa en\n${time}\nsegundos`, {
+            align: 'center',
+           fontFamily: "'Press Start 2P'", // Comillas simples dentro de dobles
+        fontSize: "18px",
             fill: '#232323ff'
         }).setOrigin(0.5).setDepth(20);
 
@@ -316,7 +320,8 @@ class Escena extends Phaser.Scene {
         if (invitado) {
             this.mensajeProgreso = this.add.text(970, 430, `Inicia sesión\npara ver tu progreso`, {
                 align: 'center',
-                fontFamily: '"miFuente"', fontSize: '18px', fill: '#232323ff',
+                fontFamily: "'Press Start 2P'", // Comillas simples dentro de dobles
+         fontSize: '14px', fill: '#232323ff',
             }).setOrigin(0.5).setDepth(20);
         } else {
             const porcentaje = totalParajes > 0
@@ -324,15 +329,17 @@ class Escena extends Phaser.Scene {
                 : 0;
             this.mensajeProgreso = this.add.text(970, 420, `Progreso: ${progreso}/${totalParajes} (${porcentaje}%)`, {
                 align: 'center',
-                fontFamily: '"miFuente"',
-                fontSize: '18px',
+                fontFamily: "'Press Start 2P'", // Comillas simples dentro de dobles
+        
+                fontSize: '14px',
                 fill: '#232323ff',
             }).setOrigin(0.5).setDepth(20);
         }
         this.departamentoNombre = this.add.text(departamento.x + 5, departamento.y, `${departamento.textureKey}`, {
-            fontFamily: '"miFuente"',
+           fontFamily: "'Press Start 2P'", // Comillas simples dentro de dobles
+        
             backgroundColor: "#B9EAEA",
-            fontSize: '19px',
+            fontSize: '17px',
             fill: '#000000ff',
         }).setOrigin(0.5).setDepth(20);
         // Crear container
@@ -343,8 +350,8 @@ class Escena extends Phaser.Scene {
 
         const mensajeComarca = this.add.text(970, 350, `¿Deseas jugar\nen\n${departamento.textureKey}?`, {
             align: 'center',
-            fontFamily: "miFuente",
-            fontSize: '28px',
+           fontFamily: "'Press Start 2P'", // Comillas simples dentro de dobles
+            fontSize: '18px',
             fill: '#232323ff',
         }).setOrigin(0.5).setDepth(20);
         dialogo.add(mensajeComarca);
@@ -367,7 +374,7 @@ class Escena extends Phaser.Scene {
 
     crearBoton(x, y, texto, color, callback) {
         const boton = this.add.text(x, y, texto, {
-            fontFamily: '"miFuente"',
+            fontFamily: "'Press Start 2P'", // Comillas simples dentro de dobles
             fontSize: '15px',
             color: '#ffffff',
             align: 'center',
