@@ -1,5 +1,8 @@
-/*Para chequear si el dominio existe*/ 
-const dns = require("dns").promises;
+/* Para chequear si el dominio existe (Versión compatible con Redes Universitarias) */
+const dns = require("node:dns").promises;
+
+// Forzar a Node a usar IPv4 primero para evitar errores de resolución en redes viejas
+dns.setDefaultResultOrder('ipv4first');
 
 const dominiosTemporales = [
   "yopmail.com",
@@ -23,25 +26,20 @@ async function validarEmail(email) {
   }
 
   try {
-    const registrosMx = await dns.resolveMx(dominio);
-    if (!registrosMx || registrosMx.length === 0) {
-      return "El dominio del email no tiene registros MX válidos.";
-    }
-  } catch (mxError) {
-    try {
-     
-      const registrosA = await dns.resolve(dominio);
-      if (!registrosA || registrosA.length === 0) {
-        return "El dominio del correo no existe.";
-      }
-    } catch (aError) {
-      return "El dominio del correo no existe.";
-    }
+    /* Cambiamos .resolveMx y .resolve por .lookup
+       .lookup usa la misma vía que tu navegador (getaddrinfo), 
+       lo cual suele saltarse los bloqueos del Firewall universitario.
+    */
+    await dns.lookup(dominio);
+    
+    // Si llega aquí, el dominio existe y responde.
+    return null; 
+    
+  } catch (error) {
+    // Si hay un error de conexión o el dominio no existe
+    console.error("Error de validación DNS:", error.code);
+    return "El dominio del correo no existe o la red bloqueó la validación.";
   }
-
-
-  return null;
 }
-
 
 module.exports = { validarEmail };
