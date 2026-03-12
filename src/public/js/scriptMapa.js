@@ -16,9 +16,9 @@ class Escena extends Phaser.Scene {
         this.load.image('Belgrano', '/img/mapa/belgranoMapa.png');
         this.load.image('Pringles', '/img/mapa/pringlesMapa.png');
         this.load.image('hoja', '/img/mapa/pixelHoja.png');
-        this.load.image('marco', '/img/mapa/pizarron1.png');
-        this.load.image('sticker', '/img/mapa/notaPixel.png');
-        this.load.image('sticker2', '/img/mapa/Nota2.png');   
+        this.load.image('marco', '/img/mapa/pizarronFondo.png');
+        this.load.image('sticker', '/img/mapa/notaCarita4.png');
+        this.load.image('sticker2', '/img/mapa/notaCarita3.png');   
         this.load.audio('ok', './audio/ok2.wav');
         this.load.audio('final', './audio/final.mp3');
         //this.load.audio('ok', './audio/ok.mp3');
@@ -42,7 +42,7 @@ class Escena extends Phaser.Scene {
 
         // Elementos de fondo
         //const hoja = this.add.sprite(canvaWidth / 2 - 60, canvaHeight / 2 - 20, 'hoja').setDepth().setScale(0.69);
-        const fondo = this.add.sprite(canvaWidth / 2, canvaHeight / 2 + 30, 'mapaSL').setScale(0.95).setAlpha(0.6);
+        const fondo = this.add.sprite(canvaWidth / 2, canvaHeight / 2 + 30, 'mapaSL').setScale(0.95).setAlpha(0.7);
         const marco = this.add.sprite(canvaWidth / 2, canvaHeight / 2 , 'marco').setScale(1).setDepth(-1);
        // const lapiz = this.add.sprite(canvaWidth / 2 - 550, canvaHeight / 2 + 100, 'lapiz').setScale(1).setAngle(-20);
 
@@ -115,7 +115,7 @@ class Escena extends Phaser.Scene {
     crearCartelInicial() {
         const cartel = this.add.container(0, 0).setDepth(100);
 
-        const sticker = this.add.sprite(120, 143, 'sticker2').setScale(0.27).setAlpha(0.6);
+        const sticker = this.add.sprite(150, 130, 'sticker2').setScale(0.45).setAlpha(1);
         cartel.add(sticker);
         document.fonts.load('21px "miFuente"').then(() => {
             const texto = this.add.text(145, 125,
@@ -265,11 +265,11 @@ class Escena extends Phaser.Scene {
     }
 
     mostrarInterfazFinal(time) {
-        const sticker = this.add.sprite(290, 250, 'sticker').setScale(0.8);
-        const botonRinicio = this.crearBoton(580, 665, "REINICIAR MAPA", '#1f6c24ff', () => {
+        const sticker = this.add.sprite(330, 250, 'sticker').setScale(0.65);
+        const botonRinicio = this.crearBoton(540, 655, "REINICIAR MAPA", '#00c7d9', () => {
             this.scene.restart()
         });
-        const mensajeFinal = this.add.text(330, 225, `¡FELICITACIONES!\nCompletaste\nEl mapa en\n${time}\nsegundos`, {
+        const mensajeFinal = this.add.text(330, 240, `¡FELICITACIONES!\nCompletaste\nEl mapa en\n${time}\nsegundos`, {
             align: 'center',
            fontFamily: "'Press Start 2P'", // Comillas simples dentro de dobles
         fontSize: "18px",
@@ -343,10 +343,10 @@ class Escena extends Phaser.Scene {
         // Crear container
         const dialogo = this.add.container(0, 0);
 
-        const sticker2 = this.add.sprite(920, 400, 'sticker').setScale(0.75);
+        const sticker2 = this.add.sprite(980, 400, 'sticker').setScale(0.65);
         dialogo.add(sticker2);
 
-        const mensajeComarca = this.add.text(970, 350, `¿Deseas jugar\nen\n${departamento.textureKey}?`, {
+        const mensajeComarca = this.add.text(990, 350, `¿Deseas jugar\nen\n${departamento.textureKey}?`, {
             align: 'center',
            fontFamily: "'Press Start 2P'", // Comillas simples dentro de dobles
             fontSize: '18px',
@@ -361,6 +361,8 @@ class Escena extends Phaser.Scene {
 
         const botonNo = this.crearBoton(955, 475, "NO", '#2d2d2d', () => {
             dialogo.destroy();
+            this.mensajeProgreso.destroy();
+            this.mensajeProgreso=null,
             this.dialogoActual = null;
         });
         dialogo.add(botonNo);
