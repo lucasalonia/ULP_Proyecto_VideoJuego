@@ -477,6 +477,8 @@ body {
   font-weight: 800;
   font-size: 26px;
   cursor: pointer;
+  transition: transform 0.15s ease, background-color 0.15s ease,
+    box-shadow 0.15s ease, border-color 0.15s ease;
 }
 
 .ficha:hover {
@@ -484,9 +486,10 @@ body {
 }
 
 .ficha.seleccionada {
-  outline: 4px solid var(--color-principal);
   transform: scale(1.03);
   background: #e6e6e6;
+  border-color: var(--color-principal);
+  box-shadow: 0 0 0 5px rgba(0, 123, 184, 0.35);
 }
 
 .ficha.usada {
@@ -508,6 +511,45 @@ body {
   filter: grayscale(0.2);
   opacity: 0.65;
 }
+
+@media (max-width: 1440px) and (min-width: 901px) {
+  .juego-layout {
+    max-width: 1100px;
+    gap: 28px;
+  }
+
+  .carta__interior {
+    width: 400px;
+  }
+
+  .fichas {
+    gap: 18px;
+    padding: 28px 36px 52px;
+  }
+
+  .ficha {
+    width: 96px;
+    height: 96px;
+    font-size: 22px;
+  }
+
+  .juego-panel {
+    width: 560px;
+    padding: 16px 20px 18px;
+  }
+
+  .juego-panel .casilleros button,
+  .juego-panel .casillero-espacio {
+    width: 72px;
+    height: 72px;
+    margin: 7px;
+  }
+
+  .juego-panel .casillero {
+    font-size: 18px;
+  }
+}
+
 /* mobile tablet */
 @media (max-width: 900px) {
   .escena {
