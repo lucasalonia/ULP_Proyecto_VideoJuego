@@ -2,6 +2,9 @@ extends layouts/mainLayout.pug
 
 block content
   main.departamentos-container
+    header.departamentos-cartel(aria-label="Titulo de la pantalla")
+      h1.titulo.departamentos-cartel__titulo COMARCAS DE SAN LUIS
+
     // ===== PANEL REGLAS =====
     section.rules-panel(aria-label="Reglas del juego")
       h2.rules-title ¿Cómo se juega?
@@ -12,7 +15,7 @@ block content
         li Podés sacar las sílabas y volver a colocarlas las veces que quieras.
         li Completá todos los parajes de un departamento para ganar.
         li Cuando vuelvas al juego, tu progreso se guarda.
-        
+    
     h1 Departamentos
 
     .departamentos-list

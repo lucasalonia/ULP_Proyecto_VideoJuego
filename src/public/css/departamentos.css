@@ -16,11 +16,41 @@
   font-family: 'Press Start 2P', Consolas, monospace;
 }
 
+.departamentos-cartel {
+  width: min(760px, 96vw);
+  margin: 0 auto 22px;
+  padding: 38px 64px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  gap: 10px;
+  background-color: #e7d58a;
+  background-image: radial-gradient(#72d8e6 18%, transparent 19%);
+  background-size: 18px 18px;
+  border-radius: 0;
+}
+
+.departamentos-cartel__titulo {
+  margin: 0;
+  padding: 12px 26px;
+  color: #007bb8;
+  font-size: 1.4rem;
+  font-weight: 700;
+  line-height: 1.4;
+  text-transform: uppercase;
+  text-shadow: none;
+  background: #f2b08c;
+  border: 6px solid #4a433f;
+  box-shadow: 6px 6px 0 rgba(74, 67, 63, 0.95);
+}
+
 
 /* ===========================
    TÍTULO
 =========================== */
-.departamentos-container h1 {
+.departamentos-container h1:not(.departamentos-cartel__titulo) {
   font-size: 22px;
   margin-bottom: 32px;
   color: #000;
@@ -145,6 +175,22 @@
 }
 
 @media (max-width: 768px) {
+  .departamentos-cartel {
+    width: min(640px, 94vw);
+    padding: 28px 28px;
+    gap: 8px;
+    margin-bottom: 18px;
+  }
+
+  .departamentos-cartel__titulo {
+    font-size: 1rem;
+    padding: 10px 16px;
+    line-height: 1.5;
+    text-shadow: none;
+    border-width: 4px;
+    box-shadow: 4px 4px 0 rgba(74, 67, 63, 0.95);
+  }
+
   .rules-panel {
     padding: 16px 16px;
     margin-bottom: 22px;
