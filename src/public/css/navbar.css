@@ -252,3 +252,17 @@ body {
     margin-top: 8px;
   }
 }
+
+@media (max-width: 480px) {
+  .navbar-brand {
+    max-width: calc(100% - 62px);
+  }
+
+  .navbar-brand span {
+    display: none;
+  }
+
+  .navbar-brand img {
+    margin-right: 0 !important;
+  }
+}

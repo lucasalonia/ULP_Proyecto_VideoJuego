@@ -513,40 +513,204 @@ body {
 }
 
 @media (max-width: 1440px) and (min-width: 901px) {
+  .escena {
+    min-height: 100dvh;
+    padding: 16px 14px 24px;
+  }
+
+  .top-actions {
+    margin: 6px 0 12px;
+  }
+
   .juego-layout {
-    max-width: 1100px;
-    gap: 28px;
+    max-width: 980px;
+    gap: 22px;
   }
 
   .carta__interior {
-    width: 400px;
+    width: 360px;
   }
 
   .fichas {
-    gap: 18px;
-    padding: 28px 36px 52px;
+    gap: 14px;
+    padding: 24px 30px 48px;
   }
 
   .ficha {
-    width: 96px;
-    height: 96px;
-    font-size: 22px;
+    width: 86px;
+    height: 86px;
+    font-size: 20px;
   }
 
   .juego-panel {
-    width: 560px;
-    padding: 16px 20px 18px;
+    width: 500px;
+    padding: 14px 16px 16px;
+  }
+
+  .titulo {
+    font-size: 1.2rem;
+  }
+
+  .contador-departamentos {
+    font-size: 0.8rem;
+  }
+
+  .cronometro {
+    font-size: 20px;
+  }
+
+  #btnPausa {
+    font-size: 13px;
   }
 
   .juego-panel .casilleros button,
   .juego-panel .casillero-espacio {
-    width: 72px;
-    height: 72px;
-    margin: 7px;
+    width: 66px;
+    height: 66px;
+    margin: 6px;
   }
 
   .juego-panel .casillero {
+    font-size: 17px;
+  }
+
+  .toast-wrapper {
+    min-height: 76px;
+  }
+
+  .comarca-toast-msg {
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 1380px) and (min-width: 901px),
+  (max-height: 820px) and (min-width: 901px) {
+  .escena {
+    padding: 12px 12px 18px;
+  }
+
+  .top-actions {
+    margin: 2px 0 10px;
+  }
+
+  .top-actions .btn-ui {
+    min-width: 170px;
+    padding: 12px 18px;
+    font-size: 12px;
+  }
+
+  .juego-layout {
+    max-width: 920px;
+    gap: 18px;
+    margin-top: 0;
+  }
+
+  .carta {
+    margin-top: 4px;
+  }
+
+  .carta__interior {
+    width: 330px;
+  }
+
+  .fichas {
+    gap: 12px;
+    padding: 20px 24px 42px;
+  }
+
+  .ficha {
+    width: 78px;
+    height: 78px;
     font-size: 18px;
+  }
+
+  .carta__etiqueta {
+    font-size: 11px;
+    padding: 7px 12px;
+    bottom: 12px;
+  }
+
+  .juego-panel {
+    width: 470px;
+    padding: 12px 14px 14px;
+  }
+
+  .barra-superior {
+    gap: 8px;
+    margin-bottom: 8px;
+  }
+
+  .titulo {
+    font-size: 1.05rem;
+    line-height: 1.35;
+  }
+
+  .barra-metas {
+    gap: 8px;
+    min-height: auto;
+  }
+
+  .contador-departamentos {
+    font-size: 0.72rem;
+  }
+
+  .cronometro-linea {
+    gap: 10px;
+    min-height: auto;
+  }
+
+  .cronometro {
+    font-size: 18px;
+  }
+
+  .btn-ui {
+    min-width: 90px;
+    padding: 8px 10px;
+    font-size: 10px;
+  }
+
+  #btnPausa {
+    font-size: 11px;
+  }
+
+  .casilleros-area {
+    margin-top: 2px;
+    min-height: 124px;
+  }
+
+  .juego-panel .casilleros button,
+  .juego-panel .casillero-espacio {
+    width: 58px;
+    height: 58px;
+    margin: 4px;
+    border-radius: 12px;
+  }
+
+  .juego-panel .casillero {
+    font-size: 14px;
+  }
+
+  .toast-wrapper {
+    min-height: 70px;
+  }
+
+  .comarca-toast {
+    max-width: 460px;
+    padding: 12px 14px 14px;
+  }
+
+  .comarca-toast-msg {
+    font-size: 11px;
+    margin-bottom: 10px;
+  }
+
+  .comarca-toast-botones {
+    gap: 10px;
+  }
+
+  .comarca-toast-botones .btn-ui {
+    min-width: 118px;
+    padding: 10px 12px;
   }
 }
 

@@ -146,17 +146,18 @@ block content
         span.visually-hidden Loading...
 
   else
-    .container.py-5.text-center
-      h1 No tenes una cuenta personal todavía!
-      p.text-muted No tenés un perfil personal porque estás jugando como invitado.
-      p
-        | Para guardar tu progreso, desbloquear logros y personalizar tu cuenta,
-        br
-        | podés crear una cuenta gratuita cuando quieras.
+    .container.py-5
+      .aviso-invitado.text-center
+        h1.aviso-titulo No tenes una cuenta personal todavia!
+        p.aviso-subtitulo No tenes un perfil personal porque estas jugando como invitado.
+        p.aviso-texto
+          | Para guardar tu progreso, desbloquear logros y personalizar tu cuenta,
+          br
+          | podes crear una cuenta gratuita cuando quieras.
 
-      .mt-4
-        a.btn.btn-primary(href="/register") Crear Cuenta
-        a.btn.btn-secondary.ms-3(href="/") Volver al Inicio
+        .mt-4.d-flex.justify-content-center.flex-wrap.gap-3
+          a.btn.btn-primary(href="/register") Crear Cuenta
+          a.btn.btn-secondary(href="/") Volver al Inicio
 
   // Script del perfil (DENTRO del block)
   script(src="/js/modificarUsuario.js")
