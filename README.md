@@ -85,3 +85,18 @@ Este proyecto utiliza **variables de entorno** para su configuración.
 2.  Edita el archivo **`.env`** y reemplaza los valores de ejemplo con tus credenciales y configuraciones específicas.
 
 
+
+
+<--------------------------------------------- .env Basico !------------------------------------------->
+
+DB_HOST=localhost
+DB_USER=root
+DB_PASSWORD=
+DB_NAME=comarcas_1
+DB_PORT=3306
+PORT=3309
+JWT_SECRET_KEY="ClaveSecretaParaComarcasDeSanLuisUnProyectoDeLaULP"
+JWT_ISSUER="Comarcas de San Luis ULP"
+JWT_AUDIENCE="Jugadores"
+MAIL_USER=testcomarcas@gmail.com
+MAIL_PASS=alsk bqpm tykf tvij
