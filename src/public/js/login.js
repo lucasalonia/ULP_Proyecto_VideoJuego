@@ -37,8 +37,6 @@ function login(){
             e.preventDefault(); 
 
             showSpinner();
-            //Para probar el spinner
-            //  await new Promise(resolve => setTimeout(resolve, 2000));
             const mail = loginForm.elements.mail.value;
             const password = loginForm.elements.password.value;
             

@@ -5,13 +5,6 @@ const Logro = {
   // INSERTAR TIEMPO DEL MAPA
   // ===================================================
   async insertTiempoMapa(usuario_id, fecha_inicio, fecha_fin, tiempo) {
-    console.log("MODELO insertTiempoMapa:", {
-      usuario_id,
-      fecha_inicio,
-      fecha_fin,
-      tiempo,
-    });
-
     const [resultado] = await pool.query(
       `
       INSERT INTO tiempo_mapa

@@ -3,7 +3,7 @@ body {
   height: 100%;
   margin: 0;
   padding: 0;
-  background-image: url("/img/degradeNaranja1.PNG");
+  background-image: url("/img/degrade-naranja-1.png");
 }
 
 /* Importante: no uses 100vw */

@@ -4,7 +4,6 @@ const router = express.Router();
 const {
   listarDepartamentos,
   verDepartamentoJuego,
-  verDepartamentoDetalle,
   mostrarMapa,
   reiniciarDepartamento,
 } = require("../controllers/DepartamentoController");
@@ -14,9 +13,6 @@ router.get("/departamentos", listarDepartamentos);
 
 // Vista del juego (mantiene tu ruta vieja)
 router.get("/departamento/:id", verDepartamentoJuego);
-
-// Detalle textual de un departamento
-router.get("/departamento/:id/detalle", verDepartamentoDetalle);
 
 router.post("/departamento/:id/reiniciar", reiniciarDepartamento);
 

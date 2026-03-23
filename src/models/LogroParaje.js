@@ -50,7 +50,7 @@ const LogroParaje = {
   },
 
   // ==========================================================
-  // ✅ NUEVO: traer logros (paraje_id + tiempo) por depto
+  // Traer logros (paraje_id + tiempo) por departamento.
   // ==========================================================
   async getLogrosPorUsuarioYDepto(usuarioId, deptoId) {
     const [rows] = await pool.query(
@@ -66,7 +66,7 @@ const LogroParaje = {
   },
 
   // ==========================================================
-  // ✅ NUEVO: borrar logros del depto (para reiniciar)
+  // Borrar logros del departamento para reiniciarlo.
   // ==========================================================
   async borrarPorUsuarioYDepto(usuarioId, deptoId) {
     const [result] = await pool.query(

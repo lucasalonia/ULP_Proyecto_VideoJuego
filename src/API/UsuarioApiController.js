@@ -4,23 +4,18 @@ const authApiController = require("./AuthApiController");
 const { validarEmail } = require("../validators/emailValidator");
 const { validarPassword } = require("../validators/passwordValidator");
 
-const { hashPassword } = authServiceHashing;
-
-
 async function registrarNuevoUsuario(req, res) {
   const { nickname, email, password, selectedProfileURL } = req.body;
-
   const rol = "jugador";
-
-  let passwordConfirm = req.body.password_confirm;
+  const passwordConfirm = req.body.password_confirm;
 
   if (!nickname || !email || !password || !passwordConfirm) {
     return res.status(400).json({
       message: "Faltan datos obligatorios: nickname, email, o password.",
     });
   }
-  try {
 
+  try {
     const errorEmail = await validarEmail(email);
     if (errorEmail) {
       return res.status(400).json({ message: errorEmail });
@@ -47,7 +42,7 @@ async function registrarNuevoUsuario(req, res) {
         });
       }
 
-      let nuevoUsuario = await Usuario.createUser(
+      const nuevoUsuario = await Usuario.createUser(
         nickname,
         email,
         passwordHash,
@@ -55,7 +50,6 @@ async function registrarNuevoUsuario(req, res) {
         selectedProfileURL
       );
 
-      console.log("Usuario creado:", nuevoUsuario.id);
       return res.status(201).json({
         message: "Registro exitoso",
         user: {
@@ -67,26 +61,21 @@ async function registrarNuevoUsuario(req, res) {
       });
     }
   } catch (error) {
-    // 6. Manejo de Errores Específicos (excepciones)
     console.error("Error al registrar nuevo usuario:", error);
 
-    // Ejemplo: Manejo de error de email duplicado (Depende de cómo tu ORM/DB lo maneje)
-    // Puedes buscar códigos de error específicos de tu ORM o base de datos.
     if (error.code && (error.code === 11000 || error.code === "23505")) {
       return res.status(409).json({
-        // 409 Conflict
         message: "El email o nickname ya están registrados.",
       });
     }
 
-    // Error general del servidor
     return res.status(500).json({
       message: "Error interno del servidor al procesar el registro.",
-      details: error.message, // Útil para depuración, pero no en producción final.
+      details: error.message,
     });
   }
 }
-// 2. Modificación de Contraseña
+
 async function modificarContraseña(req, res) {
   try {
     const currentPassword = req.body.currentPassword;
@@ -121,7 +110,6 @@ async function modificarContraseña(req, res) {
         .status(400)
         .json({ message: "La contraseña actual es incorrecta." });
     }
-   
     if (newPassword !== repetirPassword) {
       return res
         .status(400)
@@ -153,6 +141,7 @@ async function modificarContraseña(req, res) {
     });
   }
 }
+
 async function modificarNickname(req, res) {
   try {
     const currentPassword = req.body.currentPassword;

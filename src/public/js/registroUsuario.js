@@ -64,9 +64,6 @@ function enviarDatosNuevoUsuario() {
 
       showSpinner();
 
-      //Para probar el spinner
-      //  await new Promise(resolve => setTimeout(resolve, 2000));
-
       const nickname = document.querySelector('[name="nickname"]').value;
       const email = document.querySelector('[name="email"]').value;
       const password = document.querySelector('[name="password"]').value;
@@ -104,15 +101,12 @@ function enviarDatosNuevoUsuario() {
             );
           }
 
-          // console.log(" Registro Exitoso:", resultado);
           limpiarFormularioRegistro();
           window.location.href = "/login?registro=exito";
         } else {
           const errorData = await respuesta.json();
           const errorMessage =
             errorData.message || "No se pudo completar el registro.";
-
-          // console.error(" Error en el registro:", errorData);
 
           if (typeof toastr !== "undefined") {
             toastr.error(errorMessage, "Error de registro");
@@ -121,8 +115,6 @@ function enviarDatosNuevoUsuario() {
           }
         }
       } catch (error) {
-        // console.error(" Error de red o en la solicitud:", error);
-
         if (typeof toastr !== "undefined") {
           toastr.error(
             "Asegúrate de que el servidor esté en funcionamiento.",
@@ -135,8 +127,6 @@ function enviarDatosNuevoUsuario() {
         hideSpinner();
       }
     });
-  } else {
-    // console.error("No se encontró el formulario '.auth-form'.");
   }
 }
 document.addEventListener("DOMContentLoaded", () => {

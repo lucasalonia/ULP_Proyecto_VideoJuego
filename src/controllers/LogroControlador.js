@@ -2,16 +2,10 @@ const Logro = require("../models/Logro");
 const Departamento = require("../models/Departamento");
 const LogroParaje = require("../models/LogroParaje");
 
-// ===================================================
-// GUARDAR TIEMPO DEL MAPA
-// ===================================================
 async function guardarTiempo(req, res) {
   try {
-    console.log("REQ.USER EN guardarTiempo:", req.user);
-
     const usuario_id = req.user?.usuario_id;
 
-    // 🔒 Seguridad extra (nunca insertar sin usuario)
     if (!usuario_id || isNaN(Number(usuario_id))) {
       console.error("Usuario inválido en guardarTiempo:", req.user);
       return res.status(401).json({
@@ -22,7 +16,6 @@ async function guardarTiempo(req, res) {
 
     const { fecha_inicio, fecha_fin, tiempo } = req.body;
 
-    // 🔒 Validación básica de datos
     if (!fecha_inicio || !fecha_fin || tiempo == null) {
       return res.status(400).json({
         ok: false,
@@ -30,7 +23,6 @@ async function guardarTiempo(req, res) {
       });
     }
 
-    // ✅ Llamada correcta al modelo (PARÁMETROS SUELTOS)
     await Logro.insertTiempoMapa(
       usuario_id,
       fecha_inicio,
@@ -51,14 +43,10 @@ async function guardarTiempo(req, res) {
   }
 }
 
-// ===================================================
-// OBTENER LOGROS (PANTALLA LOGROS)
-// ===================================================
 async function obtenerLogros(req, res) {
   try {
     const usuarioId = req.user?.usuario_id;
 
-    // 🛑 INVITADO → vista vacía
     if (!usuarioId || isNaN(Number(usuarioId))) {
       return res.render("usuario/logros", {
         tiempos: [],
@@ -72,24 +60,18 @@ async function obtenerLogros(req, res) {
     const departamentoId = req.params.departamentoId;
     let insigniaCompletada = false;
 
-    // ===================== DEPARTAMENTOS =====================
-    const departamentos =
-      await Departamento.getDepartamentosConParajes(usuarioId);
+    const departamentos = await Departamento.getDepartamentosConParajes(usuarioId);
     let actual = null;
     let parajesCompletados = [];
-    
-    if (departamentos && departamentos.length > 0) {
 
-      // ===================== DEPTO ACTUAL =====================
+    if (departamentos && departamentos.length > 0) {
       actual = departamentoId
         ? departamentos.find((d) => d.departamento_id == departamentoId)
         : departamentos[0];
 
       if (!actual) actual = departamentos[0];
 
-      // ===================== PARAJES =====================
-      const parajes =
-        await Departamento.getParajesByDepto(actual.departamento_id);
+      const parajes = await Departamento.getParajesByDepto(actual.departamento_id);
 
       const completadosIds =
         await LogroParaje.getParajesCompletadosPorUsuarioYDepto(
@@ -106,23 +88,18 @@ async function obtenerLogros(req, res) {
       if (!parajeNoCompletado && parajes.length > 0) {
         insigniaCompletada = true;
       }
-        parajesCompletados =
-      await LogroParaje.getParajesCompletadosPorUsuarioYDeptoNombre(
+
+      parajesCompletados = await LogroParaje.getParajesCompletadosPorUsuarioYDeptoNombre(
         usuarioId,
         actual.departamento_id
       );
     }
-    // ===================== TIEMPOS =====================
     const tiempos = await Logro.getTiemposMapa(usuarioId);
     const tiemposFormateados = tiempos.map((t) => ({
       ...t,
       tiempoFormateado: formatearTiempo(t.tiempo),
     }));
 
-    // ===================== PARAJES COMPLETADOS =====================
-  
-
-    // ===================== RENDER =====================
     return res.render("usuario/logros", {
       tiempos: tiemposFormateados,
       parajes: parajesCompletados,
@@ -139,14 +116,10 @@ async function obtenerLogros(req, res) {
   }
 }
 
-// ===================================================
-// OBTENER ÚLTIMOS LOGROS (PERFIL)
-// ===================================================
 async function obtenerUltimosLogros(req, res) {
   try {
     const usuarioId = req.user?.usuario_id;
 
-    // 🛑 INVITADO
     if (!usuarioId || isNaN(Number(usuarioId))) {
       return res.json({
         ok: true,
@@ -178,15 +151,11 @@ async function obtenerUltimosLogros(req, res) {
   }
 }
 
-// ===================================================
-// Paraje Por Departamento Patalla Mapa.
-// ===================================================
 async function obtenerProgresoDepartamento(req, res) {
   try {
     const usuarioId = req.user?.usuario_id;
     const deptoId = req.params.deptoId;
 
-    // 🛑 INVITADO
     if (!usuarioId || isNaN(Number(usuarioId))) {
       return res.json({
         ok: true,
@@ -203,8 +172,9 @@ async function obtenerProgresoDepartamento(req, res) {
         deptoId
       );
 
-    const totalParajes =
-      await Departamento.getParajesByDepto(deptoId).then((parajes) => parajes.length);
+    const totalParajes = await Departamento.getParajesByDepto(deptoId).then(
+      (parajes) => parajes.length
+    );
 
     const cantidadCompletados = parajesCompletados.length;
 
@@ -220,7 +190,6 @@ async function obtenerProgresoDepartamento(req, res) {
       porcentaje,
       listaParajes: parajesCompletados,
     });
-
   } catch (err) {
     console.error("Error obteniendo progreso del departamento:", err);
     return res.status(500).json({
@@ -231,9 +200,6 @@ async function obtenerProgresoDepartamento(req, res) {
 }
 
 
-// ===================================================
-// EXPORTS
-// ===================================================
 module.exports = {
   guardarTiempo,
   obtenerLogros,
@@ -241,13 +207,11 @@ module.exports = {
   obtenerProgresoDepartamento,
 };
 
-// ===================================================
-// UTIL
-// ===================================================
 function formatearTiempo(segundos) {
   const minutos = Math.floor(segundos / 60);
   const segs = segundos % 60;
 
-  return `${minutos < 10 ? "0" : ""}${minutos}:${segs < 10 ? "0" : ""
-    }${segs}`;
+  return `${minutos < 10 ? "0" : ""}${minutos}:${
+    segs < 10 ? "0" : ""
+  }${segs}`;
 }

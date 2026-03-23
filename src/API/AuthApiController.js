@@ -12,13 +12,6 @@ const ISSUER = process.env.JWT_ISSUER;
 const AUDIENCE = process.env.JWT_AUDIENCE;
 const EXPIRATION_HOURS = 4;
 
-/**
- * @function setJWTCookie
- * Genera el JWT y establece la cookie 'jwt_token' en la respuesta.
- * @param {object} res - Objeto de respuesta de Express.
- * @param {object} usuario - Objeto de usuario con sus propiedades esenciales (usuario_id, nombre, imagen_perfil, etc.).
- */
-
 function setJWTCookie(res, usuario) {
   const payload = {
     sub: usuario.usuario_id,
@@ -48,16 +41,7 @@ function setJWTCookie(res, usuario) {
   return token;
 }
 
-/**
- * @function loginApi
- * Maneja la solicitud POST /api/login y genera el JWT.
- */
 async function loginApi(req, res) {
-
-   // Test pantalla de carga spinner
-  // await new Promise(resolve => setTimeout(resolve, 8000));
-
-  
   const { mail, password } = req.body;
 
   if (!mail || !password) {
@@ -74,7 +58,6 @@ async function loginApi(req, res) {
       .json({ message: "Usuario o contraseña incorrectos." });
   }
 
-  // Usar la función centralizada para establecer la cookie
   setJWTCookie(res, usuario);
 
   return res.json({
@@ -83,29 +66,17 @@ async function loginApi(req, res) {
   });
 }
 
-/**
- * @function logoutApi
- * Maneja la solicitud POST /api/logout.
- */
 async function logoutApi(req, res) {
-  // Elimina la cookie de manera efectiva
   res.cookie("jwt_token", "loggedout", {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
-    maxAge: 0, // Fuerza la expiración inmediata
+    maxAge: 0,
     sameSite: "strict",
   });
 
-  return res.redirect('/login');
+  return res.redirect("/login");
 }
 
-/**
- * @function recoverPassword
- * La función $recoverPassword$ gestiona el proceso de solicitud de restablecimiento de contraseña.
- * Primero, verifica que se haya proporcionado un correo electrónico.
- *  Si el correo existe en la base de datos, genera un token temporal (JWT) de 5 minutos, construye un enlace de restablecimiento y,
- *  finalmente, envía este enlace por correo electrónico al usuario. Si no encuentra el correo o si hay un error en el envío, retorna el mensaje de error correspondiente.
- */
 async function recoverPassword(req, res) {
   try {
     const { mail } = req.body;
@@ -115,7 +86,6 @@ async function recoverPassword(req, res) {
     }
 
     const user = await Usuario.findUserByMail(mail);
-    console.log(user);
 
     if (!user) {
       return res.status(404).json({ message: "Correo no registrado." });
@@ -137,7 +107,6 @@ async function recoverPassword(req, res) {
 
     const resetLink = `${process.env.FRONTEND_URL}/reset-password/${token}`;
 
-    // Enviar email
     await sendMail(
       user.mail,
       "Restablecer contraseña",
@@ -196,7 +165,7 @@ async function recoverPassword(req, res) {
       message: "Se envió un enlace a tu email para restablecer la contraseña.",
     });
   } catch (error) {
-    console.error("ERROR EN recoverPassword:", error);
+    console.error("Error en recoverPassword:", error);
 
     return res.status(500).json({
       message: "Error interno del servidor al enviar el correo.",
@@ -233,7 +202,7 @@ async function resetPassword(req, res) {
     if (payload.type !== "password-reset") {
       return res.status(400).json({ message: "Token inválido." });
     }
-    const userId = payload.sub; //Proporcionado por el Token. Ver recoverPassword
+    const userId = payload.sub;
     const user = await Usuario.findByPk(userId);
     if (!user) {
       return res.status(404).json({ message: "Usuario no encontrado." });
@@ -247,19 +216,11 @@ async function resetPassword(req, res) {
     await Usuario.updatePassword(user.usuario_id, passwordHashed);
     return res.json({ message: "Contraseña actualizada con éxito." });
   } catch (error) {
-    console.error("ERROR EN resetPassword:", error);
+    console.error("Error en resetPassword:", error);
     return res.status(500).json({ message: "Error interno del servidor." });
   }
 }
-/**
- * @function tokenVerification
- * Verifica la validez y expiración del token de restablecimiento.
- */
-/**
- * @function verifyTokenPromise
- * Verifica la validez y expiración del token de restablecimiento.
- * Devuelve una Promesa que se resuelve con true o false.
- */
+
 async function verifyTokenPromise(req) {
   const token = req.params.token;
 
@@ -277,11 +238,6 @@ async function verifyTokenPromise(req) {
 }
 
 async function guestLogin(req, res) {
-
-
-  // Test pantalla de carga spinner
-  // await new Promise(resolve => setTimeout(resolve, 2000));
-
   const { nickname } = req.body;
 
   if (!nickname || nickname.trim() === "") {
@@ -291,7 +247,7 @@ async function guestLogin(req, res) {
   }
 
   const invitado = {
-    usuario_id: `guest_${Date.now()}`, 
+    usuario_id: `guest_${Date.now()}`,
     nombre: nickname.trim(),
     imagen_perfil: null,
     mail: null,

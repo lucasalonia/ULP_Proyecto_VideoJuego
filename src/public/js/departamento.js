@@ -61,18 +61,6 @@ document.addEventListener("DOMContentLoaded", () => {
     return completados[completados.length - 1];
   }
 
-  if (esInvitado) {
-
-    const ultimo = obtenerUltimoParajeLocal();
-
-    if (ultimo) {
-      console.log("Último paraje completado:", ultimo);
-    }
-
-  }
-
-
-
   // ==================================================
   // MODAL REGLAS
   // ==================================================

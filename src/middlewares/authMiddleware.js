@@ -34,7 +34,6 @@ function verifyToken(req, res, next) {
   }
 
   if (!token) {
-    console.log(`Acceso denegado a ${req.path}. Token no proporcionado.`);
     return res.redirect("/login");
   }
 
@@ -49,11 +48,9 @@ function verifyToken(req, res, next) {
       return res.redirect("/login");
     }
     
-    console.log("JWT PAYLOAD REAL:", payload); // 🔴 CLAVE
-    // 🔑 NORMALIZACIÓN CENTRAL DEL USUARIO
     req.user = {
       userId: payload.usuario_id ?? payload.sub,
-      usuario_id: payload.usuario_id ?? payload.sub, // opcional
+      usuario_id: payload.usuario_id ?? payload.sub,
       role: payload.role,
       email: payload.email,
     };

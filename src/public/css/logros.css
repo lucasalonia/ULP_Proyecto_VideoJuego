@@ -1,22 +1,14 @@
-/*fuente*/
-/* @font-face {
-  font-family: "MiFuente";
-  src: url("/fonts/GamePocket-Regular.ttf") format("truetype");
-  font-weight: normal;
-} */
-
-/*contenedor general*/
-
 #loadingSpinner.d-none {
-    display: none !important;
-    pointer-events: none; /* Asegura que no capture clics si está oculto */
+  display: none !important;
+  pointer-events: none;
 }
 
 #loadingSpinner {
-    pointer-events: all; /* Solo captura clics cuando está visible */
+  pointer-events: all;
 }
+
 .logros-page {
-  background-image:url("/img/degradeNaranja1.PNG"); ;
+  background-image: url("/img/degrade-naranja-1.png");
   min-height: 100vh;
   padding-top: 40px;
 }
@@ -27,21 +19,22 @@
   align-items: flex-start;
 }
 
-/*columna tiempos*/
 .mejores-tiempos {
-  
   background: #96e0c9;
   border: 5px solid #3c3c3c;
   padding: 20px;
- /* width: 300px;*/
   box-shadow: 6px 5px 0px #3c3c3c, 5px 6px 0px #3c3c3c;
 }
-.icono-reloj img{ width: 45px;
-   float: right; 
-   margin-left: 5px; 
-   margin-right: 5px; }
+
+.icono-reloj img {
+  width: 45px;
+  float: right;
+  margin-left: 5px;
+  margin-right: 5px;
+}
+
 .tiempo-item {
-  background: #FBEAC7;
+  background: #fbeac7;
   font-family: "Press Start 2P", monospace;
   font-size: 15px;
   text-align: center;
@@ -55,13 +48,10 @@
   background: #F8B07D;
 }
 
-/*bloques de logros*/
 .logro-paraje,
-.logro-tiempo
- {
-  
+.logro-tiempo {
   background: #8bc4af;
- font-family: "Press Start 2P", monospace;
+  font-family: "Press Start 2P", monospace;
   font-size: 12px;
   text-align: center;
   display: inline-block;
@@ -69,20 +59,19 @@
   margin: 0 10px 4px 10px;
   border: 4px solid #3c3c3c;
   box-shadow: 5px 4px 0px #3c3c3c, 4px 5px 0px #3c3c3c;
-  
 }
+
 .logro-paraje h3,
 .logro-tiempo h3 {
- font-family: "Press Start 2P", monospace;
+  font-family: "Press Start 2P", monospace;
   font-size: 20px;
   text-align: center;
   color: #3c3c3c;
   margin-top: 1px;
   margin-bottom: 1px;
 }
-/*departamento*/
 .departamento {
-  background: #f5f4c4 ;
+  background: #f5f4c4;
   border: 4px solid #3c3c3c;
   padding: 20px;
   width: 1000px;
@@ -91,8 +80,8 @@
 }
 
 .titulo {
-  background: #FEAD85;
-   font-family: "Press Start 2P", monospace;
+  background: #fead85;
+  font-family: "Press Start 2P", monospace;
   font-size: 30px;
   text-align: center;
   padding: 5px 10px 1px 20px;
@@ -102,7 +91,6 @@
   box-shadow: 5px 4px 0px #3c3c3c, 4px 5px 0px #3c3c3c;
 }
 
-/*insignia*/
 .icono-insignia {
   position: relative;
   height: 150px;
@@ -117,7 +105,6 @@
   width: 170px;
 }
 
-/*departamento completado*/
 .logro-completado {
   position: absolute;
   left: calc(50% + 90px);
@@ -138,7 +125,6 @@
   line-height: 1.1;
 }
 
-/*lista de parajes*/
 .lista-parajes {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -159,8 +145,8 @@
   margin-left: auto;
   margin-right: auto;
   background: #FFF9C4;
-  flex-wrap: wrap;       /* Si no cabe el icono y el texto, se pone uno abajo del otro */
-  overflow: hidden;      /* Evita fugas de contenido */
+  flex-wrap: wrap;
+  overflow: hidden;
   word-break: break-word;
   font-family: "Press Start 2P", monospace;
   font-size: 14px;
@@ -170,7 +156,6 @@
   box-shadow: 5px 4px 0px #ad9b46, 4px 5px 0px #ad9b46;
 }
 
-/*flecha*/
 .flecha {
   position: absolute;
   right: 33px;
@@ -183,45 +168,39 @@
   display: block;
 }
 
-/*panel pixel*/
- .panel-pixel {
+.panel-pixel {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  /* Eliminamos max-height para que no se achique */
-  min-width: 320px; /* Asegura un ancho mínimo agradable */
-  max-width: 90%;   /* No se pega a los bordes en móviles */
-  
+  min-width: 320px;
+  max-width: 90%;
   background: #8bc4af;
   font-family: "Press Start 2P", monospace;
   font-size: 12px;
   text-align: center;
   border: 4px solid #3c3c3c;
-  padding: 20px; /* Un poco más de aire */
+  padding: 20px;
   image-rendering: pixelated;
   box-shadow: 5px 4px 0px #3c3c3c, 4px 5px 0px #3c3c3c;
-  
-  margin: 10px auto; /* Centrado */
+  margin: 10px auto;
 }
 
 .titulo-pixel {
   margin-top: 0;
-  
-  background: #FEAD85;
-   font-family: "Press Start 2P", monospace;
+  background: #fead85;
+  font-family: "Press Start 2P", monospace;
   font-size: 20px;
   text-align: center;
   padding: 5px 10px 1px 20px;
-   margin-bottom: 10px;
+  margin-bottom: 10px;
   color: #3c3c3c;
   border: 5px solid #3c3c3c;
   box-shadow: 5px 4px 0px #3c3c3c, 4px 5px 0px #3c3c3c;
 }
 
-/*datos usuario*/
 .dato-item {
-  width: 100%; /* Para que todos midan lo mismo */
+  width: 100%;
   box-sizing: border-box;
   flex-wrap: wrap;
   overflow: hidden;
@@ -231,9 +210,9 @@
   gap: 10px;
   background: #FBEAC7;
   border: 3px solid #c6ab51;
-  padding: 10px 12px; /* Reducido un poco */
+  padding: 10px 12px;
   font-family: "Press Start 2P", monospace;
-  font-size: 14px;    /* Reducido de 20px a 14px para ganar espacio */
+  font-size: 14px;
   margin-bottom: 12px;
   box-shadow: 4px 3px 0px #3c3c3c;
 }
@@ -242,20 +221,14 @@
   font-family: "Press Start 2P", monospace;
 }
 
-/*foto perfil*/
 .foto-perfil-pixel {
-  width: 120px;  /* Reducido de 150px a 120px */
+  width: 120px;
   height: 120px;
   image-rendering: pixelated;
   border: 4px solid #000;
- 
   box-shadow: 5px 4px 0px #3c3c3c;
 }
-/*botones pixel*/
 
-/* ===========================
-   BOTÓN RETRO
-=========================== */
 .btn-pixel {
   background-color: #00c6d9;
   color: #ffffff;
