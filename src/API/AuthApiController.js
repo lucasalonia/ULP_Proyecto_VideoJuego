@@ -2,7 +2,9 @@ const jwt = require("jsonwebtoken");
 const authService = require("../Services/authService");
 const Usuario = require("../models/Usuario");
 const { sendMail } = require("../Services/sendMail");
-const { validarPassword } = require("../validators/passwordValidator");
+const { 
+  
+ } = require("../validators/passwordValidator");
 
 const { authenticateUser } = authService;
 const { hashPassword } = authService;
